@@ -12,12 +12,11 @@ import java.io.Serializable;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "paymentMethods")
+@Table(name = "payment_Methods")
 public class PaymentMethod implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_paymentMethod")
     private Long id;
 
     private String type;

@@ -13,19 +13,17 @@ import java.io.Serializable;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "clientsAddresses")
+@Table(name = "clients_Addresses")
 public class ClientsAddress implements Serializable {
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_clientsAddress", nullable = false)
     private Long id;
-
 
     private String country;
     private String city;
-    private Integer postalCode;
+    private String postal_code;
     private String street;
     private String home;
     private String apartment;

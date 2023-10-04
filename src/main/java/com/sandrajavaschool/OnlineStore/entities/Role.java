@@ -23,7 +23,7 @@ public class Role implements Serializable {
     @Column(name = "id_role", nullable = false)
     private Long id;
 
-    private String roleName;
+    private String name;
 
     @ManyToMany //algún cascade?
     @JoinTable(name = "Users_has_Roles",
