@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head">
+  <meta charset="UTF-8"/>
+  <title th:text="'Spring Boot: MVC + Thymeleaf + Data JPA -' + ${titulo}"></title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+</head>
+<body>
+
+<header th:fragment="header">
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Spring Boot</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/listar}">Clientes</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="alert alert-success" th:if="${success != null}" th:text="${success}"></div>
+  <div class="alert alert-danger" th:if="${danger != null}" th:text="${error}"></div>
+  <div class="alert alert-warming" th:if="${warming != null}" th:text="${warming}"></div>
+  <div class="alert alert-info" th:if="${info != null}" th:text="${info}"></div>
+
+
+</header>
+
+<div class="container"></div>
+
+<footer th:fragment="footer" class="container">
+
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-12 text-center"><br>
+        <h2 class="footer-heading"><a href="#" class="logo">CitaTe</a></h2>
+        <p class="menu">
+
+
+        </p>
+        <div class="container">
+          <ul class="ftco-footer-social p-0 d-flex justify-content-center">
+            <li class="ftco-animate">
+              <a href="#" data-toggle="tooltip" data-placement="top" title="Twitter">
+                <span class="ion-logo-twitter"></span>
+                <img src="/img/twitter.png" alt="Twitter Logo" style="width: 30px; height: 30px;">
+              </a>
+            </li>
+            <li class="ftco-animate">
+              <a href="#" data-toggle="tooltip" data-placement="top" title="Facebook">
+                <span class="ion-logo-facebook"></span>
+                <img src="/img/facebook.png" alt="Facebook Logo" style="width: 30px; height: 30px;">
+              </a>
+            </li>
+            <li class="ftco-animate">
+              <a href="#" data-toggle="tooltip" data-placement="top" title="Instagram">
+                <span class="ion-logo-instagram"></span>
+                <img src="/img/instagram.jpg" alt="Instagram Logo" style="width: 30px; height: 30px;">
+              </a>
+            </li>
+          </ul>
+        </div>
+
+
+      </div>
+    </div>
+    <div class="row mt-5">
+      <div class="col-md-12 text-center">
+        <p class="copyright">
+          Copyright 2023 All rights reserved. CitaTe</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"
+        integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+
+</body>
+</html>
