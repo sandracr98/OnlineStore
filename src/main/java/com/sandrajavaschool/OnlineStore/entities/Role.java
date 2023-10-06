@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -25,11 +26,11 @@ public class Role implements Serializable {
 
     private String name;
 
-    @ManyToMany //algún cascade?
+    @ManyToMany
     @JoinTable(name = "Users_has_Roles",
             joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id_role"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id_user"))
-    private Set<User> users = new HashSet<>();
+    private List<User> users;
 
 
 

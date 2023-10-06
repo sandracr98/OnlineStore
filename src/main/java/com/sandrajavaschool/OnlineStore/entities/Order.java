@@ -6,9 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -37,7 +35,7 @@ public class Order implements Serializable {
     private PaymentMethod paymentMethod;
 
 
-    @OneToMany(cascade = CascadeType.ALL,
+    @OneToMany(cascade = CascadeType.ALL, //ESTA AL REVES EL JOIN COLUMN ES EN EL MANY TO ONE
                 fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private List<ReceiptLine> receiptLines;

@@ -10,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -29,7 +30,7 @@ public class User implements Serializable {
     private String surname;
 
     @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date birthdate;
 
 
@@ -37,18 +38,17 @@ public class User implements Serializable {
     private String pass;
 
     @ManyToMany(mappedBy = "users",
-            cascade = {CascadeType.ALL},
             fetch = FetchType.LAZY)
-    private Set<Role> roles = new HashSet<>();
+    private List<Role> roles;
 
 
     @OneToMany(mappedBy = "user",
             cascade = {CascadeType.ALL},
             fetch = FetchType.LAZY)
-    private Set<Order> orders = new HashSet<>();
+    private List<Order> orders;
 
 
-    public void addRole(Role role){
+    public void addRole(Role role) {
         roles.add(role);
         role.getUsers().add(this);
     }

@@ -1,42 +1,33 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="layout/layout :: head"></head>
+
 <body>
 
 <header th:replace="layout/layout :: header"></header>
 
 <div class="container py-4">
-
-    <div class="card bg-light">
+    <div class="card bg-dark text-white">
         <div class="card-header" th:text="${title}"></div>
         <div class="card-body">
 
             <table class="table table-striped  border border-success">
-                <thead class="thead-inverse">
-                <tr>
-                    <th>id</th>
-                    <th>Name</th>
-                    <th>Surname</th>
-                    <th>Birthday</th>
-                    <th>Email</th>
-                </tr>
-                </thead>
+
                 <tbody>
-                <tr th:each="user: ${users}">
 
-                    <td th:text="${user.id}"></td>
-                    <td th:text="${user.name}"></td>
-                    <td th:text="${user.surname}"></td>
-                    <td th:text="${user.birthdate}"></td>
-                    <td th:text="${user.email}"></td>
+                    <ul th:class="list-group">
+                        <li class="list-group-item" th:text="${user.name}"></li>
+                        <li class="list-group-item" th:text="${user.surname}"></li>
+                        <li class="list-group-item" th:text="${user.email}"></li>
+                        <li class="list-group-item" th:text="${user.birthdate}"></li>
+                        <li class="list-group-item" th:text="${user.roles}"></li>
+                    </ul>
 
-                </tr>
                 </tbody>
             </table>
 
         </div>
     </div>
-
 </div>
 
 <footer th:replace="layout/layout :: footer"></footer>

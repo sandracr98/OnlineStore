@@ -4,9 +4,11 @@ INSERT INTO roles (name) VALUES
 ('Admin'),
 ('Client');
 
-
 -- Insertando usuarios
 INSERT INTO users (name, surname, birthdate, email, pass) VALUES
+('Sandra', 'Checa', '1998-03-20', 'sandrachr@example.com', 'password123'),
+('Fernando', 'Alonso', '1981-07-29', 'fernandoalonso@example.com', 'password456'),
+('Carlos', 'Sainz', '1994-09-01', 'carlossainz94@example.com', 'letmein'),
 ('John', 'Doe', '1990-01-01', 'john.doe@example.com', 'password123'),
 ('Jane', 'Doe', '1988-05-15', 'jane.doe@example.com', 'password456'),
 ('Bob', 'Smith', '1995-03-20', 'bob.smith@example.com', 'letmein'),
