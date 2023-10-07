@@ -15,13 +15,18 @@
 
                 <tbody>
 
-                    <ul th:class="list-group">
-                        <li class="list-group-item" th:text="${user.name}"></li>
-                        <li class="list-group-item" th:text="${user.surname}"></li>
-                        <li class="list-group-item" th:text="${user.email}"></li>
-                        <li class="list-group-item" th:text="${user.birthdate}"></li>
-                        <li class="list-group-item" th:text="${user.roles}"></li>
-                    </ul>
+                <ul th:class="list-group">
+                    <li class="list-group-item" th:text="${user.name}"></li>
+                    <li class="list-group-item" th:text="${user.surname}"></li>
+                    <li class="list-group-item" th:text="${user.email}"></li>
+                    <li class="list-group-item" th:text="${user.birthdate}"></li>
+                    <li class="list-group-item">
+                        <ul class="list-group" th:each="role : ${user.roles}" th:text="${role.name}"></ul>
+                    </li>
+                </ul>
+                <br>
+
+                <a class="btn btn-secondary btn-sm" th:href="@{/view/} + ${user.id}" th:text="'Edit'"></a>
 
                 </tbody>
             </table>

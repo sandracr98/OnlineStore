@@ -11,8 +11,7 @@
     <div class="card-header" th:text="${title}"></div>
     <div class="card-body">
 
-
-      <form th:action="@{/update}" th:object="${user}" method="post" enctype="multipart/form-data">
+      <form th:action="@{/save}" th:object="${user}" method="post" enctype="multipart/form-data">
 
         <div class="form-group">
 
@@ -50,6 +49,13 @@
           </div>
         </div>
 
+        <div class="form-group">
+          <label class="col-sm-2 col-form-label">Password</label>
+          <div class="col-sm-6">
+            <input type="date" th:field="*{pass}" th:errorclass="'form-control alert-danger'"/>
+          </div>
+        </div>
+
         <div>
           <label for="roles">Select a rol:</label>
           <select name="roles" id="roles">
@@ -63,10 +69,12 @@
         <div class="form-group">
           <tr>
             <div>
-              <input type="submit" value="Create" class="btn btn-secondary"/>
+              <input type="submit" value="Save" class="btn btn-secondary"/>
             </div>
           </tr>
         </div>
+
+        <input type="hidden" th:field="*{id}">
 
       </form>
     </div>

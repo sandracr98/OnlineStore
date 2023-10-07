@@ -1,8 +1,33 @@
+USE osis_linker;
 
 -- Insertando roles
 INSERT INTO roles (name) VALUES
 ('Admin'),
 ('Client');
+
+
+-- Insertando direcciones de clientes
+INSERT INTO clients_Addresses (country, city, postal_Code, street, home, apartment)
+VALUES ('España', 'Barcelona', 08001, 'Calle de la Princesa', '123', '1A');
+
+INSERT INTO clients_Addresses (country, city, postal_Code, street, home, apartment)
+VALUES ('Estados Unidos', 'Nueva York', 10001, 'Broadway', '456', '2B');
+
+INSERT INTO clients_Addresses (country, city, postal_Code, street, home, apartment)
+VALUES ('Francia', 'París', 75001, 'Avenida de los Campos Elíseos', '789', '3C');
+
+INSERT INTO clients_Addresses (country, city, postal_Code, street, home, apartment)
+VALUES ('Italia', 'Roma', 00118, 'Via del Corso', '1011', '4D');
+
+INSERT INTO clients_Addresses (country, city, postal_Code, street, home, apartment)
+VALUES ('Alemania', 'Berlín', 10115, 'Unter den Linden', '1213', '5E');
+
+INSERT INTO clients_Addresses (country, city, postal_Code, street, home, apartment)
+VALUES ('Reino Unido', 'Londres', 'SW1A 1AA', 'Downing Street', '10', '1');
+
+INSERT INTO clients_Addresses (country, city, postal_Code, street, home, apartment)
+VALUES ('Japón', 'Tokio', 100-8111, 'Chiyoda', '1-1-1', '101');
+
 
 -- Insertando usuarios
 INSERT INTO users (name, surname, birthdate, email, pass) VALUES
@@ -30,29 +55,10 @@ INSERT INTO users (name, surname, birthdate, email, pass) VALUES
 ('William', 'Wright', '1987-12-03', 'william.wright@example.com', 'testpassword'),
 ('Ava', 'Lopez', '1995-06-17', 'ava.lopez@example.com', 'mypassword');
 
-
-
--- Insertando direcciones de clientes
-INSERT INTO clients_Addresses (country, city, postal_Code, street, home, apartment)
-VALUES ('España', 'Barcelona', 08001, 'Calle de la Princesa', '123', '1A');
-
-INSERT INTO clients_Addresses (country, city, postal_Code, street, home, apartment)
-VALUES ('Estados Unidos', 'Nueva York', 10001, 'Broadway', '456', '2B');
-
-INSERT INTO clients_Addresses (country, city, postal_Code, street, home, apartment)
-VALUES ('Francia', 'París', 75001, 'Avenida de los Campos Elíseos', '789', '3C');
-
-INSERT INTO clients_Addresses (country, city, postal_Code, street, home, apartment)
-VALUES ('Italia', 'Roma', 00118, 'Via del Corso', '1011', '4D');
-
-INSERT INTO clients_Addresses (country, city, postal_Code, street, home, apartment)
-VALUES ('Alemania', 'Berlín', 10115, 'Unter den Linden', '1213', '5E');
-
-INSERT INTO clients_Addresses (country, city, postal_Code, street, home, apartment)
-VALUES ('Reino Unido', 'Londres', 'SW1A 1AA', 'Downing Street', '10', '1');
-
-INSERT INTO clients_Addresses (country, city, postal_Code, street, home, apartment)
-VALUES ('Japón', 'Tokio', 100-8111, 'Chiyoda', '1-1-1', '101');
+INSERT INTO users_has_roles (user_id, role_id) VALUES
+(1, 1), (2, 2), (3, 1), (4, 2), (5, 1), (6, 2), (7, 1), (8, 2), (9, 1),
+(10, 2), (11, 1), (12, 2), (13, 1), (14, 2), (15, 1), (16, 2), (17, 1),
+(18, 2), (19, 1), (20, 2), (21, 1), (22, 2);
 
 
 -- Insertando métodos de pago
@@ -78,9 +84,9 @@ INSERT INTO receipt_Lines (amount, product_id) VALUES (2, 3);
 
 
 -- Insertando órdenes
-INSERT INTO orders (user_id_user, clients_Address_id, payment_Method_id, delivery_Method, goods, payment_Status, order_Status, sum, description, date)
-VALUES (1, 1, 1, 'Envío a domicilio', 'Productos varios', 0, 'En proceso', 150.0, 'Descripción de la orden 1', '2023-10-03');
+INSERT INTO orders (user_id_user, payment_Method_id, delivery_Method, goods, payment_Status, order_Status, sum, description, date)
+VALUES (1, 1, 'Envío a domicilio', 'Productos varios', 0, 'En proceso', 150.0, 'Descripción de la orden 1', '2023-10-03');
 
-INSERT INTO orders (user_id_user, clients_Address_id, payment_Method_id, delivery_Method, goods, payment_Status, order_Status, sum, description, date)
-VALUES (2, 2, 2, 'Recogida en tienda', 'Productos de electrónica', 1, 'Pendiente', 200.0, 'Descripción de la orden 2', '2023-10-04');
+INSERT INTO orders (user_id_user, payment_Method_id, delivery_Method, goods, payment_Status, order_Status, sum, description, date)
+VALUES (2, 2, 'Recogida en tienda', 'Productos de electrónica', 1, 'Pendiente', 200.0, 'Descripción de la orden 2', '2023-10-04');
 

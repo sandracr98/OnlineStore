@@ -16,7 +16,6 @@ import java.io.Serializable;
 @Table(name = "clients_Addresses")
 public class ClientsAddress implements Serializable {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,6 +26,10 @@ public class ClientsAddress implements Serializable {
     private String street;
     private String home;
     private String apartment;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id_user")
+    private User user;
 
 
 }

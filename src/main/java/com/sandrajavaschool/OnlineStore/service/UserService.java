@@ -4,7 +4,10 @@ import com.sandrajavaschool.OnlineStore.dao.IUserDao;
 import com.sandrajavaschool.OnlineStore.entities.User;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -36,5 +39,11 @@ public class UserService implements IUserService {
     @Transactional
     public void delete(Long id) {
         userDao.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public Page<User> findAll(Pageable pageable) {
+        return userDao.findAll(pageable);
     }
 }

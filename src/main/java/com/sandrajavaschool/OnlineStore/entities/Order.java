@@ -26,16 +26,13 @@ public class Order implements Serializable {
 
 
     @OneToOne(cascade = CascadeType.ALL,
-                fetch = FetchType.LAZY)
-    private ClientsAddress clientsAddress;
-
-
-    @OneToOne(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
     private PaymentMethod paymentMethod;
 
 
-    @OneToMany(cascade = CascadeType.ALL, //ESTA AL REVES EL JOIN COLUMN ES EN EL MANY TO ONE
+    //la relacion es en un unico sentido por eso esta asi el cascade y el join
+    //ademas en receiptline no esta el atributo order
+    @OneToMany(cascade = CascadeType.ALL,
                 fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private List<ReceiptLine> receiptLines;
@@ -53,6 +50,8 @@ public class Order implements Serializable {
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     @Column(name = "date")
     private Date date;
+
+
 
     //this method let you to adding lines to the order
     public void addReceiptLine(ReceiptLine receiptLine) {

@@ -37,7 +37,14 @@ public class User implements Serializable {
     private String email;
     private String pass;
 
+
+    @OneToMany(mappedBy = "user",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
+    private List<ClientsAddress> clientsAddresses;
+
     @ManyToMany(mappedBy = "users",
+            cascade = {CascadeType.REMOVE}, //hay que revisarlo pq se borran todos los roles
             fetch = FetchType.LAZY)
     private List<Role> roles;
 
@@ -56,6 +63,11 @@ public class User implements Serializable {
     public void addOrder(Order order) {
         orders.add(order);
         order.setUser(this);
+    }
+
+    public void addAddress(ClientsAddress clientsAddress) {
+        clientsAddresses.add(clientsAddress);
+        clientsAddress.setUser(this);
     }
 
 }

@@ -11,6 +11,12 @@
         <div class="card-header" th:text="${title}"></div>
         <div class="card-body">
 
+            <td>
+                <a class="btn btn-secondary btn-sm" th:href="@{/create}" th:text="'Create'"></a>
+            </td>
+
+            <br>
+
             <table class="table table-striped  border border-success">
                 <thead class="thead-inverse">
                 <tr>
@@ -19,31 +25,34 @@
                     <th>Surname</th>
                     <th>Birthday</th>
                     <th>Email</th>
+                    <th></th>
+                    <th></th>
+
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="user: ${users}">
 
-                    <td th:text="${user.id}"></td>
+                    <td><a class="btn btn-primary btn-sm" th:text="${user.id}" th:href="@{/userDetails/} + ${user.id}"></a></td>
                     <td th:text="${user.name}"></td>
                     <td th:text="${user.surname}"></td>
                     <td th:text="${user.birthdate}"></td>
                     <td th:text="${user.email}"></td>
 
                     <td>
-                        <a class="btn btn-primary btn-sm"
-                           th:href="@{/update/{id}(id=${cliente.id})}" th:text="'Edit'"></a>
+                        <a class="btn btn-primary btn-sm" th:href="@{/view/} + ${user.id}" th:text="'Edit'"></a>
                     </td>
 
                     <td>
-                        <a class="btn btn-primary btn-sm"
-                           th:href="@{/delete/{id}(id=${cliente.id})}" th:text="'Delete'"></a>
+                        <a class="btn btn-danger btn-sm" th:href="@{/delete/} + ${user.id}" th:text="'Delete'"></a>
                     </td>
 
 
                 </tr>
                 </tbody>
             </table>
+
+            <nav th:replace="layout/paginator_nav :: paginator"></nav>
 
         </div>
     </div>
