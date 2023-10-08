@@ -8,10 +8,7 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Getter
@@ -43,8 +40,9 @@ public class User implements Serializable {
             fetch = FetchType.LAZY)
     private List<ClientsAddress> clientsAddresses;
 
+
     @ManyToMany(mappedBy = "users",
-            cascade = {CascadeType.REMOVE}, //hay que revisarlo pq se borran todos los roles
+            cascade = {CascadeType.REFRESH}, //hay que revisarlo pq se borran todos los roles
             fetch = FetchType.LAZY)
     private List<Role> roles;
 
@@ -52,7 +50,7 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user",
             cascade = {CascadeType.ALL},
             fetch = FetchType.LAZY)
-    private List<Order> orders;
+    private List<Order> orders = new ArrayList<Order>();
 
 
     public void addRole(Role role) {
@@ -62,7 +60,6 @@ public class User implements Serializable {
 
     public void addOrder(Order order) {
         orders.add(order);
-        order.setUser(this);
     }
 
     public void addAddress(ClientsAddress clientsAddress) {

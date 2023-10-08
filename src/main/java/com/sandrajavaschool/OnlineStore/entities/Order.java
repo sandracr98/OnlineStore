@@ -25,15 +25,13 @@ public class Order implements Serializable {
     private User user;
 
 
-    @OneToOne(cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "paymentMethod_id", referencedColumnName = "id_paymentMethod")
     private PaymentMethod paymentMethod;
 
 
-    //la relacion es en un unico sentido por eso esta asi el cascade y el join
-    //ademas en receiptline no esta el atributo order
-    @OneToMany(cascade = CascadeType.ALL,
-                fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id")
     private List<ReceiptLine> receiptLines;
 
@@ -59,7 +57,6 @@ public class Order implements Serializable {
     }
 
 
-
     //This method let you to calculating the total import of a Receipt
 
     public Double getTotal() {
@@ -68,7 +65,7 @@ public class Order implements Serializable {
         int size = receiptLines.size();
 
         for (int i = 0; i < size; i++) {
-            total =+ receiptLines.get(i).importCalc();
+            total = total + receiptLines.get(i).importCalc();
         }
         return total;
     }

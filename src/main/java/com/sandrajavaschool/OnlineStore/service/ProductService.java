@@ -3,8 +3,11 @@ package com.sandrajavaschool.OnlineStore.service;
 import com.sandrajavaschool.OnlineStore.dao.IProductDao;
 import com.sandrajavaschool.OnlineStore.dao.IUserDao;
 import com.sandrajavaschool.OnlineStore.entities.Product;
+import com.sandrajavaschool.OnlineStore.entities.User;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,5 +40,11 @@ public class ProductService implements IProductService {
     @Transactional
     public void delete(Long id) {
         productDao.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public Page<Product> findAll(Pageable pageable) {
+        return productDao.findAll(pageable);
     }
 }

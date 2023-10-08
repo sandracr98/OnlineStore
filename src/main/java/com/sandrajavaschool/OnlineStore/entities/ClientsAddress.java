@@ -18,6 +18,7 @@ public class ClientsAddress implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_clientAddress", nullable = false)
     private Long id;
 
     private String country;

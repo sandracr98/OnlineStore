@@ -1,8 +1,12 @@
 package com.sandrajavaschool.OnlineStore.controllers;
 
+import com.sandrajavaschool.OnlineStore.dao.IClientAddressDao;
+import com.sandrajavaschool.OnlineStore.entities.ClientsAddress;
 import com.sandrajavaschool.OnlineStore.entities.Role;
 import com.sandrajavaschool.OnlineStore.entities.User;
 import com.sandrajavaschool.OnlineStore.paginator.PageRender;
+import com.sandrajavaschool.OnlineStore.service.ClientAddressService;
+import com.sandrajavaschool.OnlineStore.service.IClientAddressService;
 import com.sandrajavaschool.OnlineStore.service.IRoleService;
 import com.sandrajavaschool.OnlineStore.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +16,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -27,20 +33,27 @@ public class UserController {
     @Autowired
     private IRoleService roleService;
 
+    @Autowired
+    private IClientAddressService clientAddressService;
+
+    @GetMapping(value = "/mainPage")
+    public String mainPage() {
+        return "/mainPAge";
+    }
+
     @GetMapping(value = "/list")
     public String list(@RequestParam(name = "page", defaultValue = "0") int page,
                        Model model) {
 
         model.addAttribute("title", "Users List");
 
-        Pageable pageRequest = PageRequest.of(page, 4);
+        Pageable pageRequest = PageRequest.of(page, 8);
         Page<User> users = userService.findAll(pageRequest);
         PageRender<User> pageRender = new PageRender<>("/list", users);
 
         model.addAttribute("users", users);
 
         model.addAttribute("page", pageRender);
-
 
 
         return "user/usersList";
@@ -51,6 +64,7 @@ public class UserController {
                                   Model model) {
 
         User user = userService.findOne(id);
+
         model.addAttribute("user", user);
 
         return "user/profile";
@@ -64,6 +78,9 @@ public class UserController {
 
         User user = new User();
         model.addAttribute("user", user);
+
+        ClientsAddress clientsAddress = new ClientsAddress();
+        model.addAttribute("clientsAddress", clientsAddress);
 
         List<Role> roles = roleService.findAll();
         model.addAttribute("roles", roles);
@@ -98,13 +115,23 @@ public class UserController {
 
     @PostMapping(value = "/save")
     public String save(@ModelAttribute User user,
-                       RedirectAttributes flash) {
+                       @ModelAttribute ClientsAddress clientsAddress,
+                       RedirectAttributes flash,
+                       SessionStatus status) {
 
 
         String flashmessage = "Congratulation! You have an account";
 
+        clientsAddress.setUser(user);
+
 
         userService.save(user);
+
+
+        clientAddressService.save(clientsAddress);
+
+
+        status.setComplete(); //va a estar presente hasta que se guarde en la base de datos
 
 
         flash.addFlashAttribute("success", flashmessage);

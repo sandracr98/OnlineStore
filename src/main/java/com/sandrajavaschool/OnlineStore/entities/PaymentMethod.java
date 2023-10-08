@@ -17,9 +17,13 @@ public class PaymentMethod implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_paymentMethod")
     private Long id;
 
     private String type;
+
+    @OneToOne(mappedBy = "paymentMethod")
+    private Order order;
 
 
 }

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body>
+
+<header th:replace="layout/layout :: header"></header>
+
+<div class="container py-4">
+
+    <div class="card bg-light">
+        <div class="card-header" th:text="${title}"></div>
+        <div class="card-body">
+
+            <table class="table table-striped  border border-success">
+                <thead class="thead-inverse">
+                <tr>
+                    <th>id</th>
+                    <th>Title</th>
+                    <th>Price</th>
+                    <th>Category</th>
+                    <th>Volume</th>
+                    <th>Stock</th>
+                    <th>Brand</th>
+                    <th>Color</th>
+                    <th>Weight</th>
+                    <th>Date</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="product: ${products}">
+
+                    <td th:text="${product.id}"></td>
+                    <td th:text="${product.title}"></td>
+                    <td th:text="${product.price}"></td>
+                    <td th:text="${product.category}"></td>
+                    <td th:text="${product.volume}"></td>
+                    <td th:text="${product.stock}"></td>
+                    <td th:text="${product.brand}"></td>
+                    <td th:text="${product.color}"></td>
+                    <td th:text="${product.weight}"></td>
+                    <td th:text="${product.date}"></td>
+                </tr>
+                </tbody>
+
+            </table>
+
+            <nav th:replace="layout/paginator_nav :: paginator"></nav>
+
+        </div>
+    </div>
+
+</div>
+
+<footer th:replace="layout/layout :: footer"></footer>
+
+
+</body>
+</html>

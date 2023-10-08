@@ -18,7 +18,7 @@ public class ReceiptLine implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id_receiptLine", nullable = false)
     private Long id;
 
     private Integer amount;

@@ -6,29 +6,6 @@ INSERT INTO roles (name) VALUES
 ('Client');
 
 
--- Insertando direcciones de clientes
-INSERT INTO clients_Addresses (country, city, postal_Code, street, home, apartment)
-VALUES ('España', 'Barcelona', 08001, 'Calle de la Princesa', '123', '1A');
-
-INSERT INTO clients_Addresses (country, city, postal_Code, street, home, apartment)
-VALUES ('Estados Unidos', 'Nueva York', 10001, 'Broadway', '456', '2B');
-
-INSERT INTO clients_Addresses (country, city, postal_Code, street, home, apartment)
-VALUES ('Francia', 'París', 75001, 'Avenida de los Campos Elíseos', '789', '3C');
-
-INSERT INTO clients_Addresses (country, city, postal_Code, street, home, apartment)
-VALUES ('Italia', 'Roma', 00118, 'Via del Corso', '1011', '4D');
-
-INSERT INTO clients_Addresses (country, city, postal_Code, street, home, apartment)
-VALUES ('Alemania', 'Berlín', 10115, 'Unter den Linden', '1213', '5E');
-
-INSERT INTO clients_Addresses (country, city, postal_Code, street, home, apartment)
-VALUES ('Reino Unido', 'Londres', 'SW1A 1AA', 'Downing Street', '10', '1');
-
-INSERT INTO clients_Addresses (country, city, postal_Code, street, home, apartment)
-VALUES ('Japón', 'Tokio', 100-8111, 'Chiyoda', '1-1-1', '101');
-
-
 -- Insertando usuarios
 INSERT INTO users (name, surname, birthdate, email, pass) VALUES
 ('Sandra', 'Checa', '1998-03-20', 'sandrachr@example.com', 'password123'),
@@ -55,6 +32,29 @@ INSERT INTO users (name, surname, birthdate, email, pass) VALUES
 ('William', 'Wright', '1987-12-03', 'william.wright@example.com', 'testpassword'),
 ('Ava', 'Lopez', '1995-06-17', 'ava.lopez@example.com', 'mypassword');
 
+
+-- Insertando direcciones de clientes
+INSERT INTO clients_Addresses (country, city, postal_Code, street, home, apartment, user_id)
+VALUES ('España', 'Barcelona', '08001', 'Calle de la Princesa', '123', '1A', 1);
+
+INSERT INTO clients_Addresses (country, city, postal_Code, street, home, apartment, user_id)
+VALUES ('Estados Unidos', 'Nueva York', '10001', 'Broadway', '456', '2B', 2);
+
+INSERT INTO clients_Addresses (country, city, postal_Code, street, home, apartment, user_id)
+VALUES ('Francia', 'París', '75001', 'Avenida de los Campos Elíseos', '789', '3C', 3);
+
+INSERT INTO clients_Addresses (country, city, postal_Code, street, home, apartment, user_id)
+VALUES ('Italia', 'Roma', '00118', 'Via del Corso', '1011', '4D', 4);
+
+INSERT INTO clients_Addresses (country, city, postal_Code, street, home, apartment, user_id)
+VALUES ('Alemania', 'Berlín', '10115', 'Unter den Linden', '1213', '5E', 5);
+
+INSERT INTO clients_Addresses (country, city, postal_Code, street, home, apartment, user_id)
+VALUES ('Reino Unido', 'Londres', 'SW1A 1AA', 'Downing Street', '10', '1', 6);
+
+INSERT INTO clients_Addresses (country, city, postal_Code, street, home, apartment, user_id)
+VALUES ('Japón', 'Tokio', '100-8111', 'Chiyoda', '1-1-1', '101', 7);
+
 INSERT INTO users_has_roles (user_id, role_id) VALUES
 (1, 1), (2, 2), (3, 1), (4, 2), (5, 1), (6, 2), (7, 1), (8, 2), (9, 1),
 (10, 2), (11, 1), (12, 2), (13, 1), (14, 2), (15, 1), (16, 2), (17, 1),
@@ -76,17 +76,63 @@ VALUES ('Producto 2', 35.00, 'Ropa', 'M', 20, 'Marca B', 'Azul', '500g', '2023-1
 INSERT INTO products (title, price, category, volume, stock, brand, color, weight, date)
 VALUES ('Producto 3', 10.99, 'Hogar', '500ml', 15, 'Marca C', 'Blanco', '1kg', '2023-10-07');
 
+INSERT INTO products (title, price, category, volume, stock, brand, color, weight, date)
+VALUES ('Producto 4', 45.75, 'Electrónica', '2L', 12, 'Marca D', 'Plateado', '3kg', '2023-10-08');
 
--- Insertando líneas de recibo
-INSERT INTO receipt_Lines (amount, product_id) VALUES (5, 1);
-INSERT INTO receipt_Lines (amount, product_id) VALUES (3, 2);
-INSERT INTO receipt_Lines (amount, product_id) VALUES (2, 3);
+INSERT INTO products (title, price, category, volume, stock, brand, color, weight, date)
+VALUES ('Producto 5', 15.99, 'Ropa', 'L', 18, 'Marca E', 'Rojo', '700g', '2023-10-09');
+
+INSERT INTO products (title, price, category, volume, stock, brand, color, weight, date)
+VALUES ('Producto 6', 8.50, 'Hogar', '1L', 25, 'Marca F', 'Verde', '800g', '2023-10-10');
+
+INSERT INTO products (title, price, category, volume, stock, brand, color, weight, date)
+VALUES ('Producto 7', 19.95, 'Electrónica', '500ml', 30, 'Marca G', 'Dorado', '600g', '2023-10-11');
+
+INSERT INTO products (title, price, category, volume, stock, brand, color, weight, date)
+VALUES ('Producto 8', 29.75, 'Ropa', 'XL', 22, 'Marca H', 'Negro', '900g', '2023-10-12');
+
+INSERT INTO products (title, price, category, volume, stock, brand, color, weight, date)
+VALUES ('Producto 9', 12.25, 'Hogar', '750ml', 20, 'Marca I', 'Plateado', '1.2kg', '2023-10-13');
+
+INSERT INTO products (title, price, category, volume, stock, brand, color, weight, date)
+VALUES ('Producto 10', 32.99, 'Electrónica', '1L', 14, 'Marca J', 'Blanco', '1.1kg', '2023-10-14');
+
+INSERT INTO products (title, price, category, volume, stock, brand, color, weight, date)
+VALUES ('Producto 11', 14.50, 'Ropa', 'M', 18, 'Marca K', 'Gris', '700g', '2023-10-15');
+
+INSERT INTO products (title, price, category, volume, stock, brand, color, weight, date)
+VALUES ('Producto 12', 18.75, 'Hogar', '500ml', 15, 'Marca L', 'Azul', '900g', '2023-10-16');
+
+INSERT INTO products (title, price, category, volume, stock, brand, color, weight, date)
+VALUES ('Producto 13', 22.99, 'Electrónica', '2L', 10, 'Marca M', 'Verde', '1.3kg', '2023-10-17');
+
+INSERT INTO products (title, price, category, volume, stock, brand, color, weight, date)
+VALUES ('Producto 14', 9.95, 'Ropa', 'L', 20, 'Marca N', 'Amarillo', '800g', '2023-10-18');
+
+INSERT INTO products (title, price, category, volume, stock, brand, color, weight, date)
+VALUES ('Producto 15', 27.25, 'Hogar', '750ml', 18, 'Marca O', 'Blanco', '1kg', '2023-10-19');
+
+INSERT INTO products (title, price, category, volume, stock, brand, color, weight, date)
+VALUES ('Producto 16', 11.50, 'Electrónica', '1L', 22, 'Marca P', 'Rojo', '1.2kg', '2023-10-20');
+
+INSERT INTO products (title, price, category, volume, stock, brand, color, weight, date)
+VALUES ('Producto 17', 16.99, 'Ropa', 'M', 25, 'Marca Q', 'Negro', '900g', '2023-10-21');
+
+INSERT INTO products (title, price, category, volume, stock, brand, color, weight, date)
+VALUES ('Producto 18', 24.75, 'Hogar', '500ml', 28, 'Marca R', 'Plateado', '1kg', '2023-10-22');
 
 
 -- Insertando órdenes
 INSERT INTO orders (user_id_user, payment_Method_id, delivery_Method, goods, payment_Status, order_Status, sum, description, date)
-VALUES (1, 1, 'Envío a domicilio', 'Productos varios', 0, 'En proceso', 150.0, 'Descripción de la orden 1', '2023-10-03');
+VALUES (1, 1, 'Envío a domicilio', 'Productos varios', 0, 'En proceso', 150.00, 'Descripción de la orden 1', '2023-10-03');
 
 INSERT INTO orders (user_id_user, payment_Method_id, delivery_Method, goods, payment_Status, order_Status, sum, description, date)
-VALUES (2, 2, 'Recogida en tienda', 'Productos de electrónica', 1, 'Pendiente', 200.0, 'Descripción de la orden 2', '2023-10-04');
+VALUES (1, 2, 'Recogida en tienda', 'Productos de electrónica', 1, 'Pendiente', 45, 'Descripción de la orden 2', '2023-10-04');
+
+
+-- Insertando líneas de recibo
+INSERT INTO receipt_Lines (amount, product_id, order_id) VALUES (5, 1, 1);
+INSERT INTO receipt_Lines (amount, product_id, order_id) VALUES (3, 2, 2);
+INSERT INTO receipt_Lines (amount, product_id, order_id) VALUES (2, 3, 1);
+
 
