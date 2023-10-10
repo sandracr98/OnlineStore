@@ -1,14 +1,12 @@
 package com.sandrajavaschool.OnlineStore.controllers;
 
-import com.sandrajavaschool.OnlineStore.dao.IClientAddressDao;
 import com.sandrajavaschool.OnlineStore.entities.ClientsAddress;
 import com.sandrajavaschool.OnlineStore.entities.Role;
 import com.sandrajavaschool.OnlineStore.entities.User;
 import com.sandrajavaschool.OnlineStore.paginator.PageRender;
-import com.sandrajavaschool.OnlineStore.service.ClientAddressService;
-import com.sandrajavaschool.OnlineStore.service.IClientAddressService;
-import com.sandrajavaschool.OnlineStore.service.IRoleService;
-import com.sandrajavaschool.OnlineStore.service.IUserService;
+import com.sandrajavaschool.OnlineStore.service.implService.IClientAddressService;
+import com.sandrajavaschool.OnlineStore.service.implService.IRoleService;
+import com.sandrajavaschool.OnlineStore.service.implService.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -27,14 +24,30 @@ import java.util.Map;
 @SessionAttributes("User")
 public class UserController {
 
-    @Autowired
-    private IUserService userService;
+    //A esto se le llama inyeccion del constructor
+    //Esto es mejor inyectarlo asi, poniendo el final y añadiendo
+    //un constructor con @Autowired ¿Por qué?
+
+    //1.-Las dependencias están claramente identificadas, así no se te olvida
+    // cuando estemos testeando o instanciarlo en alguna otra clase
+
+    //2.- Las dependencias pueden ser 'final' lo cual ayuda con la robustez
+    // y la seguridad
+
+    //3.- Puedes crear mocks por ti mismo e inyectarlos simplemente llamando al constructor.
+    //no necesitas establecer las dependencias con los mocks
+
+
+    final private IUserService userService;
+    final private IRoleService roleService;
+    final private IClientAddressService clientAddressService;
 
     @Autowired
-    private IRoleService roleService;
-
-    @Autowired
-    private IClientAddressService clientAddressService;
+    public UserController(IUserService userService, IRoleService roleService, IClientAddressService clientAddressService) {
+        this.userService = userService;
+        this.roleService = roleService;
+        this.clientAddressService = clientAddressService;
+    }
 
     @GetMapping(value = "/mainPage")
     public String mainPage() {

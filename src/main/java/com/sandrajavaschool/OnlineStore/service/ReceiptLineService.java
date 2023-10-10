@@ -1,9 +1,8 @@
 package com.sandrajavaschool.OnlineStore.service;
 
 import com.sandrajavaschool.OnlineStore.dao.IReceiptLineDao;
-import com.sandrajavaschool.OnlineStore.dao.IUserDao;
 import com.sandrajavaschool.OnlineStore.entities.ReceiptLine;
-import com.sandrajavaschool.OnlineStore.entities.User;
+import com.sandrajavaschool.OnlineStore.service.implService.IReceiptLineService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

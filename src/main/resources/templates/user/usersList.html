@@ -38,6 +38,11 @@
                     <td th:text="${user.surname}"></td>
                     <td th:text="${user.birthdate}"></td>
                     <td th:text="${user.email}"></td>
+                    <td></td>
+                    <td></td>
+
+
+                    <td><a class="btn btn-success btn-xs" th:text="'View shopping cart'" th:href="@{/order/receipt/} + ${user.id}"></a></td>
 
                     <td>
                         <a class="btn btn-primary btn-sm" th:href="@{/userDetails/} + ${user.id}" th:text="'Edit'"></a>

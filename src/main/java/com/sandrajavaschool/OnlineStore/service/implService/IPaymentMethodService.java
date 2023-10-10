@@ -1,4 +1,4 @@
-package com.sandrajavaschool.OnlineStore.service;
+package com.sandrajavaschool.OnlineStore.service.implService;
 
 import com.sandrajavaschool.OnlineStore.entities.PaymentMethod;
 

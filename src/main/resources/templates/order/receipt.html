@@ -12,6 +12,14 @@
         <div class="card-body">
             <h4 class="card-title"></h4>
 
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    <a th:text="'Back'" class="btn btn-light btn-xs" th:href="@{/userDetails/} + ${order.user.id}"></a>
+                </div>
+            </div>
+
+            <br>
+
             <form th:action="@{/order/receipt}" th:object="${order}" method="post">
 
                 <div class="form-group row">
@@ -40,11 +48,53 @@
                     </div>
                 </div>
 
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" th:text="Delivery Method"></label>
+                    <div class="col-sm-6">
+                        <textarea th:field="*{deliveryMethod}" class="form-control"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" th:text="Goods"></label>
+                    <div class="col-sm-6">
+                        <textarea th:field="*{goods}" class="form-control"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" th:text="Payment Status"></label>
+                    <div class="col-sm-6">
+                        <textarea th:field="*{paymentStatus}" class="form-control"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" th:text="Order Status"></label>
+                    <div class="col-sm-6">
+                        <textarea th:field="*{orderStatus}" class="form-control"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" th:text="Date"></label>
+                    <div class="col-sm-6">
+                        <textarea th:field="*{date}" class="form-control"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" th:text="'Search Product'"></label>
+                    <div class="col-sm-6">
+                        <input type="text" name="search_product" id="search-product" class="form-control"></input>
+                    </div>
+                </div>
+
                 <br>
 
                 <div class="form-group row">
                     <div class="col-sm-6">
-                        <input type="submit" th:value="${title}" class="btn btn-secondary">
+                        <input type="submit"  class="btn btn-light btn-xs" th:value="'Add'">
                     </div>
                 </div>
 
@@ -56,6 +106,7 @@
 </div>
 
 <footer th:replace="layout/layout :: footer"></footer>
+<script th:replace="order/js/autocomplete-products :: javascript"></script>
 
 </body>
 </html>

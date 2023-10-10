@@ -2,7 +2,7 @@ package com.sandrajavaschool.OnlineStore.controllers;
 
 import com.sandrajavaschool.OnlineStore.entities.Order;
 import com.sandrajavaschool.OnlineStore.entities.User;
-import com.sandrajavaschool.OnlineStore.service.UserService;
+import com.sandrajavaschool.OnlineStore.service.implService.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,8 +16,13 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 @SessionAttributes("order")
 public class OrderController {
 
+    final private IUserService userService;
+
     @Autowired
-    UserService userService;
+    public OrderController(IUserService userService) {
+        this.userService = userService;
+    }
+
 
     @GetMapping("receipt/{userId}")
     public String create(@PathVariable(value = "userId") Long userId,
@@ -29,7 +34,7 @@ public class OrderController {
         order.setUser(user); //de esta forma asignamos una factura con un cliente
 
         model.addAttribute("order", order);
-        model.addAttribute("title", "Create Receipt");
+        model.addAttribute("title", "Shopping cart");
 
         return "order/receipt";
     }

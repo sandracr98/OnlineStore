@@ -1,14 +1,12 @@
 package com.sandrajavaschool.OnlineStore.service;
 
 import com.sandrajavaschool.OnlineStore.dao.IClientAddressDao;
-import com.sandrajavaschool.OnlineStore.dao.IUserDao;
 import com.sandrajavaschool.OnlineStore.entities.ClientsAddress;
-import com.sandrajavaschool.OnlineStore.entities.User;
+import com.sandrajavaschool.OnlineStore.service.implService.IClientAddressService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service

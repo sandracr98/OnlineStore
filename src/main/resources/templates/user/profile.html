@@ -13,6 +13,11 @@
 
             <table class="table table-striped  border border-success">
 
+                <h4 class="card-title">
+                    <a class="btn btn-success btn-xs" th:text="'View shopping cart'"
+                       th:href="@{/order/receipt/} + ${user.id}"></a></td>
+                </h4>
+
                 <tbody>
 
                 <ul class="list-group">
@@ -34,11 +39,12 @@
                     <td th:text="${address.street}"></td>
                 </tr>
 
-                <br>
-
                 <a class="btn btn-secondary btn-sm" th:href="@{/view/} + ${user.id}" th:text="'Edit'"></a>
 
+                <br>
+
                 </tbody>
+
             </table>
 
 

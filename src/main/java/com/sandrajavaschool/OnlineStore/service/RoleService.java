@@ -2,6 +2,7 @@ package com.sandrajavaschool.OnlineStore.service;
 
 import com.sandrajavaschool.OnlineStore.dao.IRoleDao;
 import com.sandrajavaschool.OnlineStore.entities.Role;
+import com.sandrajavaschool.OnlineStore.service.implService.IRoleService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
