@@ -1,9 +1,12 @@
 package com.sandrajavaschool.OnlineStore.service;
 
+import com.sandrajavaschool.OnlineStore.dao.IProductDao;
 import com.sandrajavaschool.OnlineStore.dao.IUserDao;
+import com.sandrajavaschool.OnlineStore.entities.Product;
 import com.sandrajavaschool.OnlineStore.entities.User;
 import com.sandrajavaschool.OnlineStore.service.implService.IUserService;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,10 @@ public class UserService implements IUserService {
 
     @Autowired
     private IUserDao userDao;
+
+    @Autowired
+    private IProductDao productDao;
+
 
     @Override
     @Transactional
@@ -46,5 +53,11 @@ public class UserService implements IUserService {
     @Transactional
     public Page<User> findAll(Pageable pageable) {
         return userDao.findAll(pageable);
+    }
+
+    @Override
+    @Transactional
+    public List<Product> findByName(String term) {
+        return productDao.findByName(term);
     }
 }

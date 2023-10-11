@@ -6,7 +6,7 @@
 <script type="text/javascript" th:fragment="javascript">
 
     $(document).ready(function () {
-        $("#search-product").autocomplete({
+        $("#search_product").autocomplete({
 
             source: function (request, response){
                 $.ajax({
@@ -19,8 +19,10 @@
                       response($.map(data, function (item) {
                           return {
                               value: item.id,
-                              label: item.name,
+                              label: item.title,
                               price: item.price,
+                              category: item.category,
+
                           }
                       }));
                     },
@@ -28,7 +30,24 @@
             },
 
             select: function (event, ui) {
-                $("#search-product").val(ui.item.label);
+                //$("#search_product").val(ui.item.label);
+
+                if (itemsHelper.hasProduct(ui.item.value)) {
+                    itemsHelper.addAmount(ui.item.value, ui.item.price);
+                    return false;
+                }
+
+                var line = $("#itemsLineTable").html();
+
+                line = line.replace(/{ID}/g, ui.item.value);
+                line = line.replace(/{TITLE}/g, ui.item.label);
+                line = line.replace(/{PRICE}/g, ui.item.price);
+                line = line.replace(/{CATEGORY}/g, ui.item.category);
+
+
+                $("#itemTable tbody").append(line);
+
+                itemsHelper.importCalc(ui.item.value, ui.item.price, 1);
 
                 return false;
             }
@@ -36,9 +55,72 @@
         });
     });
 
+    var itemsHelper = {
+
+       importCalc: function (id, price, amount) {
+           $("#total_" + id).html(parseFloat(price) *parseFloat(amount));
+           this.totalImportCalc();
+       },
+
+        hasProduct: function(id) {
+
+           var result = false;
+
+           $('input[name="item_id[]"]').each(function() {
+               if(parseInt(id) === parseInt($(this).val())) {
+                   result = true;
+               }
+           });
+
+           return result;
+        },
+
+        addAmount: function(id, price) {
+
+           var amount = $("#amount_" + id).val() ? parseInt($("#amount_" + id).val()) :0;
+            $("#amount_" + id).val(++amount);
+
+            this.importCalc(id, price, amount);
+        },
+
+
+        deleteItemLine: function (id) {
+           $("#row_" + id).remove();
+            this.totalImportCalc();
+        },
+
+
+        totalImportCalc: function (){
+
+           var total = 0;
+
+           $('span[id^="total_"]').each(function () {
+
+               total += parseFloat($(this).html());
+           });
+
+           $('#gran_total').html(total);
+
+        }
+    }
 
 
 </script>
+
+
+<!--itemsHelper es un objeto con algunos metodos de ayuda, como calcular el total
+ eliminar una linea de la factura, incrementar la cantidad cada vez que se
+ crea una linea etc -->
+
+<!-- el metodo hasProduct se encarga de buscar item por item en la linea de factura
+ para ver si hay un repetido y asi incrementar la cantidad y no ponerlo 2 veces-->
+
+<!-- el metodo addAmount, incrementa la cantidad de un producto si es encontrado
+1. validamos si la cantidad contiene un valor numerico, seria el id que pasamos por parametro y
+si tiene cantidad se pasa a integer y se la asignamos a la variable cantidad, si no retornamos un 0-->
+
+<!-- en la linea 98 asignamos el gran total al span de la linea del html correspondiente para que se
+pueda iterar y calcular el importe total-->
 
 </body>
 </html>

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -93,6 +94,7 @@ public class UserController {
         model.addAttribute("user", user);
 
         ClientsAddress clientsAddress = new ClientsAddress();
+        clientsAddress.setUser(user);
         model.addAttribute("clientsAddress", clientsAddress);
 
         List<Role> roles = roleService.findAll();
@@ -107,6 +109,7 @@ public class UserController {
                        RedirectAttributes flash) {
 
         User user;
+        List<ClientsAddress> clientsAddresses;
 
         if (id > 0) {
             user = userService.findOne(id);
@@ -114,6 +117,9 @@ public class UserController {
                 flash.addFlashAttribute("error", "The user does not exist");
                 return "redirect:/usersList";
             }
+
+            clientsAddresses = user.getClientsAddresses();
+
         } else {
             flash.addFlashAttribute("error", "The user does not exist");
             return "redirect:/usersList";
@@ -121,6 +127,7 @@ public class UserController {
 
         model.put("title", "Profile");
         model.put("user", user);
+        model.put("clientAddress", clientsAddresses);
 
         return "user/signup";
     }
@@ -129,22 +136,15 @@ public class UserController {
     @PostMapping(value = "/save")
     public String save(@ModelAttribute User user,
                        @ModelAttribute ClientsAddress clientsAddress,
-                       RedirectAttributes flash,
-                       SessionStatus status) {
+                       RedirectAttributes flash) {
 
 
         String flashmessage = "Congratulation! You have an account";
-
-        clientsAddress.setUser(user);
-
 
         userService.save(user);
 
 
         clientAddressService.save(clientsAddress);
-
-
-        status.setComplete(); //va a estar presente hasta que se guarde en la base de datos
 
 
         flash.addFlashAttribute("success", flashmessage);

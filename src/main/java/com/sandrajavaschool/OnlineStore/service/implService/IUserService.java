@@ -1,6 +1,7 @@
 package com.sandrajavaschool.OnlineStore.service.implService;
 
 
+import com.sandrajavaschool.OnlineStore.entities.Product;
 import com.sandrajavaschool.OnlineStore.entities.User;
 import org.springframework.data.domain.Page;
 
@@ -17,6 +18,8 @@ public interface IUserService {
     public void delete(Long id);
 
     public Page<User> findAll(Pageable pageable);
+
+    public List<Product> findByName(String term);
 
 
 }

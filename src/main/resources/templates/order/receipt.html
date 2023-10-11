@@ -23,7 +23,7 @@
             <form th:action="@{/order/receipt}" th:object="${order}" method="post">
 
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label" th:text="Name"></label>
+                    <label class="col-sm-2 col-form-label" th:text="'Name'"></label>
                     <div class="col-sm-6">
                         <input th:value="${order.user.name} + ' ' + ${order.user.surname}"
                                class="form-control" disabled='disabled'/>
@@ -33,7 +33,7 @@
                 <br>
 
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label" th:text="Description"></label>
+                    <label class="col-sm-2 col-form-label" th:text="'Description'"></label>
                     <div class="col-sm-6">
                         <input type="text" th:field="*{description}" class="form-control"/>
                     </div>
@@ -42,53 +42,78 @@
                 <br>
 
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label" th:text="PayMethod"></label>
+                    <label class="col-sm-2 col-form-label" th:text="'PayMethod'"></label>
                     <div class="col-sm-6">
                         <textarea th:field="*{paymentMethod}" class="form-control"></textarea>
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label" th:text="Delivery Method"></label>
+                    <label class="col-sm-2 col-form-label" th:text="'Delivery Method'"></label>
                     <div class="col-sm-6">
                         <textarea th:field="*{deliveryMethod}" class="form-control"></textarea>
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label" th:text="Goods"></label>
+                    <label class="col-sm-2 col-form-label" th:text="'Goods'"></label>
                     <div class="col-sm-6">
                         <textarea th:field="*{goods}" class="form-control"></textarea>
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label" th:text="Payment Status"></label>
+                    <label class="col-sm-2 col-form-label" th:text="'Payment Status'"></label>
                     <div class="col-sm-6">
                         <textarea th:field="*{paymentStatus}" class="form-control"></textarea>
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label" th:text="Order Status"></label>
+                    <label class="col-sm-2 col-form-label" th:text="'Order Status'"></label>
                     <div class="col-sm-6">
                         <textarea th:field="*{orderStatus}" class="form-control"></textarea>
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label" th:text="Date"></label>
+                    <label class="col-sm-2 col-form-label" th:text="'Date'"></label>
                     <div class="col-sm-6">
                         <textarea th:field="*{date}" class="form-control"></textarea>
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label" th:text="'Search Product'"></label>
+                    <label for="search_product" class="col-sm-2 col-form-label" th:text="'Search Product'"></label>
                     <div class="col-sm-6">
-                        <input type="text" name="search_product" id="search-product" class="form-control"></input>
+                        <input type="text" name="search_product" id="search_product" class="form-control" />
                     </div>
                 </div>
+
+                <table th:replace="order/products-lines :: productsLines"></table>
+
+                <table id="itemTable"
+                       class="table table-sm table-striped table-hover">
+
+                    <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Price</th>
+                        <th>Category</th>
+                        <th>Amount</th>
+                        <th>Total</th>
+                        <th>Delete</th>
+
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    </tbody>
+
+                </table>
+                <br>
+                <h5>TOTAL: <span class="badge badge-secondary" id="gran_total">0</span></h5>
 
                 <br>
 

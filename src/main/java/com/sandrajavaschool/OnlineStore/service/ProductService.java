@@ -4,15 +4,18 @@ import com.sandrajavaschool.OnlineStore.dao.IProductDao;
 import com.sandrajavaschool.OnlineStore.entities.Product;
 import com.sandrajavaschool.OnlineStore.service.implService.IProductService;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
 @Service
 public class ProductService implements IProductService {
+
 
     @Autowired
     private IProductDao productDao;
@@ -46,4 +49,5 @@ public class ProductService implements IProductService {
     public Page<Product> findAll(Pageable pageable) {
         return productDao.findAll(pageable);
     }
+
 }

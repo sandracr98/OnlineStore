@@ -3,6 +3,7 @@ package com.sandrajavaschool.OnlineStore.controllers;
 import com.sandrajavaschool.OnlineStore.entities.Product;
 import com.sandrajavaschool.OnlineStore.paginator.PageRender;
 import com.sandrajavaschool.OnlineStore.service.implService.IProductService;
+import com.sandrajavaschool.OnlineStore.service.implService.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,9 +13,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 
 @Controller
 @SessionAttributes("Product")
+@RequestMapping("/product")
 public class ProductController {
 
     final private IProductService productService;
@@ -65,7 +69,6 @@ public class ProductController {
 
         return "redirect:productsList";
     }
-
 
 
 
