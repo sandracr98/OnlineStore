@@ -13,7 +13,7 @@
 
             <form th:action="@{/save}" th:object="${user}" method="post" enctype="multipart/form-data">
 
-                <div class="row d-flex justify-content-center">
+                <div class="row">
 
                     <div class="col-md-6">
 
@@ -22,7 +22,7 @@
                             <div class="card-body align-items-center">
 
                                 <div class="form-group">
-                                    <label class="col-sm-2 col-form-label">Name</label>
+                                    <label class="col-sm-6 col-form-label">Name</label>
                                     <div class="col-sm-6">
                                         <input type="text" th:field="*{name}"
                                                th:errorclass="'form-control alert-danger'"/>
@@ -31,7 +31,7 @@
 
 
                                 <div class="form-group">
-                                    <label class="col-sm-2 col-form-label">Surname</label>
+                                    <label class="col-sm-6 col-form-label">Surname</label>
                                     <div class="col-sm-6">
                                         <input type="text" th:field="*{surname}"
                                                th:errorclass="'form-control alert-danger'"/>
@@ -39,7 +39,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-sm-2 col-form-label">Email</label>
+                                    <label class="col-sm-6 col-form-label">Email</label>
                                     <div class="col-sm-6">
                                         <input type="text" th:field="*{email}"
                                                th:errorclass="'form-control alert-danger'"/>
@@ -47,7 +47,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-sm-2 col-form-label">BirthDate</label>
+                                    <label class="col-sm-6 col-form-label">BirthDate</label>
                                     <div class="col-sm-6">
                                         <input type="date" th:field="*{birthdate}"
                                                th:errorclass="'form-control alert-danger'"/>
@@ -55,7 +55,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-sm-2 col-form-label">Password</label>
+                                    <label class="col-sm-6 col-form-label">Password</label>
                                     <div class="col-sm-6">
                                         <input type="text" th:field="*{pass}"
                                                th:errorclass="'form-control alert-danger'"/>
@@ -71,6 +71,7 @@
                                                 th:text="${role.name}"></option>
                                     </select>
                                 </div>
+
                             </div>
 
                         </div>
@@ -79,11 +80,12 @@
                     <div class="col-md-6">
 
                         <div class="card d-flex justify-content-center h-100">
+
                             <div class="card-header" th:text="'Address'"></div>
                             <div class="card-body align-items-center">
 
                                 <div class="col-m-6 form-group">
-                                    <label class="col-sm-2 col-form-label">Country</label>
+                                    <label class="col-sm-6 col-form-label">Country</label>
                                     <div class="col-sm-6">
                                         <input type="text" th:field="${clientsAddress.country}"
                                                th:errorclass="'form-control alert-danger'"/>
@@ -91,7 +93,7 @@
                                 </div>
 
                                 <div class="col-m-6 form-group">
-                                    <label class="col-sm-2 col-form-label">City</label>
+                                    <label class="col-sm-6 col-form-label">City</label>
                                     <div class="col-sm-6">
                                         <input type="text" th:field="${clientsAddress.city}"
                                                th:errorclass="'form-control alert-danger'"/>
@@ -99,7 +101,7 @@
                                 </div>
 
                                 <div class="col-m-6 form-group">
-                                    <label class="col-sm-2 col-form-label">Postal Code</label>
+                                    <label class="col-sm-6 col-form-label">Postal Code</label>
                                     <div class="col-sm-6">
                                         <input type="text" th:field="${clientsAddress.postal_code}"
                                                th:errorclass="'form-control alert-danger'"/>
@@ -107,7 +109,7 @@
                                 </div>
 
                                 <div class="col-m-6 form-group">
-                                    <label class="col-sm-2 col-form-label">Street</label>
+                                    <label class="col-sm-6 col-form-label">Street</label>
                                     <div class="col-sm-6">
                                         <input type="text" th:field="${clientsAddress.street}"
                                                th:errorclass="'form-control alert-danger'"/>
@@ -115,7 +117,7 @@
                                 </div>
 
                                 <div class="col-m-6 form-group">
-                                    <label class="col-sm-2 col-form-label">Home</label>
+                                    <label class="col-sm-6 col-form-label">Home</label>
                                     <div class="col-sm-6">
                                         <input type="text" th:field="${clientsAddress.home}"
                                                th:errorclass="'form-control alert-danger'"/>
@@ -123,12 +125,13 @@
                                 </div>
 
                                 <div class="col-m-6 form-group">
-                                    <label class="col-sm-2 col-form-label">Apartment</label>
+                                    <label class="col-sm-6 col-form-label">Apartment</label>
                                     <div class="col-sm-6">
                                         <input type="text" th:field="${clientsAddress.apartment}"
                                                th:errorclass="'form-control alert-danger'"/>
                                     </div>
                                 </div>
+
                                 <br>
 
                                 <button type="button" onclick="addAddress()">Add Direction</button>

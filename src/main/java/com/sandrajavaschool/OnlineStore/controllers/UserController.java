@@ -7,6 +7,7 @@ import com.sandrajavaschool.OnlineStore.paginator.PageRender;
 import com.sandrajavaschool.OnlineStore.service.implService.IClientAddressService;
 import com.sandrajavaschool.OnlineStore.service.implService.IRoleService;
 import com.sandrajavaschool.OnlineStore.service.implService.IUserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +24,7 @@ import java.util.Map;
 
 @Controller
 @SessionAttributes("User")
+@RequiredArgsConstructor
 public class UserController {
 
     //A esto se le llama inyeccion del constructor
@@ -43,12 +45,12 @@ public class UserController {
     final private IRoleService roleService;
     final private IClientAddressService clientAddressService;
 
-    @Autowired
-    public UserController(IUserService userService, IRoleService roleService, IClientAddressService clientAddressService) {
-        this.userService = userService;
-        this.roleService = roleService;
-        this.clientAddressService = clientAddressService;
-    }
+    //@Autowired
+    //public UserController(IUserService userService, IRoleService roleService, IClientAddressService clientAddressService) {
+      //  this.userService = userService;
+        //this.roleService = roleService;
+        //this.clientAddressService = clientAddressService;
+    //}
 
     @GetMapping(value = "/mainPage")
     public String mainPage() {

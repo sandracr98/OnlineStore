@@ -5,6 +5,7 @@ import com.sandrajavaschool.OnlineStore.entities.Product;
 import com.sandrajavaschool.OnlineStore.entities.User;
 import com.sandrajavaschool.OnlineStore.service.implService.IOrderService;
 import com.sandrajavaschool.OnlineStore.service.implService.IUserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,17 +16,11 @@ import java.util.List;
 @Controller
 @RequestMapping("/order")
 @SessionAttributes("order")
+@RequiredArgsConstructor
 public class OrderController {
 
     final private IUserService userService;
     final private IOrderService orderService;
-
-    @Autowired
-    public OrderController(IUserService userService, IOrderService orderService) {
-        this.userService = userService;
-        this.orderService = orderService;
-    }
-
 
     @GetMapping("receipt/{userId}")
     public String create(@PathVariable(value = "userId") Long userId,
@@ -47,5 +42,5 @@ public class OrderController {
         return userService.findByName(term);
     }
 
-
+//preguntar @RestController y el @ResponseBody
 }

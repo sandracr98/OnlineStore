@@ -9,45 +9,117 @@
 
     <div class="card bg-light">
         <div class="card-header" th:text="${title}"></div>
+
         <div class="card-body">
+            <div class="container">
 
-            <table class="table table-striped  border border-success">
-                <thead class="thead-inverse">
-                <tr>
-                    <th>id</th>
-                    <th>Title</th>
-                    <th>Price</th>
-                    <th>Category</th>
-                    <th>Volume</th>
-                    <th>Stock</th>
-                    <th>Brand</th>
-                    <th>Color</th>
-                    <th>Weight</th>
-                    <th>Date</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="product: ${products}">
+                <div class="form-group row">
 
-                    <td th:text="${product.id}"></td>
-                    <td th:text="${product.title}"></td>
-                    <td th:text="${product.price}"></td>
-                    <td th:text="${product.category}"></td>
-                    <td th:text="${product.volume}"></td>
-                    <td th:text="${product.stock}"></td>
-                    <td th:text="${product.brand}"></td>
-                    <td th:text="${product.color}"></td>
-                    <td th:text="${product.weight}"></td>
-                    <td th:text="${product.date}"></td>
-                </tr>
-                </tbody>
+                    <label for="search_product" class="col-sm-2 col-form-label" th:text="'Search Product'"></label>
+                    <div class="col-sm-4">
+                        <input type="text" name="search_product" id="search_product" class="form-control"/>
+                    </div>
+                </div>
 
-            </table>
+                <div class="form-group row">
+                    <div class="col-sm-8">
+                        <div class="row">
 
-            <nav th:replace="layout/paginator_nav :: paginator"></nav>
+                            <div class="col-md-3">
+                                <label for="priceFilter">Price:</label>
+                                <select class="form-select" id="priceFilter">
+                                    <option value="all">All</option>
+                                    <option value="low">Low to High</option>
+                                    <option value="high">High to Low</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="categoryFilter">Category:</label>
+                                <select class="form-select" id="categoryFilter">
+                                    <option value="all">All</option>
+                                    <option value="electronics">Electronics</option>
+                                    <option value="clothing">Clothing</option>
+                                    <option value="home">Home</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="brandFilter">Brand:</label>
+                                <select class="form-select" id="brandFilter">
+                                    <option value="all">All</option>
+                                    <option value="brandA">Brand A</option>
+                                    <option value="brandB">Brand B</option>
+                                    <option value="brandC">Brand C</option>
+                                    <option value="brandD">Brand D</option>
+                                    <option value="brandE">Brand E</option>
+                                    <option value="brandF">Brand F</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="colorFilter">Color:</label>
+                                <select class="form-select" id="colorFilter">
+                                    <option value="all">All</option>
+                                    <option value="white">White</option>
+                                    <option value="Black">Black</option>
+                                    <option value="blue">Blue</option>
+                                    <option value="red">Red</option>
+                                    <option value="green">Green</option>
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <div class="col-sm-4">
+                        <button class="btn btn-primary" onclick="applyFilters()">Apply Filters</button>
+                    </div>
+                </div>
+
+            </div>
 
         </div>
+
     </div>
+
+    <table class="table table-striped  border border-success">
+        <thead class="thead-inverse">
+        <tr>
+            <th>id</th>
+            <th>Title</th>
+            <th>Price</th>
+            <th>Category</th>
+            <th>Volume</th>
+            <th>Stock</th>
+            <th>Brand</th>
+            <th>Color</th>
+            <th>Weight</th>
+            <th>Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product: ${products}">
+
+            <td th:text="${product.id}"></td>
+            <td th:text="${product.title}"></td>
+            <td th:text="${product.price}"></td>
+            <td th:text="${product.category}"></td>
+            <td th:text="${product.volume}"></td>
+            <td th:text="${product.stock}"></td>
+            <td th:text="${product.brand}"></td>
+            <td th:text="${product.color}"></td>
+            <td th:text="${product.weight}"></td>
+            <td th:text="${product.date}"></td>
+        </tr>
+        </tbody>
+
+    </table>
+
+    <nav th:replace="layout/paginator_nav :: paginator"></nav>
+
+</div>
+</div>
 
 </div>
 

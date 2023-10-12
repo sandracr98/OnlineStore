@@ -4,6 +4,7 @@ import com.sandrajavaschool.OnlineStore.entities.Product;
 import com.sandrajavaschool.OnlineStore.paginator.PageRender;
 import com.sandrajavaschool.OnlineStore.service.implService.IProductService;
 import com.sandrajavaschool.OnlineStore.service.implService.IUserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,15 +19,10 @@ import java.util.List;
 
 @Controller
 @SessionAttributes("Product")
-@RequestMapping("/product")
+@RequiredArgsConstructor
 public class ProductController {
 
     final private IProductService productService;
-
-    @Autowired
-    public ProductController(IProductService productService) {
-        this.productService = productService;
-    }
 
     @GetMapping(value = "/productsList")
     public String list(@RequestParam(name = "page", defaultValue = "0") int page,

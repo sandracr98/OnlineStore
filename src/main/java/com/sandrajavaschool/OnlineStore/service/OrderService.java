@@ -11,31 +11,28 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class OrderService implements IOrderService {
 
-    @Autowired
-    private IOrderDao orderDao;
+    private final IOrderDao orderDao;
 
     @Override
-    @Transactional
     public List<Order> findAll() {
         return orderDao.findAll();
     }
 
     @Override
-    @Transactional
     public void save(Order order) {
         orderDao.save(order);
     }
 
     @Override
-    @Transactional
     public Order findOne(Long id) {
         return orderDao.findById(id).orElse(null);
     }
 
     @Override
-    @Transactional
     public void delete(Long id) {
         orderDao.deleteById(id);
     }

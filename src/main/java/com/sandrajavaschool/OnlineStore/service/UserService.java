@@ -16,47 +16,39 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class UserService implements IUserService {
 
-    @Autowired
-    private IUserDao userDao;
-
-    @Autowired
-    private IProductDao productDao;
-
+    private final IUserDao userDao;
+    private final IProductDao productDao;
 
     @Override
-    @Transactional
     public List<User> findAll() {
         return userDao.findAll();
     }
 
     @Override
-    @Transactional
     public void save(User user) {
         userDao.save(user);
     }
 
     @Override
-    @Transactional
     public User findOne(Long id) {
         return userDao.findById(id).orElse(null);
     }
 
     @Override
-    @Transactional
     public void delete(Long id) {
         userDao.deleteById(id);
     }
 
     @Override
-    @Transactional
     public Page<User> findAll(Pageable pageable) {
         return userDao.findAll(pageable);
     }
 
     @Override
-    @Transactional
     public List<Product> findByName(String term) {
         return productDao.findByName(term);
     }

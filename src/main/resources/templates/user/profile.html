@@ -30,20 +30,35 @@
                         <ul class="list-group" th:each="role : ${user.roles}" th:text="${role.name}"></ul>
                     </li>
                 </ul>
+                </tbody>
+
                 <br>
 
-                <tr th:each="address: ${user.clientsAddresses}">
-                    <td th:text="${address.country}"></td>
-                    <td th:text="${address.city}"></td>
-                    <td th:text="${address.postal_code}"></td>
-                    <td th:text="${address.street}"></td>
+                <thead class="thead-dark">
+                <tr>
+                    <th>country</th>
+                    <th>city</th>
+                    <th>postal_code</th>
+                    <th>street</th>
                 </tr>
+                </thead>
+
+                <tbody>
+                    <tr th:each="address: ${user.clientsAddresses}">
+                        <td th:text="${address.country}"></td>
+                        <td th:text="${address.city}"></td>
+                        <td th:text="${address.postal_code}"></td>
+                        <td th:text="${address.street}"></td>
+                    </tr>
+                </tbody>
+
+
+                <br>
 
                 <a class="btn btn-secondary btn-sm" th:href="@{/view/} + ${user.id}" th:text="'Edit'"></a>
 
                 <br>
 
-                </tbody>
 
             </table>
 
