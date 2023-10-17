@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class Order implements Serializable {
 
 
     @OneToMany(fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
+            cascade = CascadeType.ALL) //al estar en cascada en el controlador basta con agregar los items a la factura, y se guardará todo solo
     @JoinColumn(name = "order_id")
     private List<ReceiptLine> receiptLines;
 
@@ -52,9 +53,13 @@ public class Order implements Serializable {
 
 
     //this method let you to adding lines to the order
-    public void addReceiptLine(ReceiptLine receiptLine) {
-        this.receiptLines.add(receiptLine);
+    public void addReceiptLine(ReceiptLine line) {
+        if (this.receiptLines == null) {
+            this.receiptLines = new ArrayList<>();
+        }
+        this.receiptLines.add(line);
     }
+
 
 
     //This method let you to calculating the total import of a Receipt
@@ -68,6 +73,7 @@ public class Order implements Serializable {
             total = total + receiptLines.get(i).importCalc();
         }
         return total;
+
     }
 
 

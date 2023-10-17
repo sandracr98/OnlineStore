@@ -67,4 +67,8 @@ public class User implements Serializable {
         clientsAddress.setUser(this);
     }
 
+    @Override
+    public String toString() {
+        return  name + ' ' + surname;
+    }
 }

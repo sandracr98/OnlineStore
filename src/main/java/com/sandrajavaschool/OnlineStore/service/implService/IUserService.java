@@ -1,6 +1,7 @@
 package com.sandrajavaschool.OnlineStore.service.implService;
 
 
+import com.sandrajavaschool.OnlineStore.entities.Order;
 import com.sandrajavaschool.OnlineStore.entities.Product;
 import com.sandrajavaschool.OnlineStore.entities.User;
 import org.springframework.data.domain.Page;
@@ -20,6 +21,18 @@ public interface IUserService {
     public Page<User> findAll(Pageable pageable);
 
     public List<Product> findByName(String term);
+
+    public void saveOrder(Order order);
+
+    public Product findProductById(Long id);
+
+    public Order findOrderById(Long id);
+
+    public void deleteOrder(Long id);
+
+    public Order fetchByIdWithUserReceiptLineProduct(Long Id);
+
+    public User fetchByIdWithOrder(Long id);
 
 
 }

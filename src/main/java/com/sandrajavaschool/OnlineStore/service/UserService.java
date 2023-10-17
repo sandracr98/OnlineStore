@@ -1,13 +1,15 @@
 package com.sandrajavaschool.OnlineStore.service;
 
+import com.sandrajavaschool.OnlineStore.dao.IOrderDao;
 import com.sandrajavaschool.OnlineStore.dao.IProductDao;
 import com.sandrajavaschool.OnlineStore.dao.IUserDao;
+import com.sandrajavaschool.OnlineStore.entities.Order;
 import com.sandrajavaschool.OnlineStore.entities.Product;
 import com.sandrajavaschool.OnlineStore.entities.User;
 import com.sandrajavaschool.OnlineStore.service.implService.IUserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.ToString;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,7 @@ public class UserService implements IUserService {
 
     private final IUserDao userDao;
     private final IProductDao productDao;
+    private final IOrderDao orderDao;
 
     @Override
     public List<User> findAll() {
@@ -52,4 +55,41 @@ public class UserService implements IUserService {
     public List<Product> findByName(String term) {
         return productDao.findByName(term);
     }
+
+    @Override
+    public void saveOrder(Order order) {
+        orderDao.save(order);
+    }
+
+    @Override
+    public Product findProductById(Long id) {
+
+        //maneja un optional de producto asi podemos saber si el
+        //producto viene en la consulta
+
+        return productDao.findById(id).orElse(null);
+
+    }
+
+    @Override
+    public Order findOrderById(Long id) {
+        return orderDao.findById(id).orElse(null);
+    }
+
+    @Override
+    public void deleteOrder(Long id) {
+        orderDao.deleteById(id);
+    }
+
+    @Override
+    public Order fetchByIdWithUserReceiptLineProduct(Long id) {
+        return orderDao.fetchByIdWithUserReceiptLineProduct(id);
+    }
+
+    @Override
+    public User fetchByIdWithOrder(Long id) {
+        return userDao.fetchByIdWithOrder(id);
+    }
+
+
 }

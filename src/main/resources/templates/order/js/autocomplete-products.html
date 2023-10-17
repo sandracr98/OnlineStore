@@ -53,6 +53,12 @@
             }
 
         });
+
+        $("form").submit(function () {
+            $("#itemsLineTable").remove();
+            return;
+        });
+
     });
 
     var itemsHelper = {
@@ -121,6 +127,10 @@ si tiene cantidad se pasa a integer y se la asignamos a la variable cantidad, si
 
 <!-- en la linea 98 asignamos el gran total al span de la linea del html correspondiente para que se
 pueda iterar y calcular el importe total-->
+
+<!--La linea 57 ("form") es muy importante porque hace que una vez la factura este guardada
+y queramos verla no se guarden las lineas de id y de cantidad, que dará error pq chocan,
+lo que hace es eliminar el t-body del products-lines y así se muestra tal cual-->
 
 </body>
 </html>

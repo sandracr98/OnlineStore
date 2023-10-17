@@ -79,7 +79,9 @@ public class UserController {
     public String viewUserDetails(@PathVariable(value = "id") Long id,
                                   Model model) {
 
-        User user = userService.findOne(id);
+        //User user = userService.findOne(id);
+        //con esto en una sola consulta jpa trae al cliente con todas sus facturas
+        User user = userService.fetchByIdWithOrder(id);
 
         model.addAttribute("user", user);
 
