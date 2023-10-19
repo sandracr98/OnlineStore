@@ -8,17 +8,14 @@ import com.sandrajavaschool.OnlineStore.service.implService.IClientAddressServic
 import com.sandrajavaschool.OnlineStore.service.implService.IRoleService;
 import com.sandrajavaschool.OnlineStore.service.implService.IUserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -54,7 +51,7 @@ public class UserController {
 
     @GetMapping(value = "/mainPage")
     public String mainPage() {
-        return "/mainPAge";
+        return "/mainPage";
     }
 
     @GetMapping(value = "/list")
@@ -77,13 +74,22 @@ public class UserController {
 
     @GetMapping(value = "/userDetails/{id}")
     public String viewUserDetails(@PathVariable(value = "id") Long id,
+                                  RedirectAttributes flash,
                                   Model model) {
 
-        //User user = userService.findOne(id);
+        User user = userService.findOne(id);
+
         //con esto en una sola consulta jpa trae al cliente con todas sus facturas
-        User user = userService.fetchByIdWithOrder(id);
+        //User user = userService.fetchByIdWithOrder(id);
+
+        if(user == null) {
+            flash.addFlashAttribute("error", "The user does not exist into DDBB");
+            return "redirect:/list";
+        }
+
 
         model.addAttribute("user", user);
+        model.addAttribute("title", "User Details: " + user.getName());
 
         return "user/profile";
 
@@ -112,17 +118,17 @@ public class UserController {
                        Map<String, Object> model,
                        RedirectAttributes flash) {
 
-        User user;
-        List<ClientsAddress> clientsAddresses;
+        User user = null;
+        List<ClientsAddress> clientsAddresses = null;
 
         if (id > 0) {
             user = userService.findOne(id);
             if (user == null) {
                 flash.addFlashAttribute("error", "The user does not exist");
                 return "redirect:/usersList";
+            }else {
+                clientsAddresses = user.getClientsAddresses();
             }
-
-            clientsAddresses = user.getClientsAddresses();
 
         } else {
             flash.addFlashAttribute("error", "The user does not exist");
@@ -146,7 +152,6 @@ public class UserController {
         String flashmessage = "Congratulation! You have an account";
 
         userService.save(user);
-
 
         clientAddressService.save(clientsAddress);
 

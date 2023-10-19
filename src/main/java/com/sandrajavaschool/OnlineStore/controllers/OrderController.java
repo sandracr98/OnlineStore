@@ -104,12 +104,12 @@ public class OrderController {
                             Model model,
                             RedirectAttributes flash) {
 
-        //Order order = userService.findOrderById(id);
+        Order order = userService.findOrderById(id);
 
         //¿Debo dejarlo así o como siempre lo he hecho, se suele usar asi cuando
         // trabajamos con un objeto entity con muchas relaciones?
 
-        Order order = userService.fetchByIdWithUserReceiptLineProduct(id);
+        //Order order = userService.fetchByIdWithUserReceiptLineProduct(id);
 
         if (order == null) {
             flash.addFlashAttribute("error", "Order does not exist into DDBB");

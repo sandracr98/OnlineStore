@@ -39,4 +39,9 @@ public class ClientAddressService implements IClientAddressService {
         clientAddressDao.deleteById(id);
     }
 
+    @Override
+    public void saveAll(List<ClientsAddress> clientsAddresses) {
+        clientAddressDao.saveAll(clientsAddresses);
+    }
+
 }

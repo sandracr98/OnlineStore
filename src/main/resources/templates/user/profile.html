@@ -88,9 +88,12 @@
                     <td th:text="${order.date}"></td>
                     <td th:text="${order.orderStatus}"></td>
                     <td th:text="${order.total}"></td>
+
                     <td><a class="btn btn-primary btn-xs" th:href="@{'/order/viewReceipt/' + ${order.id}}" th:text="'Detail'"></a></td>
+
                     <td><a class="btn btn-danger btn-xs" th:href="@{'/order/delete/' + ${order.id}}" th:text="'Delete'"
-                    onclick="return confirm('Are you sure do you want to delete the order?')"></a></td>
+                    onclick="return confirm('Are you sure do you want to delete this order?')"></a></td>
+
                 </tr>
                 </tbody>
 

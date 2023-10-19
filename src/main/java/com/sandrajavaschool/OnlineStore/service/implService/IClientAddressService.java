@@ -13,4 +13,6 @@ public interface IClientAddressService {
 
     public void delete(Long id);
 
+    public void saveAll(List<ClientsAddress> clientsAddresses);
+
 }
