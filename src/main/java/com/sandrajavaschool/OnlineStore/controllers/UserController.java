@@ -50,7 +50,8 @@ public class UserController {
     //}
 
     @GetMapping(value = "/mainPage")
-    public String mainPage() {
+    public String mainPage(Model model) {
+        model.addAttribute("title", "SCR");
         return "/mainPage";
     }
 

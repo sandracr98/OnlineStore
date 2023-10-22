@@ -45,4 +45,10 @@ public class ProductService implements IProductService {
         return productDao.findAll(pageable);
     }
 
+
+    public Page<Product> findByName(String term, Pageable pageable) {
+        return productDao.findByNameContaining(term, pageable);
+    }
+
+
 }

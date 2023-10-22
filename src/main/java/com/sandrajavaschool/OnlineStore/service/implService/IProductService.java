@@ -19,4 +19,8 @@ public interface IProductService {
 
     public Page<Product> findAll(Pageable pageable);
 
+    public Page<Product> findByName(String term, Pageable pageable);
+
+
+
 }

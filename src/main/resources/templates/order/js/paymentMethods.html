@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+<script type="text/javascript" th:fragment="paymentMethods">
+  document.addEventListener('DOMContentLoaded', function () {
+      console.log('Cambio detectado'); // Esta línea agregará un mensaje en la consola del navegador
+
+    document.getElementById('paymentMethodSelect').addEventListener('change', function () {
+      var cardDetails = document.getElementById('cardDetails');
+      if (this.value === '2') {
+        cardDetails.style.display = 'block';
+      } else {
+        cardDetails.style.display = 'none';
+      }
+    });
+  });
+</script>
+</body>
+</html>

@@ -19,7 +19,6 @@
                 <li class="list-group-item list-group-item-primary" th:text="'User details'"></li>
                 <li class="list-group-item" th:text="${order.user}"></li>
                 <li class="list-group-item" th:text="${order.user.email}"></li>
-
             </ul>
 
             <ul class="list-group my-2">
@@ -27,6 +26,10 @@
                 <li class="list-group-item" th:text="'Order: ' + ${order.id}"></li>
                 <li class="list-group-item" th:text="'Description: ' + ${order.description}"></li>
                 <li class="list-group-item" th:text="'Date: ' + ${order.date}"></li>
+                <li class="list-group-item" th:text="'Order Status: ' + ${order.orderStatus}"></li>
+                <li class="list-group-item" th:text="'Payment Status: ' + ${order.paymentStatus}"></li>
+                <li class="list-group-item" th:text="'Payment Method: ' + ${order.paymentMethod.type}"></li>
+
             </ul>
 
             <div class="alert alert-info my-4" th:if="${#lists.isEmpty(order.receiptLines)}"
@@ -61,6 +64,15 @@
                        th:if="${ not #strings.isEmpty(order.description)}"></p>
                     <h4 class="card-title" th:if="${#strings.isEmpty(order.description)}"
                         th:text="'There is no observations'"></h4>
+                </div>
+            </div>
+            <div class="card border-info mb-4" style="max-width: 20rem;">
+                <div class="card-header">Payment Status</div>
+                <div class="card-body">
+                    <p class="card-text" th:text="${order.orderStatus}"
+                       th:if="${ not #strings.isEmpty(order.orderStatus)}"></p>
+                    <h4 class="card-title" th:if="${#strings.isEmpty(order.orderStatus)}"
+                        th:text="'The order has not been processed yet'"></h4>
                 </div>
             </div>
 

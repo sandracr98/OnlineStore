@@ -11,121 +11,97 @@
         <div class="card-header" th:text="${title}"></div>
 
         <div class="card-body">
-            <div class="container">
 
-                <div class="form-group row">
-
-                    <label for="search_product" class="col-sm-2 col-form-label" th:text="'Search Product'"></label>
-                    <div class="col-sm-4">
-                        <input type="text" name="search_product" id="search_product" class="form-control"/>
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <div class="col-sm-8">
-                        <div class="row">
-
-                            <div class="col-md-3">
-                                <label for="priceFilter">Price:</label>
-                                <select class="form-select" id="priceFilter">
-                                    <option value="all">All</option>
-                                    <option value="low">Low to High</option>
-                                    <option value="high">High to Low</option>
-                                </select>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="categoryFilter">Category:</label>
-                                <select class="form-select" id="categoryFilter">
-                                    <option value="all">All</option>
-                                    <option value="electronics">Electronics</option>
-                                    <option value="clothing">Clothing</option>
-                                    <option value="home">Home</option>
-                                </select>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="brandFilter">Brand:</label>
-                                <select class="form-select" id="brandFilter">
-                                    <option value="all">All</option>
-                                    <option value="brandA">Brand A</option>
-                                    <option value="brandB">Brand B</option>
-                                    <option value="brandC">Brand C</option>
-                                    <option value="brandD">Brand D</option>
-                                    <option value="brandE">Brand E</option>
-                                    <option value="brandF">Brand F</option>
-                                </select>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="colorFilter">Color:</label>
-                                <select class="form-select" id="colorFilter">
-                                    <option value="all">All</option>
-                                    <option value="white">White</option>
-                                    <option value="Black">Black</option>
-                                    <option value="blue">Blue</option>
-                                    <option value="red">Red</option>
-                                    <option value="green">Green</option>
-
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="form-group row">
-                    <div class="col-sm-4">
-                        <button class="btn btn-primary" onclick="applyFilters()">Apply Filters</button>
-                    </div>
-                </div>
-
+            <div>
+                <a class="btn btn-success" th:href="@{/createProduct}" th:text="'Create'"></a>
             </div>
 
+
+            <form class="form-group" th:action="@{/productsList}">
+                <div class="row">
+
+                    <label for="term" class="col-sm-2 col-form-label" th:text="'Search Product'"></label>
+
+                    <div class="col-sm-4">
+                        <input type="text" name="term" id="term" class="form-control"
+                               th:value="${term}"/>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <input type="submit" class="btn btn-info" value="Search">
+                        <input type="button" class="btn btn-secondary" value="Clear" onclick="clearTerms()">
+                    </div>
+
+                </div>
+            </form>
+            <br>
+
+
+            <table class="table table-striped  border border-success">
+                <thead class="thead-inverse">
+                <tr>
+                    <th>id</th>
+                    <th>Title</th>
+                    <th>Price</th>
+                    <th>Category</th>
+                    <th>Volume</th>
+                    <th>Stock</th>
+                    <th>Brand</th>
+                    <th>Color</th>
+                    <th>Weight</th>
+                    <th>Date</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="product: ${products}">
+
+                    <td th:text="${product.id}"></td>
+                    <td th:text="${product.title}"></td>
+                    <td th:text="${product.price}"></td>
+                    <td th:text="${product.category}"></td>
+                    <td th:text="${product.volume}"></td>
+                    <td th:text="${product.stock}"></td>
+                    <td th:text="${product.brand}"></td>
+                    <td th:text="${product.color}"></td>
+                    <td th:text="${product.weight}"></td>
+                    <td th:text="${product.date}"></td>
+
+                    <td>
+                        <a class="btn btn-danger btn-sm" th:href="@{/addProduct/} + ${product.id}"
+                           th:text="'Buy'"></a>
+                    </td>
+
+                    <td>
+                        <a class="btn btn-primary btn-sm" th:href="@{/editProduct/} + ${product.id}"
+                           th:text="'Edit'"></a>
+                    </td>
+
+                    <td>
+                        <a class="btn btn-danger btn-sm" th:href="@{/deleteProduct/} + ${product.id}"
+                           th:text="'Delete'"></a>
+                    </td>
+
+                </tr>
+
+
+                </tbody>
+
+            </table>
+
+            <nav th:replace="layout/paginator_nav :: paginator"></nav>
         </div>
 
     </div>
-
-    <table class="table table-striped  border border-success">
-        <thead class="thead-inverse">
-        <tr>
-            <th>id</th>
-            <th>Title</th>
-            <th>Price</th>
-            <th>Category</th>
-            <th>Volume</th>
-            <th>Stock</th>
-            <th>Brand</th>
-            <th>Color</th>
-            <th>Weight</th>
-            <th>Date</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="product: ${products}">
-
-            <td th:text="${product.id}"></td>
-            <td th:text="${product.title}"></td>
-            <td th:text="${product.price}"></td>
-            <td th:text="${product.category}"></td>
-            <td th:text="${product.volume}"></td>
-            <td th:text="${product.stock}"></td>
-            <td th:text="${product.brand}"></td>
-            <td th:text="${product.color}"></td>
-            <td th:text="${product.weight}"></td>
-            <td th:text="${product.date}"></td>
-        </tr>
-        </tbody>
-
-    </table>
-
-    <nav th:replace="layout/paginator_nav :: paginator"></nav>
-
-</div>
-</div>
-
 </div>
 
 <footer th:replace="layout/layout :: footer"></footer>
-<script th:replace="order/js/autocomplete-products :: javascript"></script>
 
+<script th:replace="product/js/clearFilter :: clearFilter"></script>
 
 </body>
 </html>

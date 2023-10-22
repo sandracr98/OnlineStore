@@ -1,10 +1,9 @@
 package com.sandrajavaschool.OnlineStore.controllers;
 
-import com.sandrajavaschool.OnlineStore.entities.Order;
-import com.sandrajavaschool.OnlineStore.entities.Product;
-import com.sandrajavaschool.OnlineStore.entities.ReceiptLine;
-import com.sandrajavaschool.OnlineStore.entities.User;
+import com.sandrajavaschool.OnlineStore.dao.IPaymentMethodDao;
+import com.sandrajavaschool.OnlineStore.entities.*;
 import com.sandrajavaschool.OnlineStore.service.implService.IOrderService;
+import com.sandrajavaschool.OnlineStore.service.implService.IPaymentMethodService;
 import com.sandrajavaschool.OnlineStore.service.implService.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.weaver.ast.Or;
@@ -28,6 +27,7 @@ import java.util.logging.Logger;
 public class OrderController {
 
     final private IUserService userService;
+    final private IPaymentMethodService paymentMethodService;
 
     @GetMapping("receipt/{userId}")
     public String create(@PathVariable(value = "userId") Long userId,
@@ -38,7 +38,12 @@ public class OrderController {
         Order order = new Order();
         order.setUser(user); //de esta forma asignamos una factura con un cliente
 
+        PaymentMethod paymentMethod = new PaymentMethod();
+        order.setPaymentMethod(paymentMethod);
+
         model.addAttribute("order", order);
+        model.addAttribute("paymentMethod", paymentMethod);
+
         model.addAttribute("title", "Shopping cart");
 
         return "order/receipt";
@@ -53,6 +58,7 @@ public class OrderController {
 
     @PostMapping("/receipt")
     public String save(@Valid Order order,
+                       @ModelAttribute PaymentMethod paymentMethod,
                        BindingResult result,
                        Model model,
                        @RequestParam(name = "item_id[]", required = false) Long[] itemId,
@@ -90,6 +96,8 @@ public class OrderController {
 
         Double total = order.getTotal();
         order.setSum(total);
+
+        paymentMethodService.save(paymentMethod);
 
         userService.saveOrder(order);
 

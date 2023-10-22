@@ -1,6 +1,7 @@
 package com.sandrajavaschool.OnlineStore.service.implService;
 
 
+import com.sandrajavaschool.OnlineStore.entities.ClientsAddress;
 import com.sandrajavaschool.OnlineStore.entities.Order;
 import com.sandrajavaschool.OnlineStore.entities.Product;
 import com.sandrajavaschool.OnlineStore.entities.User;
@@ -29,6 +30,8 @@ public interface IUserService {
     public Order findOrderById(Long id);
 
     public void deleteOrder(Long id);
+
+    public void saveClientAddress(ClientsAddress clientsAddress);
 
     public Order fetchByIdWithUserReceiptLineProduct(Long Id);
 

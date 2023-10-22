@@ -39,8 +39,8 @@ public class Order implements Serializable {
 
     private String deliveryMethod;
     private String goods;
-    private Boolean paymentStatus;
-    private String orderStatus; //con un check box
+    private String paymentStatus;
+    private String orderStatus;
     private double sum;
     private String description;
 
@@ -83,6 +83,9 @@ public class Order implements Serializable {
     public void prePersist() {
         date = new Date();
     }
+
+
+    private static final long serialVersionUID = 1L; // Puedes cambiar el número según sea necesario
 
 
 }

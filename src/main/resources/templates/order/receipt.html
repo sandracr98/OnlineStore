@@ -42,16 +42,34 @@
                 <br>
 
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label" th:text="'PayMethod'"></label>
+                    <label class="col-sm-2 col-form-label" th:text="'Payment Method'"></label>
                     <div class="col-sm-6">
-                        <textarea th:field="*{paymentMethod}" class="form-control"></textarea>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" th:field="*{paymentMethod.type}"
+                                   value="cash" id="cash">
+                            <label class="form-check-label" for="cash">cash </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" th:field="*{paymentMethod.type}"
+                                   value="By card" id="bycard">
+                            <label class="form-check-label" for="bycard">bycard</label>
+                        </div>
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label" th:text="'Delivery Method'"></label>
                     <div class="col-sm-6">
-                        <textarea th:field="*{deliveryMethod}" class="form-control"></textarea>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" th:field="*{deliveryMethod}"
+                                   value="Home Delivery" id="homeDelivery">
+                            <label class="form-check-label" for="homeDelivery">Home Delivery</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" th:field="*{deliveryMethod}"
+                                   value="In-Store Pickup" id="inStorePickup">
+                            <label class="form-check-label" for="inStorePickup">In-Store Pickup</label>
+                        </div>
                     </div>
                 </div>
 
@@ -63,23 +81,51 @@
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label" th:text="'Payment Status'"></label>
+                    <label class="col-sm-2 col-form-label" th:text="'Order Status'"></label>
                     <div class="col-sm-6">
-                        <textarea th:field="*{paymentStatus}" class="form-control"></textarea>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" th:field="*{orderStatus}"
+                                   value="pending payment" id="pendingpayment">
+                            <label class="form-check-label" for="pendingpayment">Pending Payment</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" th:field="*{orderStatus}"
+                                   value="pending shipment" id="pendingshipment">
+                            <label class="form-check-label" for="pendingshipment">Pending Shipment</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" th:field="*{orderStatus}"
+                                   value="shipped" id="shipped">
+                            <label class="form-check-label" for="shipped">Shipped</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" th:field="*{orderStatus}"
+                                   value="delivered" id="delivered">
+                            <label class="form-check-label" for="delivered">Delivered</label>
+                        </div>
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label" th:text="'Order Status'"></label>
+                    <label class="col-sm-2 col-form-label" th:text="'Payment Status'"></label>
                     <div class="col-sm-6">
-                        <textarea th:field="*{orderStatus}" class="form-control"></textarea>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" th:field="*{paymentStatus}" value="pending"
+                                   id="pending">
+                            <label class="form-check-label" for="pending">Pending</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" th:field="*{paymentStatus}" value="paid"
+                                   id="paid">
+                            <label class="form-check-label" for="paid">Paid</label>
+                        </div>
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label for="search_product" class="col-sm-2 col-form-label" th:text="'Search Product'"></label>
                     <div class="col-sm-6">
-                        <input type="text" name="search_product" id="search_product" class="form-control" />
+                        <input type="text" name="search_product" id="search_product" class="form-control"/>
                     </div>
                 </div>
 
@@ -112,7 +158,7 @@
 
                 <div class="form-group row">
                     <div class="col-sm-6">
-                        <input type="submit"  class="btn btn-light btn-xs" th:value="'Add'">
+                        <input type="submit" class="btn btn-light btn-xs" th:value="'Add'">
                     </div>
                 </div>
 
@@ -125,6 +171,8 @@
 
 <footer th:replace="layout/layout :: footer"></footer>
 <script th:replace="order/js/autocomplete-products :: javascript"></script>
+<script th:replace="order/js/paymentMethods :: paymentMethods"></script>
+
 
 </body>
 </html>

@@ -4,11 +4,13 @@ import com.sandrajavaschool.OnlineStore.entities.Product;
 import com.sandrajavaschool.OnlineStore.paginator.PageRender;
 import com.sandrajavaschool.OnlineStore.service.implService.IProductService;
 import com.sandrajavaschool.OnlineStore.service.implService.IUserService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,18 +28,30 @@ public class ProductController {
 
     @GetMapping(value = "/productsList")
     public String list(@RequestParam(name = "page", defaultValue = "0") int page,
-                       Model model) {
+                       Model model,
+                       @RequestParam(name = "term", required = false) String term,
+                       HttpSession session) {
+        //diferencias entre @param y request param
 
         model.addAttribute("title", "Products");
 
+        session.setAttribute("term", term);
+
+
+        Page<Product> products;
         Pageable pageRequest = PageRequest.of(page, 8);
-        Page<Product> products = productService.findAll(pageRequest);
+
+        if (term != null && !term.isEmpty()) {
+            products = productService.findByName(term, pageRequest);
+        } else {
+            products = productService.findAll(pageRequest);
+        }
+
         PageRender<Product> pageRender = new PageRender<>("/productsList", products);
 
         model.addAttribute("products", products);
-
+        model.addAttribute("term", term);
         model.addAttribute("page", pageRender);
-
 
         return "product/productsList";
     }
@@ -66,6 +80,41 @@ public class ProductController {
         return "redirect:productsList";
     }
 
+    @GetMapping(value = "/editProduct/{id}")
+    public String edit(@PathVariable(value = "id") Long id,
+                       Model model,
+                       RedirectAttributes flash) {
+
+        Product product = null;
+
+        if (id > 0) {
+            product = productService.findOne(id);
+            if (product == null) {
+                flash.addFlashAttribute("error", "The product does not exist");
+                return "redirect:/product/productList";
+            }
+
+        } else {
+            flash.addFlashAttribute("error", "The product does not exist");
+            return "redirect:/product/productList";
+        }
 
 
+        model.addAttribute("product", product);
+
+        return "product/productCreate";
+
+    }
+
+    @RequestMapping(value = "/deleteProduct/{id}")
+    public String delete(@PathVariable(value = "id") Long id,
+                         RedirectAttributes flash) {
+
+        if (id > 0) {
+            productService.delete(id);
+            flash.addFlashAttribute("success", "The product has been deleted");
+        }
+
+        return "redirect:/list";
+    }
 }

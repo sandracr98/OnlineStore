@@ -1,8 +1,10 @@
 package com.sandrajavaschool.OnlineStore.service;
 
+import com.sandrajavaschool.OnlineStore.dao.IClientAddressDao;
 import com.sandrajavaschool.OnlineStore.dao.IOrderDao;
 import com.sandrajavaschool.OnlineStore.dao.IProductDao;
 import com.sandrajavaschool.OnlineStore.dao.IUserDao;
+import com.sandrajavaschool.OnlineStore.entities.ClientsAddress;
 import com.sandrajavaschool.OnlineStore.entities.Order;
 import com.sandrajavaschool.OnlineStore.entities.Product;
 import com.sandrajavaschool.OnlineStore.entities.User;
@@ -25,6 +27,7 @@ public class UserService implements IUserService {
     private final IUserDao userDao;
     private final IProductDao productDao;
     private final IOrderDao orderDao;
+    private final IClientAddressDao clientAddressDao;
 
     @Override
     public List<User> findAll() {
@@ -79,6 +82,11 @@ public class UserService implements IUserService {
     @Override
     public void deleteOrder(Long id) {
         orderDao.deleteById(id);
+    }
+
+    @Override
+    public void saveClientAddress(ClientsAddress clientsAddress) {
+        clientAddressDao.save(clientsAddress);
     }
 
     @Override
