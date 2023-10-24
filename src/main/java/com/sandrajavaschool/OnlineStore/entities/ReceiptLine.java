@@ -33,3 +33,4 @@ public class ReceiptLine implements Serializable {
     }
 
 }
+

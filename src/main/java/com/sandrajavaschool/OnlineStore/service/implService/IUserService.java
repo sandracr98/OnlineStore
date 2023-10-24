@@ -33,6 +33,8 @@ public interface IUserService {
 
     public void saveClientAddress(ClientsAddress clientsAddress);
 
+    public void deleteClientAddress(Long id);
+
     public Order fetchByIdWithUserReceiptLineProduct(Long Id);
 
     public User fetchByIdWithOrder(Long id);

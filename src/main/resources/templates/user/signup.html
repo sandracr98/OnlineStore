@@ -73,35 +73,9 @@
 
                         <div class="card d-flex justify-content-center h-100">
 
-                            <div class="card-header" th:text="'Address'"></div>
+                            <div class="card-header" th:text="'Photo'"></div>
 
                             <div class="card-body align-items-center">
-
-                                <table class="table table-striped  border border-success">
-                                    <thead class="thead-dark">
-                                    <tr>
-                                        <th>country</th>
-                                        <th>city</th>
-                                        <th>postal code</th>
-                                        <th>street</th>
-                                    </tr>
-                                    </thead>
-
-                                    <tbody>
-                                    <tr th:each="address: ${user.clientsAddresses}">
-                                        <td th:text="${address.country}"></td>
-                                        <td th:text="${address.city}"></td>
-                                        <td th:text="${address.postal_code}"></td>
-                                        <td th:text="${address.street}"></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-
-                                <div id="addresses-container" class="card-body align-items-center">
-
-                                </div>
-
-                                <button type="button" onclick="addAddress()">Add Direction</button>
 
                             </div>
                         </div>
@@ -119,14 +93,13 @@
 
 
                 <input type="hidden" th:field="*{id}">
+
             </form>
         </div>
     </div>
 </div>
 
 <footer th:replace="layout/layout :: footer"></footer>
-<script th:replace="user/js/addAddresses.html :: addresses"></script>
-
 
 </body>
 </html>

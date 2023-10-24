@@ -123,10 +123,10 @@ VALUES ('Producto 18', 24.75, 'Hogar', '500ml', 28, 'Marca R', 'Plateado', '1kg'
 
 
 -- Insertando órdenes
-INSERT INTO orders (user_id_user, payment_Method_id, delivery_Method, goods, payment_Status, order_Status, total, description, date)
+INSERT INTO orders (user_id_user, payment_Method_id, delivery_Method, goods, payment_Status, order_Status, sum, description, date)
 VALUES (1, 1, 'Envío a domicilio', 'Productos varios', 0, 'En proceso', 150.00, 'Descripción de la orden 1', '2023-10-03');
 
-INSERT INTO orders (user_id_user, payment_Method_id, delivery_Method, goods, payment_Status, order_Status, total, description, date)
+INSERT INTO orders (user_id_user, payment_Method_id, delivery_Method, goods, payment_Status, order_Status, sum, description, date)
 VALUES (1, 2, 'Recogida en tienda', 'Productos de electrónica', 1, 'Pendiente', 45, 'Descripción de la orden 2', '2023-10-04');
 
 

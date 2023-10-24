@@ -39,8 +39,6 @@ public class UserController {
 
 
     final private IUserService userService;
-    final private IRoleService roleService;
-    final private IClientAddressService clientAddressService;
 
     //@Autowired
     //public UserController(IUserService userService, IRoleService roleService, IClientAddressService clientAddressService) {
@@ -90,7 +88,7 @@ public class UserController {
 
 
         model.addAttribute("user", user);
-        model.addAttribute("title", "User Details: " + user.getName());
+        model.addAttribute("title", "Profile: " + user.getName());
 
         return "user/profile";
 
@@ -102,14 +100,8 @@ public class UserController {
         model.addAttribute("title", "Sign Up!");
 
         User user = new User();
+
         model.addAttribute("user", user);
-
-        ClientsAddress clientsAddress = new ClientsAddress();
-        clientsAddress.setUser(user);
-        model.addAttribute("clientsAddress", clientsAddress);
-
-        List<Role> roles = roleService.findAll();
-        model.addAttribute("roles", roles);
 
         return "user/signup";
     }
@@ -120,15 +112,13 @@ public class UserController {
                        RedirectAttributes flash) {
 
         User user = null;
-        List<ClientsAddress> clientsAddresses = null;
+
 
         if (id > 0) {
             user = userService.findOne(id);
             if (user == null) {
                 flash.addFlashAttribute("error", "The user does not exist");
                 return "redirect:/usersList";
-            }else {
-                clientsAddresses = user.getClientsAddresses();
             }
 
         } else {
@@ -138,7 +128,6 @@ public class UserController {
 
         model.put("title", "Profile");
         model.put("user", user);
-        model.put("clientAddress", clientsAddresses);
 
         return "user/signup";
     }
@@ -146,7 +135,6 @@ public class UserController {
 
     @PostMapping(value = "/save")
     public String save(@ModelAttribute User user,
-                       @ModelAttribute ClientsAddress clientsAddress,
                        RedirectAttributes flash) {
 
 
@@ -154,11 +142,8 @@ public class UserController {
 
         userService.save(user);
 
-        clientAddressService.save(clientsAddress);
-
-
         flash.addFlashAttribute("success", flashmessage);
-        return "redirect:list";
+        return "redirect:/list";
     }
 
     @RequestMapping(value = "/delete/{id}")

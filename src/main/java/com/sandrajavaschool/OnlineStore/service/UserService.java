@@ -54,6 +54,8 @@ public class UserService implements IUserService {
         return userDao.findAll(pageable);
     }
 
+
+
     @Override
     public List<Product> findByName(String term) {
         return productDao.findByName(term);
@@ -87,6 +89,10 @@ public class UserService implements IUserService {
     @Override
     public void saveClientAddress(ClientsAddress clientsAddress) {
         clientAddressDao.save(clientsAddress);
+    }
+    @Override
+    public void deleteClientAddress(Long id) {
+        clientAddressDao.deleteById(id);
     }
 
     @Override
