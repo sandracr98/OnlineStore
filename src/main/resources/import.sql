@@ -65,61 +65,71 @@ INSERT INTO users_has_roles (user_id, role_id) VALUES
 INSERT INTO payment_Methods (type) VALUES ('Cash');
 INSERT INTO payment_Methods (type) VALUES ('By Card');
 
+-- Insertanfo categorias
+
+INSERT INTO categories (name)
+VALUES ('Home');
+
+INSERT INTO categories (name)
+VALUES ('Electronics');
+
+INSERT INTO categories (name)
+VALUES ('Clothes');
 
 -- Insertando productos
-INSERT INTO products (title, price, category, volume, stock, brand, color, weight, date)
-VALUES ('Producto 1', 25.50, 'Electrónica', '1L', 10, 'Marca A', 'Negro', '2kg', '2023-10-05');
+INSERT INTO products (title, price, category_id_category, volume, stock, brand, color, weight, date)
+VALUES ('Producto 1', 25.50, 1 , '1L', 10, 'Marca A', 'Negro', '2kg', '2023-10-05');
 
-INSERT INTO products (title, price, category, volume, stock, brand, color, weight, date)
-VALUES ('Producto 2', 35.00, 'Ropa', 'M', 20, 'Marca B', 'Azul', '500g', '2023-10-06');
+INSERT INTO products (title, price, category_id_category, volume, stock, brand, color, weight, date)
+VALUES ('Producto 2', 35.00, 3, 'M', 20, 'Marca B', 'Azul', '500g', '2023-10-06');
 
-INSERT INTO products (title, price, category, volume, stock, brand, color, weight, date)
-VALUES ('Producto 3', 10.99, 'Hogar', '500ml', 15, 'Marca C', 'Blanco', '1kg', '2023-10-07');
+INSERT INTO products (title, price, category_id_category, volume, stock, brand, color, weight, date)
+VALUES ('Producto 3', 10.99, 2, '500ml', 15, 'Marca C', 'Blanco', '1kg', '2023-10-07');
 
-INSERT INTO products (title, price, category, volume, stock, brand, color, weight, date)
-VALUES ('Producto 4', 45.75, 'Electrónica', '2L', 12, 'Marca D', 'Plateado', '3kg', '2023-10-08');
+INSERT INTO products (title, price, category_id_category, volume, stock, brand, color, weight, date)
+VALUES ('Producto 4', 45.75, 2, '2L', 12, 'Marca D', 'Plateado', '3kg', '2023-10-08');
 
-INSERT INTO products (title, price, category, volume, stock, brand, color, weight, date)
-VALUES ('Producto 5', 15.99, 'Ropa', 'L', 18, 'Marca E', 'Rojo', '700g', '2023-10-09');
+INSERT INTO products (title, price, category_id_category, volume, stock, brand, color, weight, date)
+VALUES ('Producto 5', 15.99, 3, 'L', 18, 'Marca E', 'Rojo', '700g', '2023-10-09');
 
-INSERT INTO products (title, price, category, volume, stock, brand, color, weight, date)
-VALUES ('Producto 6', 8.50, 'Hogar', '1L', 25, 'Marca F', 'Verde', '800g', '2023-10-10');
+INSERT INTO products (title, price, category_id_category, volume, stock, brand, color, weight, date)
+VALUES ('Producto 6', 8.50, 1, '1L', 25, 'Marca F', 'Verde', '800g', '2023-10-10');
 
-INSERT INTO products (title, price, category, volume, stock, brand, color, weight, date)
-VALUES ('Producto 7', 19.95, 'Electrónica', '500ml', 30, 'Marca G', 'Dorado', '600g', '2023-10-11');
+INSERT INTO products (title, price, category_id_category, volume, stock, brand, color, weight, date)
+VALUES ('Producto 7', 19.95, 2, '500ml', 30, 'Marca G', 'Dorado', '600g', '2023-10-11');
 
-INSERT INTO products (title, price, category, volume, stock, brand, color, weight, date)
-VALUES ('Producto 8', 29.75, 'Ropa', 'XL', 22, 'Marca H', 'Negro', '900g', '2023-10-12');
+INSERT INTO products (title, price, category_id_category, volume, stock, brand, color, weight, date)
+VALUES ('Producto 8', 29.75, 1, 'XL', 22, 'Marca H', 'Negro', '900g', '2023-10-12');
 
-INSERT INTO products (title, price, category, volume, stock, brand, color, weight, date)
-VALUES ('Producto 9', 12.25, 'Hogar', '750ml', 20, 'Marca I', 'Plateado', '1.2kg', '2023-10-13');
+INSERT INTO products (title, price, category_id_category, volume, stock, brand, color, weight, date)
+VALUES ('Producto 9', 12.25, 1, '750ml', 20, 'Marca I', 'Plateado', '1.2kg', '2023-10-13');
 
-INSERT INTO products (title, price, category, volume, stock, brand, color, weight, date)
-VALUES ('Producto 10', 32.99, 'Electrónica', '1L', 14, 'Marca J', 'Blanco', '1.1kg', '2023-10-14');
+INSERT INTO products (title, price, category_id_category, volume, stock, brand, color, weight, date)
+VALUES ('Producto 10', 32.99, 2, '1L', 14, 'Marca J', 'Blanco', '1.1kg', '2023-10-14');
 
-INSERT INTO products (title, price, category, volume, stock, brand, color, weight, date)
-VALUES ('Producto 11', 14.50, 'Ropa', 'M', 18, 'Marca K', 'Gris', '700g', '2023-10-15');
+INSERT INTO products (title, price, category_id_category, volume, stock, brand, color, weight, date)
+VALUES ('Producto 11', 14.50, 3, 'M', 18, 'Marca K', 'Gris', '700g', '2023-10-15');
 
-INSERT INTO products (title, price, category, volume, stock, brand, color, weight, date)
-VALUES ('Producto 12', 18.75, 'Hogar', '500ml', 15, 'Marca L', 'Azul', '900g', '2023-10-16');
+INSERT INTO products (title, price, category_id_category, volume, stock, brand, color, weight, date)
+VALUES ('Producto 12', 18.75, 1, '500ml', 15, 'Marca L', 'Azul', '900g', '2023-10-16');
 
-INSERT INTO products (title, price, category, volume, stock, brand, color, weight, date)
-VALUES ('Producto 13', 22.99, 'Electrónica', '2L', 10, 'Marca M', 'Verde', '1.3kg', '2023-10-17');
+INSERT INTO products (title, price, category_id_category, volume, stock, brand, color, weight, date)
+VALUES ('Producto 13', 22.99, 2, '2L', 10, 'Marca M', 'Verde', '1.3kg', '2023-10-17');
 
-INSERT INTO products (title, price, category, volume, stock, brand, color, weight, date)
-VALUES ('Producto 14', 9.95, 'Ropa', 'L', 20, 'Marca N', 'Amarillo', '800g', '2023-10-18');
+INSERT INTO products (title, price, category_id_category, volume, stock, brand, color, weight, date)
+VALUES ('Producto 14', 9.95, 3, 'L', 20, 'Marca N', 'Amarillo', '800g', '2023-10-18');
 
-INSERT INTO products (title, price, category, volume, stock, brand, color, weight, date)
-VALUES ('Producto 15', 27.25, 'Hogar', '750ml', 18, 'Marca O', 'Blanco', '1kg', '2023-10-19');
+INSERT INTO products (title, price, category_id_category, volume, stock, brand, color, weight, date)
+VALUES ('Producto 15', 27.25, 1, '750ml', 18, 'Marca O', 'Blanco', '1kg', '2023-10-19');
 
-INSERT INTO products (title, price, category, volume, stock, brand, color, weight, date)
-VALUES ('Producto 16', 11.50, 'Electrónica', '1L', 22, 'Marca P', 'Rojo', '1.2kg', '2023-10-20');
+INSERT INTO products (title, price, category_id_category, volume, stock, brand, color, weight, date)
+VALUES ('Producto 16', 11.50, 2, '1L', 22, 'Marca P', 'Rojo', '1.2kg', '2023-10-20');
 
-INSERT INTO products (title, price, category, volume, stock, brand, color, weight, date)
-VALUES ('Producto 17', 16.99, 'Ropa', 'M', 25, 'Marca Q', 'Negro', '900g', '2023-10-21');
+INSERT INTO products (title, price, category_id_category, volume, stock, brand, color, weight, date)
+VALUES ('Producto 17', 16.99, 3, 'M', 25, 'Marca Q', 'Negro', '900g', '2023-10-21');
 
-INSERT INTO products (title, price, category, volume, stock, brand, color, weight, date)
-VALUES ('Producto 18', 24.75, 'Hogar', '500ml', 28, 'Marca R', 'Plateado', '1kg', '2023-10-22');
+INSERT INTO products (title, price, category_id_category, volume, stock, brand, color, weight, date)
+VALUES ('Producto 18', 24.75, 1, '500ml', 28, 'Marca R', 'Plateado', '1kg', '2023-10-22');
 
 
 -- Insertando órdenes

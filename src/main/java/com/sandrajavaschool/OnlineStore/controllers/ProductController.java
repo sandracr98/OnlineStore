@@ -39,9 +39,11 @@ public class ProductController {
 
 
         Page<Product> products;
-        Pageable pageRequest = PageRequest.of(page, 8);
+        Pageable pageRequest = PageRequest.of(page, 5);
+
 
         if (term != null && !term.isEmpty()) {
+            model.addAttribute("additionalParams", "&term=" + term);
             products = productService.findByName(term, pageRequest);
         } else {
             products = productService.findAll(pageRequest);

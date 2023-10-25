@@ -16,7 +16,7 @@ public interface IProductDao extends JpaRepository<Product, Long> {
     //falta por date y por precio +++
     @Query("select p from Product p where p.title like %?1%"
             + "or p.brand like %?1%"
-            + "or p.category like %?1%"
+            + "or p.category.name like %?1%"
             + "or p.weight like %?1%"
             + "or p.volume like %?1%"
             + "or p.color like %?1%")

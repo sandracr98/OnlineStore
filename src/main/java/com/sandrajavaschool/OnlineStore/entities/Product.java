@@ -25,7 +25,6 @@ public class Product implements Serializable {
 
     private String title;
     private Double price;
-    private String category;
     private String volume;
     private Integer stock;
     private String brand;
@@ -36,6 +35,11 @@ public class Product implements Serializable {
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     @Column(name = "date")
     private Date date;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Category category;
+
 
 
     @PrePersist
