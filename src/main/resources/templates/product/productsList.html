@@ -50,6 +50,7 @@
                     <th>Color</th>
                     <th>Weight</th>
                     <th>Date</th>
+                    <th>Status</th>
                     <th></th>
                     <th></th>
                     <th></th>
@@ -70,6 +71,8 @@
                     <td th:text="${product.color}"></td>
                     <td th:text="${product.weight}"></td>
                     <td th:text="${product.date}"></td>
+                    <td th:text="${product.status}"></td>
+
 
                     <td>
                         <a class="btn btn-danger btn-sm" th:href="@{/addProduct/} + ${product.id}"
@@ -83,7 +86,8 @@
 
                     <td>
                         <a class="btn btn-danger btn-sm" th:href="@{/deleteProduct/} + ${product.id}"
-                           th:text="'Delete'"></a>
+                           th:text="'Delete'" onclick="return confirm('Are you sure do you want to delete this product? ' +
+                            'If this product is associated with a product, its status will be changed to removed, but it will persist in the database.')"></a>
                     </td>
 
                 </tr>

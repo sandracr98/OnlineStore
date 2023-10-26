@@ -27,9 +27,18 @@ import java.util.logging.Logger;
 public class OrderController {
 
     final private IUserService userService;
+    final private IOrderService orderService;
     final private IPaymentMethodService paymentMethodService;
 
-    @GetMapping("receipt/{userId}")
+    @GetMapping("/ordersList")
+    public String list(Model model) {
+       List<Order> orders = orderService.findAll();
+       model.addAttribute("orders", orders);
+
+       return "/order/ordersList";
+    }
+
+    @GetMapping("/receipt/{userId}")
     public String create(@PathVariable(value = "userId") Long userId,
                          Model model) {
 
@@ -70,7 +79,7 @@ public class OrderController {
         //receipt, para que nuestros campos esten validados si la descripcion es null
         if (result.hasErrors()) {
             model.addAttribute("title", "Create Order");
-            return "order/receipt";
+            return "redirect:/userDetails/" + order.getUser().getId();
         }
 
         //Si el id no existe o no hay cantidades de productos lanza esta validacion
@@ -78,7 +87,7 @@ public class OrderController {
         if (itemId == null || itemId.length == 0) {
             model.addAttribute("title", "Create Order");
             model.addAttribute("error", "ERROR: the receipt is blank");
-            return "order/receipt";
+            return "redirect:/userDetails/" + order.getUser().getId();
         }
 
 

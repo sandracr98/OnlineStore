@@ -20,7 +20,6 @@ public interface IProductDao extends JpaRepository<Product, Long> {
             + "or p.weight like %?1%"
             + "or p.volume like %?1%"
             + "or p.color like %?1%")
-
     Page<Product> findByNameContaining(String term, Pageable pageable);
 
 

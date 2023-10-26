@@ -22,5 +22,4 @@ public interface IProductService {
     public Page<Product> findByName(String term, Pageable pageable);
 
 
-
 }

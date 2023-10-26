@@ -1,5 +1,6 @@
 package com.sandrajavaschool.OnlineStore.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -31,16 +33,23 @@ public class Product implements Serializable {
     private String color;
     private String weight;
 
+    private boolean status;
+
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     @Column(name = "date")
     private Date date;
 
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
+    @JoinColumn(name = "category_id", referencedColumnName = "id_category")
+    @JsonIgnore
     private Category category;
 
-
+    @OneToMany(mappedBy = "product",
+    cascade = {CascadeType.ALL},
+    fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<ReceiptLine> receiptLine;
 
     @PrePersist
     public void prePersist() {

@@ -1,7 +1,10 @@
 package com.sandrajavaschool.OnlineStore.controllers;
 
+import com.sandrajavaschool.OnlineStore.entities.Category;
+import com.sandrajavaschool.OnlineStore.entities.CategoryStatus;
 import com.sandrajavaschool.OnlineStore.entities.Product;
 import com.sandrajavaschool.OnlineStore.paginator.PageRender;
+import com.sandrajavaschool.OnlineStore.service.implService.ICategoryService;
 import com.sandrajavaschool.OnlineStore.service.implService.IProductService;
 import com.sandrajavaschool.OnlineStore.service.implService.IUserService;
 import jakarta.servlet.http.HttpSession;
@@ -25,6 +28,7 @@ import java.util.List;
 public class ProductController {
 
     final private IProductService productService;
+    final private ICategoryService categoryService;
 
     @GetMapping(value = "/productsList")
     public String list(@RequestParam(name = "page", defaultValue = "0") int page,
@@ -36,7 +40,6 @@ public class ProductController {
         model.addAttribute("title", "Products");
 
         session.setAttribute("term", term);
-
 
         Page<Product> products;
         Pageable pageRequest = PageRequest.of(page, 5);
@@ -66,6 +69,9 @@ public class ProductController {
         Product product = new Product();
         model.addAttribute("product", product);
 
+        List<Category> categories = categoryService.findAll();
+        model.addAttribute("categories", categories);
+
         return "product/productCreate";
     }
 
@@ -74,6 +80,9 @@ public class ProductController {
                        RedirectAttributes flash) {
 
         String flashmessage = "Your item has been created";
+
+        //para que se guarde la fecha cada vez que lo modificas
+        product.prePersist();
 
         productService.save(product);
 
@@ -102,6 +111,9 @@ public class ProductController {
         }
 
 
+        List<Category> categories = categoryService.findAll();
+        model.addAttribute("categories", categories);
+
         model.addAttribute("product", product);
 
         return "product/productCreate";
@@ -113,10 +125,21 @@ public class ProductController {
                          RedirectAttributes flash) {
 
         if (id > 0) {
-            productService.delete(id);
-            flash.addFlashAttribute("success", "The product has been deleted");
+
+            Product product = productService.findOne(id);
+
+            if (product.getReceiptLine().isEmpty()) {
+
+                productService.delete(id);
+                flash.addFlashAttribute("success", "The product has been deleted");
+
+            } else {
+                product.setStatus(false);
+                productService.save(product);
+                flash.addFlashAttribute("error", "The product is associated with one or more products and cannot be deleted.");
+            }
         }
 
-        return "redirect:/list";
+        return "redirect:/productsList";
     }
 }

@@ -24,8 +24,17 @@ public class Category {
     private String name;
 
     @OneToMany(mappedBy = "category",
-            cascade = {CascadeType.ALL},
+            cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
-    private List<Product> product;
+    private List<Product> products;
+
+
+    @Enumerated(EnumType.STRING)
+    private CategoryStatus status;
+
+    public void addProduct(Product product) {
+        products.add(product);
+        product.setCategory(this);
+    }
 
 }
