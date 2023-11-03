@@ -68,13 +68,13 @@ INSERT INTO payment_Methods (type) VALUES ('By Card');
 -- Insertanfo categorias
 
 INSERT INTO categories (name, status)
-VALUES ('Home', 0);
+VALUES ('Home', true);
 
 INSERT INTO categories (name, status)
-VALUES ('Electronics', 0);
+VALUES ('Electronics', true);
 
 INSERT INTO categories (name, status)
-VALUES ('Clothes', 0);
+VALUES ('Clothes', true);
 
 -- Insertando productos
 INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status)
