@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,6 +29,7 @@ public class Order implements Serializable {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "paymentMethod_id", referencedColumnName = "id_paymentMethod")
+    @NotEmpty(message = "Please, choose an option")
     private PaymentMethod paymentMethod;
 
 

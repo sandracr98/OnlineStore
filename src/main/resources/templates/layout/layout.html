@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:fragment="head">
     <meta charset="UTF-8"/>
     <title th:text="'SCR ' + ${title}"></title>
@@ -32,6 +32,28 @@
                         <a class="nav-link" th:href="@{/productsList}">Products</a>
                     </li>
                 </ul>
+
+                <ul class="navbar-nav ml-auto navbar-right">
+                    <li sec:authorize="!isAuthenticated()">
+                        <a class="btn btn-outline-light" th:href="@{/login}">Sign In</a>
+                    </li>
+
+                    <li sec:authorize="isAuthenticated()" class="dropdown">
+
+                        <a class="btn btn-outline-light dropdown-toggle" href="#" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                        <span sec:authentication="name"></span>
+                        </a>
+
+                        <div class="dropdown">
+                            <form id="logout" th:action="@{/logout}" method="post">
+                                <button class="dropdown-item" onclick="document.getElementById('logout').submit();"
+                                type="submit">Sign out</button>
+                            </form>
+                        </div>
+
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
@@ -50,6 +72,12 @@
     <div class="container-fluid bg-dark container-dark container-expand-lg">
 
         <div class="row justify-content-center">
+
+            <p class="text-white text-center" sec:authorize="isAuthenticated()">User:
+                <span sec:authentication="name"></span>
+                | Role:
+                <span sec:authentication="principal.authorities"></span>
+            </p>
 
             <div class="col-md-12 text-center"><br>
 

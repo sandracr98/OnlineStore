@@ -1,14 +1,10 @@
 package com.sandrajavaschool.OnlineStore.controllers;
 
-import com.sandrajavaschool.OnlineStore.dao.IPaymentMethodDao;
 import com.sandrajavaschool.OnlineStore.entities.*;
 import com.sandrajavaschool.OnlineStore.service.implService.IOrderService;
 import com.sandrajavaschool.OnlineStore.service.implService.IPaymentMethodService;
 import com.sandrajavaschool.OnlineStore.service.implService.IUserService;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Or;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,7 +14,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.logging.Logger;
 
 @Controller
 @RequestMapping("/order")
@@ -67,7 +62,7 @@ public class OrderController {
 
     @PostMapping("/receipt")
     public String save(@Valid Order order,
-                       @ModelAttribute PaymentMethod paymentMethod,
+                       @Valid @ModelAttribute PaymentMethod paymentMethod,
                        BindingResult result,
                        Model model,
                        @RequestParam(name = "item_id[]", required = false) Long[] itemId,
@@ -140,9 +135,39 @@ public class OrderController {
 
     }
 
+    @GetMapping("/orderDetails/{id}")
+    public String editOrder(@PathVariable(value = "id") Long id,
+                            Model model,
+                            RedirectAttributes flash) {
+
+        Order order = orderService.findOne(id);
+
+        if (order == null) {
+            flash.addFlashAttribute("error", "Order does not exist into DDBB");
+            return "redirect:/list";
+        }
+
+        model.addAttribute("order", order);
+        model.addAttribute("title", "Edit Order");
+
+        return "order/orderDetails";
+    }
+
+    @PostMapping("/saveOrderDetails")
+    public String saveOrderStatus(@Valid Order order,
+                                  RedirectAttributes flash) {
+        String flashmessage = "Congratulation! You change status order";
+
+        orderService.save(order);
+
+        flash.addFlashAttribute("success", flashmessage);
+
+        return "redirect:/order/ordersList";
+    }
+
 
     @GetMapping("/delete/{id}")
-    public String deleteOrder(@PathVariable Long id,
+    public String deleteOrder(@PathVariable(value = "id") Long id,
                               RedirectAttributes flash) {
         Order order = userService.findOrderById(id);
 
@@ -154,5 +179,33 @@ public class OrderController {
 
         flash.addFlashAttribute("error", "The order does not exist in DDBB");
         return "redirect:/list/";
+    }
+
+    @RequestMapping("/reorder/{id}")
+    public String reorder(@PathVariable(value = "id") Long id,
+                          RedirectAttributes flash) {
+
+        Order existingOrder = userService.findOrderById(id);
+
+        if (existingOrder == null) {
+            flash.addFlashAttribute("error", "Order does not exist into DDBB");
+            return "redirect:/list";
+        }
+
+        Order newOrder = new Order();
+
+        newOrder.setUser(existingOrder.getUser());
+        newOrder.setDescription(existingOrder.getDescription());
+        newOrder.setGoods(existingOrder.getGoods());
+
+        existingOrder.setReceiptLines(null);
+//LO SUYO ES QUE LO LLEVARA A CREAR UNA NUEVA ORDER EN CREAR PERO CON LOS PRODUCTOS YA HECHOS
+// SOLO CAMBIAS 4 VARIABLES LOCAAS
+        newOrder.setReceiptLines(existingOrder.getReceiptLines());
+
+        orderService.save(newOrder);
+
+        return "redirect:/userDetails/" + existingOrder.getUser().getId();
+
     }
 }

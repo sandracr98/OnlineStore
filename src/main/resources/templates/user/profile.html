@@ -84,6 +84,7 @@
                     <th>Total</th>
                     <th>Order view</th>
                     <th>Delete</th>
+                    <th>Reorder</th>
                 </tr>
                 </thead>
 
@@ -101,6 +102,14 @@
                     <td><a class="btn btn-danger btn-xs" th:href="@{'/order/delete/' + ${order.id}}" th:text="'Delete'"
                            onclick="return confirm('Are you sure do you want to delete this order?')"></a></td>
 
+                    <td>
+                        <a class="btn btn-secondary btn-xs" th:href="@{'/order/reorder/' + ${order.id}}"
+                           th:text="'Reorder'">
+                        </a>
+                    </td>
+
+
+                    <!-- FALTA POR PONER EL FORM EN EL REORDER PARA QUE SE ENVIE EL FORM AL CONTROLADOR -->
                 </tr>
                 </tbody>
 

@@ -46,7 +46,7 @@ public class UserController {
         //this.clientAddressService = clientAddressService;
     //}
 
-    @GetMapping(value = "/mainPage")
+    @GetMapping(value = {"/mainPage", "/"})
     public String mainPage(Model model) {
         model.addAttribute("title", "SCR");
         return "/mainPage";
