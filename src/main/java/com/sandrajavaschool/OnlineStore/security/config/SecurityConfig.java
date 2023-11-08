@@ -2,31 +2,89 @@ package com.sandrajavaschool.OnlineStore.security.config;
 
 import com.sandrajavaschool.OnlineStore.authHandler.LoginSuccessHandler;
 
+import com.sandrajavaschool.OnlineStore.security.service.JpaUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration //le indica al contenedor de spring que esta es una clase de seguridad en el momento de iniciar la app
 @EnableWebSecurity //Se activa la seguridad web en nuestra app, y esta clase contiene toda la config referente a la seguridad
 @EnableMethodSecurity(securedEnabled = true, prePostEnabled = true) // , (opcional)
 @RequiredArgsConstructor
 public class SecurityConfig {
+
+
+    private final LoginSuccessHandler loginSuccessHandler;
+
+    private final BCryptPasswordEncoder passwordEncoder;
+
+    private final JpaUserDetailsService userDetailsService;
+
+
+    @Autowired
+    public void userDetailsService(AuthenticationManagerBuilder build) throws Exception {
+        build.userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder);
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+
+                .authorizeHttpRequests((authz) -> {
+                    try {
+                        authz.requestMatchers("/css/**", "/js/**", "/images/**", "/productsList", "/order/receipt/**", "/create/**").permitAll()
+
+                                //aqui van las rutas privadas
+                                .requestMatchers("/list").hasAnyRole("ADMIN")
+                                .requestMatchers("/createProduct/**").hasAnyRole("ADMIN")
+                                .requestMatchers("/editProduct/**").hasAnyRole("ADMIN")
+                                .requestMatchers("/deleteProduct/**").hasAnyRole("ADMIN")
+                                .requestMatchers("/category/**").hasRole("ADMIN")
+                                .requestMatchers("/order/orderList/**").hasRole("ADMIN")
+                                .requestMatchers("/form/**").hasRole("ADMIN")
+                                .requestMatchers("/create/**").hasRole("ADMIN")
+                                .anyRequest().authenticated();
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+
+
+        http.formLogin((form) -> form.loginPage("/login")
+                .loginProcessingUrl("/login")
+                .defaultSuccessUrl("/")
+                .successHandler(loginSuccessHandler)
+                .permitAll());
+
+        http.logout((logout) -> logout.permitAll()
+                .logoutSuccessUrl("/"));
+
+        http.exceptionHandling().accessDeniedPage("/error/error403");
+
+        return http.build();
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////////
 
     /*
     private JwtAuthenticationEntryPoint authenticationEntryPoint;
@@ -97,15 +155,6 @@ public class SecurityConfig {
 */
 
 
-    //Configuramos el Metodo HTTPSecurity para indicar la cadena de filtros
-    // de Autotización que vamos a seguir;
-
-    private final LoginSuccessHandler loginSuccessHandler;
-
-    @Bean
-    PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
 /*
     @Autowired
@@ -115,6 +164,26 @@ public class SecurityConfig {
     }
 
 */
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    //METODOS CON LOS COMENTARIOS
+
+/*
+
+
+    //Configuramos el Metodo HTTPSecurity para indicar la cadena de filtros
+    // de Autotización que vamos a seguir;
+
+    private final LoginSuccessHandler loginSuccessHandler;
+
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
 
     ///se puede dar seguridad desde los controladores en lugar de requestMatcher
@@ -162,9 +231,11 @@ public class SecurityConfig {
         http.logout((logout) -> logout.permitAll()
                 .logoutSuccessUrl("/"));
 
-        //PENDIENTE: lanzar un mensaje de excepcion para el error 403 en spring security 6
-        //http.exceptionHandling("/error/error403");
+        //lanzar un mensaje de excepcion para el error 403 en spring security 6
+
         http.exceptionHandling().accessDeniedPage("/error/error403");
+
+
         // Devolvemos el objeto HttpSecurity configurado para que Spring Boot y Spring Security realicen su magia.
 
         //http.csrf(AbstractHttpConfigurer::disable);
@@ -196,6 +267,23 @@ public class SecurityConfig {
     }
 
 
+
+    @Bean
+    AuthenticationManager authManager(HttpSecurity http) throws Exception {
+        return http.getSharedObject(AuthenticationManagerBuilder.class)
+                .jdbcAuthentication()
+                .dataSource(dataSource)
+                .passwordEncoder(passwordEncoder)
+                .usersByUsernameQuery("select email, pass, enabled from users where email=?")
+                .authoritiesByUsernameQuery("SELECT u.email, r.name " +
+                        "FROM users u " +
+                        "INNER JOIN users_has_roles ur ON u.id_user = ur.user_id " +
+                        "INNER JOIN roles r ON ur.role_id = r.id_role " +
+                        "WHERE u.email=?")
+
+                .and().build();
+    }
+*/
 
 
 }

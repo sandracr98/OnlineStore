@@ -9,6 +9,7 @@ import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.*;
 
@@ -25,7 +26,10 @@ public class User implements Serializable {
     @Column(name = "id_user", nullable = false)
     private Long id;
 
+    @NotNull
     private String name;
+
+
     private String surname;
 
     @Temporal(TemporalType.DATE)
@@ -33,13 +37,18 @@ public class User implements Serializable {
     private Date birthdate;
 
 
-    @Column( length = 30,unique = true)
+    @NotNull
+    @Column(length = 30,unique = true)
     private String email;
 
+    @NotNull
     @Column(length = 60)
     private String pass;
 
-    private boolean enabled;
+    @NotNull
+    private boolean enabled = true;
+
+
 
 
     @OneToMany(mappedBy = "user",
@@ -49,7 +58,7 @@ public class User implements Serializable {
 
 
     @ManyToMany(mappedBy = "users",
-            cascade = {CascadeType.ALL}, //hay que revisarlo pq se borran todos los roles
+            cascade = {CascadeType.REFRESH}, //hay que revisarlo pq se borran todos los roles
             fetch = FetchType.EAGER)
     private List<Role> roles;
 

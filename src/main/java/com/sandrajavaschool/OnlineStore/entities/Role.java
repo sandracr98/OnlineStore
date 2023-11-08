@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
@@ -23,7 +24,10 @@ public class Role implements Serializable {
     @Column(name = "id_role", nullable = false)
     private Long id;
 
+
     private String name;
+
+
 
     @ManyToMany
     @JoinTable(name = "Users_has_Roles",

@@ -2,14 +2,13 @@ USE osis_linker;
 
 -- Insertando roles
 INSERT INTO roles (name) VALUES
-('Admin'),
-('Client');
-
+('ROLE_ADMIN'),
+('ROLE_USER');
 
 -- Insertando usuarios
 INSERT INTO users (name, surname, birthdate, email, pass, enabled) VALUES
-('User', 'user', '1998-03-20', 'user', '$2a$10$pPrFPWCEAL/cmHVpg8NZTO7dKQUKKRZSiv9xz.DbzSBKqqVLJVHP2', 1),
-('Admin', 'admin', '1998-03-20', 'admin', '$2a$10$vVX.W5rNNEpyW4uTtajjfujaX9V89ZKBTw4DRx4FctMNxyhODw0W.', 1),
+('User', 'user', '1998-03-20', 'user', '$2a$10$/I57cTVQxky9hCrESg..Uu.ozMVWLzmWK8cfzH1bwmWyvjenRmohG', 1),
+('Admin', 'admin', '1998-03-20', 'admin', '$2a$10$2x/R0J3I8YebbF8vfkIYF.fOWIlqkc1dqPLC0IytLBGH.POjJSlXy', 1),
 ('Sandra', 'Checa', '1998-03-20', 'sandrachr@example.com', 'password123', 1),
 ('Fernando', 'Alonso', '1981-07-29', 'fernandoalonso@example.com', 'password456', 1),
 ('Carlos', 'Sainz', '1994-09-01', 'carlossainz94@example.com', 'letmein', 1),
@@ -60,7 +59,7 @@ VALUES ('Japón', 'Tokio', '100-8111', 'Chiyoda', '1-1-1', '101', 7);
 
 
 INSERT INTO users_has_roles (user_id, role_id) VALUES
-(1, 1), (2, 2), (3, 1), (4, 2), (5, 1), (6, 2), (7, 1), (8, 2), (9, 1),
+(1, 2), (2, 1), (3, 1), (4, 2), (5, 1), (6, 2), (7, 1), (8, 2), (9, 1),
 (10, 2), (11, 1), (12, 2), (13, 1), (14, 2), (15, 1), (16, 2), (17, 1),
 (18, 2), (19, 1), (20, 2), (21, 1), (22, 2);
 

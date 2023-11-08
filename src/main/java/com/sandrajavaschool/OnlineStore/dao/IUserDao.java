@@ -11,8 +11,13 @@ public interface IUserDao extends JpaRepository<User,Long> {
     @Query("select u from User u left join fetch u.orders o where o.id=?1")
     public User fetchByIdWithOrder(Long id);
 
+
     //Metodo para buscar un usuario por el email.
-    User findUserByEmail(String email);
+    //Viene integrado en el nombre del metodo, una consulta JPQL
+    //para buscar por email.
+    //Pero tambien se puede hacer usando el @Query como hemos hecho arriba
+
+    public User findUserByEmail(String email);
 
     //Metodo para verificar si un usuario existe en nuestra bbdd
     Boolean existsByEmail(String email);

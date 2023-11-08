@@ -7,19 +7,18 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
-public class OnlineStoreApplication //implements CommandLineRunner {
-{
-	/*
+public class OnlineStoreApplication implements CommandLineRunner {
+
+
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
-	 */
 
 	public static void main(String[] args) {
 		SpringApplication.run(OnlineStoreApplication.class, args);
 	}
 
-	/*
+
 	@Override
 	public void run(String... args) throws Exception {
 
@@ -28,6 +27,7 @@ public class OnlineStoreApplication //implements CommandLineRunner {
 
 		//asi generamos contraseñas encriptadas a partir de "12345" +++
 		//de esta forma no es siempre la misma encriptacion
+		//genera dos contraseñas encriptadas una para adm y otra para user
 
 		for (int i = 0; i < 2; i++) {
 			String bcryptPassword = passwordEncoder.encode(password);
@@ -35,5 +35,5 @@ public class OnlineStoreApplication //implements CommandLineRunner {
 		}
 	}
 
-	 */
+
 }

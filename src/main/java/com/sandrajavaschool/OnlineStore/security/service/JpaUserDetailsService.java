@@ -15,13 +15,70 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
-/*
+
 @Service("jpaUserDetailsService")
 @Transactional
 @RequiredArgsConstructor
 public class JpaUserDetailsService implements UserDetailsService {
 
+
+    private final IUserDao userDao;
+    private Logger logger = LoggerFactory.getLogger(JpaUserDetailsService.class);
+
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+
+        User user = userDao.findUserByEmail(email);
+
+
+        if (user == null) {
+            logger.error("Login error: the user does not exist ");
+            throw new UsernameNotFoundException("The User is not found.");
+        }
+
+
+        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+
+        for (Role role: user.getRoles()) {
+            logger.info("Role: " .concat(role.getName()));
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
+        }
+
+        if (authorities.isEmpty()) {
+            logger.error("Login error: the user with email: " + email + "does not have any role");
+            throw new UsernameNotFoundException("Login error: the user with email: " + email + "does not have any role");
+        }
+
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPass(), user.isEnabled(), true, true, true, authorities);
+    }
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////
     /*
     //En esta clase nos vamos a traer al usuario junto con su username, pass etc y asi
     //comprobar que existe y está logeado
