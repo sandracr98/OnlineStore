@@ -1,16 +1,14 @@
 package com.sandrajavaschool.OnlineStore.controllers;
-
-import com.sandrajavaschool.OnlineStore.entities.ClientsAddress;
-import com.sandrajavaschool.OnlineStore.entities.Role;
 import com.sandrajavaschool.OnlineStore.entities.User;
 import com.sandrajavaschool.OnlineStore.paginator.PageRender;
-import com.sandrajavaschool.OnlineStore.service.implService.IClientAddressService;
-import com.sandrajavaschool.OnlineStore.service.implService.IRoleService;
 import com.sandrajavaschool.OnlineStore.service.implService.IUserService;
 import lombok.RequiredArgsConstructor;
+
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -54,9 +52,15 @@ public class UserController {
 
     @GetMapping(value = "/list")
     public String list(@RequestParam(name = "page", defaultValue = "0") int page,
-                       Model model) {
+                       Model model,
+                       Authentication authentication) {
 
         model.addAttribute("title", "Users List");
+
+        //PARA VALIDAR EL ROL ++++
+
+
+
 
         Pageable pageRequest = PageRequest.of(page, 8);
         Page<User> users = userService.findAll(pageRequest);
@@ -145,6 +149,7 @@ public class UserController {
         return "redirect:/list";
     }
 
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value = "/delete/{id}")
     public String delete(@PathVariable(value = "id") Long id,
                          RedirectAttributes flash) {

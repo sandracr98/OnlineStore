@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.*;
@@ -31,8 +33,13 @@ public class User implements Serializable {
     private Date birthdate;
 
 
+    @Column( length = 30,unique = true)
     private String email;
+
+    @Column(length = 60)
     private String pass;
+
+    private boolean enabled;
 
 
     @OneToMany(mappedBy = "user",
@@ -42,8 +49,8 @@ public class User implements Serializable {
 
 
     @ManyToMany(mappedBy = "users",
-            cascade = {CascadeType.REFRESH}, //hay que revisarlo pq se borran todos los roles
-            fetch = FetchType.LAZY)
+            cascade = {CascadeType.ALL}, //hay que revisarlo pq se borran todos los roles
+            fetch = FetchType.EAGER)
     private List<Role> roles;
 
 

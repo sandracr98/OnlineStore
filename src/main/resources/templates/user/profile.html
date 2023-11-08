@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="layout/layout :: head"></head>
 
 <body>
@@ -83,8 +83,8 @@
                     <th>Order Status</th>
                     <th>Total</th>
                     <th>Order view</th>
-                    <th>Delete</th>
-                    <th>Reorder</th>
+                    <th sec:authorize="hasRole('ROLE_ADMIN')">Delete</th>
+                    <th sec:authorize="hasRole('ROLE_USER')">Reorder</th>
                 </tr>
                 </thead>
 
@@ -99,11 +99,14 @@
                     <td><a class="btn btn-primary btn-xs" th:href="@{'/order/viewReceipt/' + ${order.id}}"
                            th:text="'Detail'"></a></td>
 
-                    <td><a class="btn btn-danger btn-xs" th:href="@{'/order/delete/' + ${order.id}}" th:text="'Delete'"
-                           onclick="return confirm('Are you sure do you want to delete this order?')"></a></td>
+                    <td sec:authorize="hasRole('ROLE_ADMIN')">
+                        <a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-danger btn-xs" th:href="@{'/order/delete/' + ${order.id}}" th:text="'Delete'"
+                           onclick="return confirm('Are you sure do you want to delete this order?')">
+                        </a>
+                    </td>
 
-                    <td>
-                        <a class="btn btn-secondary btn-xs" th:href="@{'/order/reorder/' + ${order.id}}"
+                    <td sec:authorize="hasRole('ROLE_USER')">
+                        <a sec:authorize="hasRole('ROLE_USER')" class="btn btn-secondary btn-xs" th:href="@{'/order/reorder/' + ${order.id}}"
                            th:text="'Reorder'">
                         </a>
                     </td>

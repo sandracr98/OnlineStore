@@ -7,30 +7,32 @@ INSERT INTO roles (name) VALUES
 
 
 -- Insertando usuarios
-INSERT INTO users (name, surname, birthdate, email, pass) VALUES
-('Sandra', 'Checa', '1998-03-20', 'sandrachr@example.com', 'password123'),
-('Fernando', 'Alonso', '1981-07-29', 'fernandoalonso@example.com', 'password456'),
-('Carlos', 'Sainz', '1994-09-01', 'carlossainz94@example.com', 'letmein'),
-('John', 'Doe', '1990-01-01', 'john.doe@example.com', 'password123'),
-('Jane', 'Doe', '1988-05-15', 'jane.doe@example.com', 'password456'),
-('Bob', 'Smith', '1995-03-20', 'bob.smith@example.com', 'letmein'),
-('Alice', 'Johnson', '1989-12-10', 'alice.johnson@example.com', 'password789'),
-('Michael', 'Brown', '1987-07-05', 'michael.brown@example.com', '123456'),
-('Emily', 'Davis', '1992-09-25', 'emily.davis@example.com', 'qwerty'),
-('David', 'Wilson', '1998-11-15', 'david.wilson@example.com', 'pass1234'),
-('Sarah', 'Taylor', '1985-06-30', 'sarah.taylor@example.com', 'abcd1234'),
-('Ryan', 'Anderson', '1993-04-18', 'ryan.anderson@example.com', 'password12'),
-('Jennifer', 'Harris', '1991-08-22', 'jennifer.harris@example.com', 'test123'),
-('Matthew', 'Clark', '1986-10-12', 'matthew.clark@example.com', 'letmein567'),
-('Laura', 'Parker', '1997-02-28', 'laura.parker@example.com', 'password890'),
-('James', 'Jones', '1984-03-08', 'james.jones@example.com', 'hello123'),
-('Jessica', 'Evans', '1996-07-19', 'jessica.evans@example.com', '1234abcd'),
-('Daniel', 'Morris', '1983-09-02', 'daniel.morris@example.com', 'qwerty123'),
-('Natalie', 'Baker', '1994-01-05', 'natalie.baker@example.com', 'welcome123'),
-('Andrew', 'Cooper', '1990-05-29', 'andrew.cooper@example.com', 'letmeinnow'),
-('Olivia', 'Hill', '1988-08-14', 'olivia.hill@example.com', 'password7890'),
-('William', 'Wright', '1987-12-03', 'william.wright@example.com', 'testpassword'),
-('Ava', 'Lopez', '1995-06-17', 'ava.lopez@example.com', 'mypassword');
+INSERT INTO users (name, surname, birthdate, email, pass, enabled) VALUES
+('User', 'user', '1998-03-20', 'user', '$2a$10$pPrFPWCEAL/cmHVpg8NZTO7dKQUKKRZSiv9xz.DbzSBKqqVLJVHP2', 1),
+('Admin', 'admin', '1998-03-20', 'admin', '$2a$10$vVX.W5rNNEpyW4uTtajjfujaX9V89ZKBTw4DRx4FctMNxyhODw0W.', 1),
+('Sandra', 'Checa', '1998-03-20', 'sandrachr@example.com', 'password123', 1),
+('Fernando', 'Alonso', '1981-07-29', 'fernandoalonso@example.com', 'password456', 1),
+('Carlos', 'Sainz', '1994-09-01', 'carlossainz94@example.com', 'letmein', 1),
+('John', 'Doe', '1990-01-01', 'john.doe@example.com', 'password123', 1),
+('Jane', 'Doe', '1988-05-15', 'jane.doe@example.com', 'password456', 1),
+('Bob', 'Smith', '1995-03-20', 'bob.smith@example.com', 'letmein', 1),
+('Alice', 'Johnson', '1989-12-10', 'alice.johnson@example.com', 'password789', 1),
+('Michael', 'Brown', '1987-07-05', 'michael.brown@example.com', '123456', 1),
+('Emily', 'Davis', '1992-09-25', 'emily.davis@example.com', 'qwerty', 1),
+('David', 'Wilson', '1998-11-15', 'david.wilson@example.com', 'pass1234', 1),
+('Sarah', 'Taylor', '1985-06-30', 'sarah.taylor@example.com', 'abcd1234', 1),
+('Ryan', 'Anderson', '1993-04-18', 'ryan.anderson@example.com', 'password12', 1),
+('Jennifer', 'Harris', '1991-08-22', 'jennifer.harris@example.com', 'test123', 1),
+('Matthew', 'Clark', '1986-10-12', 'matthew.clark@example.com', 'letmein567', 1),
+('Laura', 'Parker', '1997-02-28', 'laura.parker@example.com', 'password890', 1),
+('James', 'Jones', '1984-03-08', 'james.jones@example.com', 'hello123', 1),
+('Jessica', 'Evans', '1996-07-19', 'jessica.evans@example.com', '1234abcd', 1),
+('Daniel', 'Morris', '1983-09-02', 'daniel.morris@example.com', 'qwerty123', 1),
+('Natalie', 'Baker', '1994-01-05', 'natalie.baker@example.com', 'welcome123', 1),
+('Andrew', 'Cooper', '1990-05-29', 'andrew.cooper@example.com', 'letmeinnow', 1),
+('Olivia', 'Hill', '1988-08-14', 'olivia.hill@example.com', 'password7890', 1),
+('William', 'Wright', '1987-12-03', 'william.wright@example.com', 'testpassword', 1),
+('Ava', 'Lopez', '1995-06-17', 'ava.lopez@example.com', 'mypassword', 1);
 
 
 -- Insertando direcciones de clientes
@@ -54,6 +56,8 @@ VALUES ('Reino Unido', 'Londres', 'SW1A 1AA', 'Downing Street', '10', '1', 6);
 
 INSERT INTO clients_Addresses (country, city, postal_Code, street, home, apartment, user_id)
 VALUES ('Japón', 'Tokio', '100-8111', 'Chiyoda', '1-1-1', '101', 7);
+
+
 
 INSERT INTO users_has_roles (user_id, role_id) VALUES
 (1, 1), (2, 2), (3, 1), (4, 2), (5, 1), (6, 2), (7, 1), (8, 2), (9, 1),
