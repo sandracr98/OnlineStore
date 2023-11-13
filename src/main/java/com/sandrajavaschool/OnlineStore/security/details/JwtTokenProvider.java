@@ -1,18 +1,21 @@
-package com.sandrajavaschool.OnlineStore.security;
-/*
+package com.sandrajavaschool.OnlineStore.security.details;
+
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.util.Date;
-/*
+
 @Component
 public class JwtTokenProvider {
 
     //metodo para generar el token por medio de la autenticacion
+
 
     public String tokenProvider(Authentication authentication) {
 
@@ -20,14 +23,14 @@ public class JwtTokenProvider {
         Date actualTime = new Date();
 
         //tiempo que va a durar nuestro token
-        Date tokenExpiration = new Date(actualTime.getTime() + TokenConstants.EXPIRATION_TOKEN);
+        Date tokenExpiration = new Date(actualTime.getTime() + TokenConstants.JWT_EXPIRATION_TOKEN);
 
         //Linea para generar el token
         String token = Jwts.builder()
                 .setSubject(email)
                 .setIssuedAt(new Date())
                 .setExpiration(tokenExpiration)
-                .signWith(SignatureAlgorithm.HS512, TokenConstants.SECRET) //para validar que el token no ha sido modificado
+                .signWith(SignatureAlgorithm.HS512, TokenConstants.JWT_SECRET) //para validar que el token no ha sido modificado
                 .compact();
 
         return token;
@@ -37,7 +40,7 @@ public class JwtTokenProvider {
 
     public String getEmailFromJwt(String token) {
         Claims claims = Jwts.parser()
-                .setSigningKey(TokenConstants.SECRET)
+                .setSigningKey(TokenConstants.JWT_SECRET)
                 .parseClaimsJws(token)
                 .getBody();
 
@@ -45,14 +48,23 @@ public class JwtTokenProvider {
     }
 
     //metodo para validar el token
+
     public Boolean tokenValidation(String token) {
         try {
-            Jwts.parser().setSigningKey(TokenConstants.SECRET).parseClaimsJws(token);
+            Claims claims = Jwts.parser().setSigningKey(TokenConstants.JWT_SECRET).parseClaimsJws(token).getBody();
+            Date expirationDate = claims.getExpiration();
+
+            if (expirationDate != null && expirationDate.toInstant().isBefore(Instant.now())) {
+                throw new JwtException("Jwt has expired");
+            }
+
             return true;
 
-        }catch (Exception e) {
-            throw new AuthenticationCredentialsNotFoundException("Jwt is expired or is incorrect");
+        }catch (JwtException e) {
+            throw new BadCredentialsException("Jwt is incorrect");
         }
     }
 
-}*/
+
+
+}

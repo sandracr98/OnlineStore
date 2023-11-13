@@ -1,9 +1,9 @@
-package com.sandrajavaschool.OnlineStore.dto;
+package com.sandrajavaschool.OnlineStore.security.dto;
 
 import lombok.Data;
 
 @Data
-public class RegisterDto {
+public class LoginDto {
     private String email;
     private String pass;
 }

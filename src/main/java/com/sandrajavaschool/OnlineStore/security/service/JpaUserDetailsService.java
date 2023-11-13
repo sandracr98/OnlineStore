@@ -26,10 +26,61 @@ public class JpaUserDetailsService implements UserDetailsService {
     private Logger logger = LoggerFactory.getLogger(JpaUserDetailsService.class);
 
 
+    //Metodo para traer usuario con todos sus datos mediante su email
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        User user = userDao.findUserByEmail(email);
+        User user = userDao.findByEmail(email);
+
+        if (user == null) {
+            logger.error("Login error: the user does not exist ");
+            throw new UsernameNotFoundException("The User is not found.");
+        }
+
+
+        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+
+        for (Role role: user.getRoles()) {
+            logger.info("Role: " .concat(role.getName()));
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
+        }
+
+        if (authorities.isEmpty()) {
+            logger.error("Login error: the user with email: " + email + "does not have any role");
+            throw new UsernameNotFoundException("Login error: the user with email: " + email + "does not have any role");
+        }
+
+
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPass(), authorities);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
+
+    private final IUserDao userDao;
+    private Logger logger = LoggerFactory.getLogger(JpaUserDetailsService.class);
+
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+
+        User user = userDao.findByEmail(email);
 
 
         if (user == null) {

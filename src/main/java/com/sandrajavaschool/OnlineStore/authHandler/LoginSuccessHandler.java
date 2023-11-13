@@ -1,4 +1,6 @@
+
 package com.sandrajavaschool.OnlineStore.authHandler;
+
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,6 +12,7 @@ import org.springframework.web.servlet.FlashMap;
 import org.springframework.web.servlet.support.SessionFlashMapManager;
 
 import java.io.IOException;
+
 
 @Component
 public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
@@ -41,3 +44,5 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     //importante poder acceder al username para poder hacer consulta a la base de datos, pasarlo a la vista etc.
     //Suele ser util.
 }
+
+
