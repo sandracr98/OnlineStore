@@ -1,3 +1,4 @@
+/*
 package com.sandrajavaschool.OnlineStore.security.filter;
 
 import com.sandrajavaschool.OnlineStore.security.details.JwtTokenProvider;
@@ -27,7 +28,7 @@ import java.util.List;
 //de un usuario en la solicitud que se está realizando. o en el contexto de seguridad de la app
 
 
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+public class JwtAuthenticationFilterDeprecated extends OncePerRequestFilter {
 
     @Autowired
     private JpaUserDetailsService userDetailsService;
@@ -35,7 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private JwtTokenProvider tokenProvider;
 
-    public JwtAuthenticationFilter() {
+    public JwtAuthenticationFilterDeprecated() {
     }
 
     private String getRequestToken(HttpServletRequest request) {
@@ -179,9 +180,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
 
-     */
-
 
 }
 
 
+        */

@@ -1,4 +1,4 @@
-package com.sandrajavaschool.OnlineStore.security.Exception;
+/*package com.sandrajavaschool.OnlineStore.security.Exception;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,3 +24,4 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     }
 }
+*/

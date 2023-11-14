@@ -1,6 +1,7 @@
 package com.sandrajavaschool.OnlineStore.controllers;
 import com.sandrajavaschool.OnlineStore.entities.User;
 import com.sandrajavaschool.OnlineStore.paginator.PageRender;
+import com.sandrajavaschool.OnlineStore.service.implService.IRoleService;
 import com.sandrajavaschool.OnlineStore.service.implService.IUserService;
 import lombok.RequiredArgsConstructor;
 
@@ -15,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Collections;
 import java.util.Map;
 
 @Controller
@@ -37,6 +39,7 @@ public class UserController {
 
 
     final private IUserService userService;
+    final private IRoleService roleService;
 
     //@Autowired
     //public UserController(IUserService userService, IRoleService roleService, IClientAddressService clientAddressService) {
@@ -143,6 +146,8 @@ public class UserController {
 
 
         String flashmessage = "Congratulation! You have an account";
+
+        //user.setRoles(Collections.singletonList(roleService.findOne(2L)));
 
         userService.save(user);
 

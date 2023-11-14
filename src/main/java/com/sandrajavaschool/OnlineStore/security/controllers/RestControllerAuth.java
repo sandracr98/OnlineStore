@@ -1,4 +1,6 @@
+/*
 package com.sandrajavaschool.OnlineStore.security.controllers;
+
 
 import com.sandrajavaschool.OnlineStore.dao.IRoleDao;
 import com.sandrajavaschool.OnlineStore.dao.IUserDao;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
+
 
 @RestController
 @RequestMapping("/api/auth/")
@@ -95,3 +98,4 @@ public class RestControllerAuth {
 
 
 }
+*/

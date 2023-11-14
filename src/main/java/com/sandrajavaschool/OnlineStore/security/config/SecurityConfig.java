@@ -1,111 +1,89 @@
 package com.sandrajavaschool.OnlineStore.security.config;
 
 
-import com.sandrajavaschool.OnlineStore.security.Exception.JwtAuthenticationEntryPoint;
-import com.sandrajavaschool.OnlineStore.security.filter.JwtAuthenticationFilter;
+import com.sandrajavaschool.OnlineStore.authHandler.filter.JWTAuthenticationFilter;
+import com.sandrajavaschool.OnlineStore.security.service.JpaUserDetailsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
 @Configuration //le indica al contenedor de spring que esta es una clase de seguridad en el momento de iniciar la app
-@EnableWebSecurity //Se activa la seguridad web en nuestra app, y esta clase contiene toda la config referente a la seguridad
+@EnableWebSecurity
+//Se activa la seguridad web en nuestra app, y esta clase contiene toda la config referente a la seguridad
 @EnableMethodSecurity(securedEnabled = true, prePostEnabled = true) // , (opcional)
 @RequiredArgsConstructor
 public class SecurityConfig {
 
 
-    private final JwtAuthenticationEntryPoint authenticationEntryPoint;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    //Se encarga de verificar la informacion de los usuarios que le loggean en nuestra app
+    private final JpaUserDetailsService userDetailsService;
+
+    private final AuthenticationConfiguration authenticationConfiguration;
+
+
+    @Autowired
+    public void userDetailsService(AuthenticationManagerBuilder build) throws Exception {
+        build.userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder);
+    }
 
     @Bean
-    AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
-            throws Exception {
+    public AuthenticationManager authenticationManager() throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
-
-    //Con este metodo encriptamos todas nuestras contraseñas
-    @Bean
-    PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-
-    //Se encarga de incorporar el filtro de seguridad de jwt que creamos anteriormente
-
-    @Bean
-    JwtAuthenticationFilter authenticationFilter(){
-        return new JwtAuthenticationFilter();
-    }
-
-    //establece una cadena de filtros de seguridad en nuestra app, es aqui donde
-    //determinaremos los permisos segun los roles de usuarios para acceder a nuestra app
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
-                .exceptionHandling().accessDeniedPage("/error/error403")
-                .authenticationEntryPoint(authenticationEntryPoint);
-        http
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS); //desabilitamos el uso de sesion
 
         http
                 .authorizeHttpRequests((authz) -> {
-                        authz
-                                .requestMatchers("/css/**", "/js/**", "/images/**",
-                                        "/productsList", "/order/receipt/**",
-                                        "/create/**", "/api/auth/**",
-                                        "/", "/login").permitAll()
+                    authz
+                            .requestMatchers("/css/**", "/js/**", "/images/**",
+                                    "/productsList", "/order/receipt/**",
+                                    "/create/**", "/api/auth/**",
+                                    "/", "/login").permitAll()
 
-                                //aqui van las rutas privadas
-                                .requestMatchers("/list").hasAnyRole("ADMIN")
-                                .requestMatchers("/createProduct/**").hasAnyRole("ADMIN")
-                                .requestMatchers("/editProduct/**").hasAnyRole("ADMIN")
-                                .requestMatchers("/deleteProduct/**").hasAnyRole("ADMIN")
-                                .requestMatchers("/category/**").hasRole("ADMIN")
-                                .requestMatchers("/order/orderList/**").hasRole("ADMIN")
-                                .requestMatchers("/form/**").hasRole("ADMIN")
-                                .requestMatchers("/create/**").hasRole("ADMIN")
+                            //aqui van las rutas privadas
+                            .requestMatchers("/list").hasAnyRole("ADMIN")
+                            .requestMatchers("/createProduct/**").hasAnyRole("ADMIN")
+                            .requestMatchers("/editProduct/**").hasAnyRole("ADMIN")
+                            .requestMatchers("/deleteProduct/**").hasAnyRole("ADMIN")
+                            .requestMatchers("/category/**").hasRole("ADMIN")
+                            .requestMatchers("/order/orderList/**").hasRole("ADMIN")
+                            .requestMatchers("/form/**").hasRole("ADMIN")
+                            .requestMatchers("/create/**").hasRole("ADMIN")
 
 
-                                .anyRequest().authenticated();
+                            .anyRequest().authenticated();
 
                 });
 
-        http.addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http
+                .addFilter(new JWTAuthenticationFilter(authenticationConfiguration.getAuthenticationManager()));
 
-/*
-        http.formLogin((form) -> form.loginPage("/login")
-                .loginProcessingUrl("/login")
-                .defaultSuccessUrl("/")
-                .successHandler(loginSuccessHandler)
-                .permitAll());
+        http
+                .csrf().disable();
+        http
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS.STATELESS); //desabilitamos el uso de sesion
 
-        http.logout((logout) -> logout.permitAll()
-                .logoutSuccessUrl("/"));
-
-*/
 
         return http.build();
 
     }
-
-
-
 
 
 
@@ -272,9 +250,6 @@ public class SecurityConfig {
     }
 
 */
-
-
-
 
 
     /////////////////////////////////////////////////////////////////////////////////////////////

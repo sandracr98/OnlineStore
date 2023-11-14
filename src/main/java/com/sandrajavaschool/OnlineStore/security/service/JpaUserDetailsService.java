@@ -3,7 +3,6 @@ package com.sandrajavaschool.OnlineStore.security.service;
 import com.sandrajavaschool.OnlineStore.dao.IUserDao;
 import com.sandrajavaschool.OnlineStore.entities.Role;
 import com.sandrajavaschool.OnlineStore.entities.User;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,21 +12,24 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
 @Service("jpaUserDetailsService")
-@Transactional
 @RequiredArgsConstructor
 public class JpaUserDetailsService implements UserDetailsService {
 
+    //ES PARA LA AUTENTICACION DE USUARIOS
 
     private final IUserDao userDao;
     private Logger logger = LoggerFactory.getLogger(JpaUserDetailsService.class);
 
 
     //Metodo para traer usuario con todos sus datos mediante su email
+    //userdetails es un usuario que esta autenticado
     @Override
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
         User user = userDao.findByEmail(email);
@@ -51,7 +53,7 @@ public class JpaUserDetailsService implements UserDetailsService {
         }
 
 
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPass(), authorities);
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPass(), user.isEnabled(), true, true, true, authorities);
     }
 }
 
