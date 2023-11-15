@@ -1,8 +1,8 @@
 package com.sandrajavaschool.OnlineStore.authHandler.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
+import com.sandrajavaschool.OnlineStore.authHandler.service.JWTService;
+import com.sandrajavaschool.OnlineStore.authHandler.service.JWTServiceImpl;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.FilterChain;
@@ -14,28 +14,26 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.io.IOException;
 import java.security.Key;
-import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
+    private final JWTService jwtService;
 
-    public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
+    public JWTAuthenticationFilter(AuthenticationManager authenticationManager, JWTService jwtService) {
         this.authenticationManager = authenticationManager;
         setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/api/login", "POST"));
-    }
 
-    public static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+        this.jwtService = jwtService;
+    }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request,
@@ -77,7 +75,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         UsernamePasswordAuthenticationToken authToken =
                 new UsernamePasswordAuthenticationToken(email, pass);
 
-
         return authenticationManager.authenticate(authToken);
     }
 
@@ -90,26 +87,14 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                             FilterChain chain, Authentication authResult)
             throws IOException, ServletException {
 
-        String email = authResult.getName();
+        String token = jwtService.create(authResult);
 
-        Collection<? extends GrantedAuthority> roles = authResult.getAuthorities();
-
-        Claims claims = Jwts.claims();
-        claims.put("authorities", new ObjectMapper().writeValueAsString(roles));
-
-        String token = Jwts.builder()
-                .setClaims(claims)
-                .setSubject(email)
-                .signWith(SECRET_KEY)
-                .setExpiration(new Date(System.currentTimeMillis() + 3600000 * 4))
-                .compact();
-
-        response.addHeader("Authorization", "Bearer " + token);
+        response.addHeader(JWTServiceImpl.HEADER_STRING, JWTServiceImpl.TOKEN_PREFIX + token);
 
         Map<String, Object> body = new HashMap<String, Object>();
         body.put("token", token);
         body.put("user", (User) authResult.getPrincipal());
-        body.put("message", String.format("Hello %s, you have login successfully", email));
+        body.put("message", String.format("Hello %s, you have login successfully", authResult.getName()));
 
         //lo transforma del tipo mapper a json
         response.getWriter().write(new ObjectMapper().writeValueAsString(body));

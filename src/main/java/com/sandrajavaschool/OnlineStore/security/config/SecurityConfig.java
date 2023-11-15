@@ -1,7 +1,10 @@
 package com.sandrajavaschool.OnlineStore.security.config;
 
 
+import com.sandrajavaschool.OnlineStore.authHandler.LoginSuccessHandler;
 import com.sandrajavaschool.OnlineStore.authHandler.filter.JWTAuthenticationFilter;
+import com.sandrajavaschool.OnlineStore.authHandler.filter.JWTAuthorizationFilter;
+import com.sandrajavaschool.OnlineStore.authHandler.service.JWTService;
 import com.sandrajavaschool.OnlineStore.security.service.JpaUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +32,13 @@ public class SecurityConfig {
 
     private final BCryptPasswordEncoder passwordEncoder;
 
+    private final LoginSuccessHandler loginSuccessHandler;
+
     private final JpaUserDetailsService userDetailsService;
 
     private final AuthenticationConfiguration authenticationConfiguration;
+
+    private final JWTService jwtService;
 
 
     @Autowired
@@ -67,12 +74,25 @@ public class SecurityConfig {
                             .requestMatchers("/create/**").hasRole("ADMIN")
 
 
-                            .anyRequest().authenticated();
+                            //.anyRequest().authenticated();
+                            .anyRequest().permitAll();
 
                 });
 
+        http.formLogin((form) -> form.loginPage("/login")
+                .loginProcessingUrl("/login")
+                .defaultSuccessUrl("/")
+                .successHandler(loginSuccessHandler)
+                .permitAll());
+
+        http.logout((logout) -> logout.permitAll()
+                .logoutSuccessUrl("/"));
+
+        http.exceptionHandling().accessDeniedPage("/error/error403");
+
         http
-                .addFilter(new JWTAuthenticationFilter(authenticationConfiguration.getAuthenticationManager()));
+                .addFilter(new JWTAuthenticationFilter(authenticationConfiguration.getAuthenticationManager(), jwtService))
+                .addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtService));
 
         http
                 .csrf().disable();
@@ -84,11 +104,6 @@ public class SecurityConfig {
         return http.build();
 
     }
-
-
-
-
-
 
 
 ///////////////////////////////////////////////////////////////////

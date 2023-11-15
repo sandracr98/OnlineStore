@@ -1,7 +1,6 @@
 package com.sandrajavaschool.OnlineStore.controllers;
 import com.sandrajavaschool.OnlineStore.entities.User;
 import com.sandrajavaschool.OnlineStore.paginator.PageRender;
-import com.sandrajavaschool.OnlineStore.service.implService.IRoleService;
 import com.sandrajavaschool.OnlineStore.service.implService.IUserService;
 import lombok.RequiredArgsConstructor;
 
@@ -39,7 +38,6 @@ public class UserController {
 
 
     final private IUserService userService;
-    final private IRoleService roleService;
 
     //@Autowired
     //public UserController(IUserService userService, IRoleService roleService, IClientAddressService clientAddressService) {

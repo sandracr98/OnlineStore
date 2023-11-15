@@ -1,17 +1,26 @@
 package com.sandrajavaschool.OnlineStore.authHandler.filter;
 
+import com.sandrajavaschool.OnlineStore.authHandler.service.JWTService;
+
+import com.sandrajavaschool.OnlineStore.authHandler.service.JWTServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import java.io.IOException;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
-    public JWTAuthorizationFilter(AuthenticationManager authenticationManager) {
+
+    private JWTService jwtService;
+    public JWTAuthorizationFilter(AuthenticationManager authenticationManager, JWTService jwtService) {
         super(authenticationManager);
+        this.jwtService = jwtService;
     }
 
 
@@ -22,7 +31,32 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             throws IOException, ServletException {
 
 
+        String header = request.getHeader(JWTServiceImpl.HEADER_STRING);
 
-        super.doFilterInternal(request, response, chain);
+        if (!requiresAuthentication(header)) {
+            chain.doFilter(request, response);
+            return;
+        }
+
+        UsernamePasswordAuthenticationToken authentication = null;
+
+        if (jwtService.validate(header)) {
+
+            authentication = new UsernamePasswordAuthenticationToken(jwtService.getEmail(header),
+                    null, jwtService.getRoles(header));
+        }
+
+        //Autentica al usuario dentro del request (pq no maneja sesiones)
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        chain.doFilter(request, response);
+
+    }
+
+    protected boolean requiresAuthentication(String header) {
+
+        if (header == null || !header.startsWith(JWTServiceImpl.TOKEN_PREFIX)) {
+            return false;
+        }
+        return true;
     }
 }

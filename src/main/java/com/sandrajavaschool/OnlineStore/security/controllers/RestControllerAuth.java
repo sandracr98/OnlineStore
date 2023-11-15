@@ -1,4 +1,4 @@
-/*
+
 package com.sandrajavaschool.OnlineStore.security.controllers;
 
 
@@ -6,7 +6,6 @@ import com.sandrajavaschool.OnlineStore.dao.IRoleDao;
 import com.sandrajavaschool.OnlineStore.dao.IUserDao;
 import com.sandrajavaschool.OnlineStore.entities.Role;
 import com.sandrajavaschool.OnlineStore.entities.User;
-import com.sandrajavaschool.OnlineStore.security.details.JwtTokenProvider;
 import com.sandrajavaschool.OnlineStore.security.dto.AuthResponseDto;
 import com.sandrajavaschool.OnlineStore.security.dto.LoginDto;
 import com.sandrajavaschool.OnlineStore.security.dto.RegisterDto;
@@ -35,7 +34,6 @@ public class RestControllerAuth {
     private final PasswordEncoder passwordEncoder;
     private final IRoleDao roleDao;
     private final IUserDao userDao;
-    private final JwtTokenProvider tokenProvider;
 
 
     //Metodo para poder registrar usuarios con ROLE_USER (para admin es == pero cambiando a ROLE_ADMIN)
@@ -79,6 +77,7 @@ public class RestControllerAuth {
 
     //Método para poder logear un usuario y obtener un token
 
+    /*
     @PostMapping("login")
     public ResponseEntity<AuthResponseDto> login(@RequestBody LoginDto loginDto) {
 
@@ -88,14 +87,14 @@ public class RestControllerAuth {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String token = tokenProvider.tokenProvider(authentication);
+        //String token = tokenProvider.tokenProvider(authentication);
 
-        return new ResponseEntity<>(new AuthResponseDto(token), HttpStatus.OK);
+        //return new ResponseEntity<>(new AuthResponseDto(token), HttpStatus.OK);
+        return "";
 
     }
 
-
+*/
 
 
 }
-*/

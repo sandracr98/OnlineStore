@@ -1,13 +1,13 @@
 package com.sandrajavaschool.OnlineStore.entities;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
