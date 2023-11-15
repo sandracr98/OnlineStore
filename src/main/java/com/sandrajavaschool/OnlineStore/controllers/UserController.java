@@ -1,4 +1,6 @@
 package com.sandrajavaschool.OnlineStore.controllers;
+import com.sandrajavaschool.OnlineStore.dao.IRoleDao;
+import com.sandrajavaschool.OnlineStore.entities.Role;
 import com.sandrajavaschool.OnlineStore.entities.User;
 import com.sandrajavaschool.OnlineStore.paginator.PageRender;
 import com.sandrajavaschool.OnlineStore.service.implService.IUserService;
@@ -10,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +41,10 @@ public class UserController {
 
 
     final private IUserService userService;
+    private final PasswordEncoder passwordEncoder;
+    private final IRoleDao roleDao;
+
+
 
     //@Autowired
     //public UserController(IUserService userService, IRoleService roleService, IClientAddressService clientAddressService) {
@@ -146,6 +153,10 @@ public class UserController {
         String flashmessage = "Congratulation! You have an account";
 
         //user.setRoles(Collections.singletonList(roleService.findOne(2L)));
+        user.setPass(passwordEncoder.encode(user.getPass()));
+
+        Role role = roleDao.findByName("ROLE_USER");
+        user.setRoles(Collections.singletonList(role));
 
         userService.save(user);
 

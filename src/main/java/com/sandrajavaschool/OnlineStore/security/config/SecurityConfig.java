@@ -81,7 +81,7 @@ public class SecurityConfig {
 
         http.formLogin((form) -> form.loginPage("/login")
                 .loginProcessingUrl("/login")
-                .defaultSuccessUrl("/")
+                .defaultSuccessUrl("/product/productsList", true)
                 .successHandler(loginSuccessHandler)
                 .permitAll());
 

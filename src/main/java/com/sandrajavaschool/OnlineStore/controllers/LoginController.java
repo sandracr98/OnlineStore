@@ -1,6 +1,7 @@
 
 package com.sandrajavaschool.OnlineStore.controllers;
 
+import com.sandrajavaschool.OnlineStore.security.dto.LoginDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,8 @@ import java.security.Principal;
 @Controller
 @RequestMapping("/api")
 public class LoginController {
+
+    private LoginDto loginDto;
 
     @GetMapping("/login")
     public String login(@RequestParam(value = "error", required = false) String error,
@@ -36,6 +39,8 @@ public class LoginController {
         if(logout != null) {
             model.addAttribute("success", "You have logged out successfully");
         }
+
+        model.addAttribute("loginDto", new LoginDto());
 
         return "login";
     }

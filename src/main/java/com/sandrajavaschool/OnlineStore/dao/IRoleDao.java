@@ -12,6 +12,6 @@ public interface IRoleDao extends JpaRepository<Role,Long> {
 
     //Metodo para buscar un rol por su nombre en la bbdd
 
-    Optional<Role> findByName(String name);
+    Role findByName(String name);
 
 }

@@ -57,9 +57,10 @@ public class User implements Serializable {
     private List<ClientsAddress> clientsAddresses;
 
 
-    @ManyToMany(mappedBy = "users",
-            cascade = {CascadeType.REFRESH}, //hay que revisarlo pq se borran todos los roles
-            fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @JoinTable(name = "Users_has_Roles",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id_user"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id_role"))
     private List<Role> roles;
 
 

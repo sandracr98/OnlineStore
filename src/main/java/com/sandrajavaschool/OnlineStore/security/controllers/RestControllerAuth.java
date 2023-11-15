@@ -2,6 +2,7 @@
 package com.sandrajavaschool.OnlineStore.security.controllers;
 
 
+import com.sandrajavaschool.OnlineStore.authHandler.service.JWTServiceImpl;
 import com.sandrajavaschool.OnlineStore.dao.IRoleDao;
 import com.sandrajavaschool.OnlineStore.dao.IUserDao;
 import com.sandrajavaschool.OnlineStore.entities.Role;
@@ -15,14 +16,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
+import java.io.IOException;
 
 
 @RestController
@@ -34,13 +33,17 @@ public class RestControllerAuth {
     private final PasswordEncoder passwordEncoder;
     private final IRoleDao roleDao;
     private final IUserDao userDao;
+    private final JWTServiceImpl jwtService;
 
 
     //Metodo para poder registrar usuarios con ROLE_USER (para admin es == pero cambiando a ROLE_ADMIN)
 
+
+    /*
     @PostMapping("register")
     public ResponseEntity<String> register(@RequestBody RegisterDto registerDto) {
         System.out.println("WE ARE INTO REGISTER CONTROLLER");
+
         if (userDao.existsByEmail(registerDto.getEmail())) {
             return new ResponseEntity<>("The user already exists", HttpStatus.BAD_REQUEST);
         }
@@ -75,26 +78,33 @@ public class RestControllerAuth {
 
     }
 
+     */
     //Método para poder logear un usuario y obtener un token
 
-    /*
+
     @PostMapping("login")
     public ResponseEntity<AuthResponseDto> login(@RequestBody LoginDto loginDto) {
 
-        Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(
-                loginDto.getEmail(), loginDto.getPass()));
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPass()));
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        //String token = tokenProvider.tokenProvider(authentication);
+            String token = jwtService.create(authentication);
 
-        //return new ResponseEntity<>(new AuthResponseDto(token), HttpStatus.OK);
-        return "";
+            return new ResponseEntity<>(new AuthResponseDto(token), HttpStatus.OK);
+
+        } catch (AuthenticationException e) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
-*/
+
 
 
 }

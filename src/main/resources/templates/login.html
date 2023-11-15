@@ -13,24 +13,23 @@
         <div class="card border-dark">
             <div class="card-header">Please Sign In</div>
             <div class="card-body">
-                <form th:action="@{/login}" method="post">
+                <form th:action="@{/api/auth/login}" method="post">
 
                     <div class="form-group">
-                        <input type="text" name="username" id="username"
-                               class="form-control" placeholder="UserName" autofocus required/>
+                        <input type="text" name="email" id="email" class="form-control" placeholder="Email" autofocus required/>
                     </div>
 
                     <div class="form-group">
-                        <input type="password" name="password" id="password"
-                               class="form-control" placeholder="Password" required/>
+                        <input type="password" name="pass" id="pass" class="form-control" placeholder="Password" required/>
                     </div>
 
                     <div class="form-group">
-                        <input type="submit" class="btn btn-lg btn-success btn-block"
-                               value="Sign In"/>
+                        <input type="submit" class="btn btn-lg btn-success btn-block" value="Sign In"/>
                     </div>
 
                 </form>
+
+
             </div>
 
         </div>
@@ -39,7 +38,42 @@
 
 </div>
 
+
 <footer th:replace="layout/layout :: footer"></footer>
+<script>
+    $(document).ready(function() {
+        $('form').submit(function(e) {
+            e.preventDefault();
+
+            var formData = {
+                email: $('#email').val(),
+                pass: $('#pass').val()
+            };
+
+            // Hacer la solicitud AJAX al servidor para autenticar
+            $.ajax({
+                type: 'POST',
+                url: '/api/auth/login',
+                data: JSON.stringify(formData),
+                contentType: 'application/json',
+                success: function(response) {
+                    // Manejar la respuesta exitosa (token)
+                    console.log(response);
+
+                    // Redirigir a la página de inicio después de autenticarse
+                    window.location.replace('/');
+                },
+                error: function(error) {
+                    // Manejar errores de autenticación
+                    console.error('Error en la autenticación:', error);
+                }
+            });
+        });
+    });
+</script>
+
 
 </body>
+
+
 </html>

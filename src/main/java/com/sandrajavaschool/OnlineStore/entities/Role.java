@@ -24,17 +24,11 @@ public class Role implements Serializable {
     @Column(name = "id_role", nullable = false)
     private Long id;
 
-
     private String name;
 
 
-
-    @ManyToMany
-    @JoinTable(name = "Users_has_Roles",
-            joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id_role"),
-            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id_user"))
+    @ManyToMany(mappedBy = "roles")
     private List<User> users;
-
 
 
     public void addUsers(User user){

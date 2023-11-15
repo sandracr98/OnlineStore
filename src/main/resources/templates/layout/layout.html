@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:fragment="head">
     <meta charset="UTF-8"/>
-    <title th:text="'SCR ' + ${title}"></title>
+    <title th:text="'SCR '"></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
@@ -53,6 +53,15 @@
                         </div>
 
                     </li>
+
+                    <script>
+                        function logout() {
+                            // Borrar el token almacenado (puede ser en localStorage, sessionStorage, o cookies)
+                            localStorage.removeItem('jwtToken');
+                            // Redirigir al usuario a la página de inicio de sesión u otra página deseada
+                            window.location.replace('/login');
+                        }
+                    </script>
                 </ul>
             </div>
         </div>
@@ -76,8 +85,9 @@
             <p class="text-white text-center" sec:authorize="isAuthenticated()">User:
                 <span sec:authentication="name"></span>
                 | Role:
-                <span sec:authentication="principal.authorities"></span>
+                <span sec:authentication="principal.claims['authorities']"></span>
             </p>
+
 
             <div class="col-md-12 text-center"><br>
 
