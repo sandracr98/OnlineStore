@@ -77,6 +77,14 @@
 
                             <div class="card-body align-items-center">
 
+                                <div class="form-group">
+                                    <label class="col-sm-6 col-form-label">Photo</label>
+                                    <div class="col-sm-6">
+                                        <input type="file" th:field="*{photo}"
+                                               th:errorclass="'form-control alert-danger'"/>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>

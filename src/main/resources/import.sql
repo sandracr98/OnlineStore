@@ -6,32 +6,32 @@ INSERT INTO roles (name) VALUES
 ('ROLE_USER');
 
 -- Insertando usuarios
-INSERT INTO users (name, surname, birthdate, email, pass, enabled) VALUES
-('User', 'user', '1998-03-20', 'user', '$2a$10$/I57cTVQxky9hCrESg..Uu.ozMVWLzmWK8cfzH1bwmWyvjenRmohG', 1),
-('Admin', 'admin', '1998-03-20', 'admin', '$2a$10$2x/R0J3I8YebbF8vfkIYF.fOWIlqkc1dqPLC0IytLBGH.POjJSlXy', 1),
-('Sandra', 'Checa', '1998-03-20', 'sandrachr@example.com', 'password123', 1),
-('Fernando', 'Alonso', '1981-07-29', 'fernandoalonso@example.com', 'password456', 1),
-('Carlos', 'Sainz', '1994-09-01', 'carlossainz94@example.com', 'letmein', 1),
-('John', 'Doe', '1990-01-01', 'john.doe@example.com', 'password123', 1),
-('Jane', 'Doe', '1988-05-15', 'jane.doe@example.com', 'password456', 1),
-('Bob', 'Smith', '1995-03-20', 'bob.smith@example.com', 'letmein', 1),
-('Alice', 'Johnson', '1989-12-10', 'alice.johnson@example.com', 'password789', 1),
-('Michael', 'Brown', '1987-07-05', 'michael.brown@example.com', '123456', 1),
-('Emily', 'Davis', '1992-09-25', 'emily.davis@example.com', 'qwerty', 1),
-('David', 'Wilson', '1998-11-15', 'david.wilson@example.com', 'pass1234', 1),
-('Sarah', 'Taylor', '1985-06-30', 'sarah.taylor@example.com', 'abcd1234', 1),
-('Ryan', 'Anderson', '1993-04-18', 'ryan.anderson@example.com', 'password12', 1),
-('Jennifer', 'Harris', '1991-08-22', 'jennifer.harris@example.com', 'test123', 1),
-('Matthew', 'Clark', '1986-10-12', 'matthew.clark@example.com', 'letmein567', 1),
-('Laura', 'Parker', '1997-02-28', 'laura.parker@example.com', 'password890', 1),
-('James', 'Jones', '1984-03-08', 'james.jones@example.com', 'hello123', 1),
-('Jessica', 'Evans', '1996-07-19', 'jessica.evans@example.com', '1234abcd', 1),
-('Daniel', 'Morris', '1983-09-02', 'daniel.morris@example.com', 'qwerty123', 1),
-('Natalie', 'Baker', '1994-01-05', 'natalie.baker@example.com', 'welcome123', 1),
-('Andrew', 'Cooper', '1990-05-29', 'andrew.cooper@example.com', 'letmeinnow', 1),
-('Olivia', 'Hill', '1988-08-14', 'olivia.hill@example.com', 'password7890', 1),
-('William', 'Wright', '1987-12-03', 'william.wright@example.com', 'testpassword', 1),
-('Ava', 'Lopez', '1995-06-17', 'ava.lopez@example.com', 'mypassword', 1);
+INSERT INTO users (name, surname, birthdate, email, pass, enabled, photo) VALUES
+('User', 'user', '1998-03-20', 'user', '$2a$10$/I57cTVQxky9hCrESg..Uu.ozMVWLzmWK8cfzH1bwmWyvjenRmohG', 1, ''),
+('Admin', 'admin', '1998-03-20', 'admin', '$2a$10$2x/R0J3I8YebbF8vfkIYF.fOWIlqkc1dqPLC0IytLBGH.POjJSlXy', 1, ''),
+('Sandra', 'Checa', '1998-03-20', 'sandrachr@example.com', 'password123', 1, ''),
+('Fernando', 'Alonso', '1981-07-29', 'fernandoalonso@example.com', 'password456', 1, ''),
+('Carlos', 'Sainz', '1994-09-01', 'carlossainz94@example.com', 'letmein', 1, ''),
+('John', 'Doe', '1990-01-01', 'john.doe@example.com', 'password123', 1, ''),
+('Jane', 'Doe', '1988-05-15', 'jane.doe@example.com', 'password456', 1, ''),
+('Bob', 'Smith', '1995-03-20', 'bob.smith@example.com', 'letmein', 1, ''),
+('Alice', 'Johnson', '1989-12-10', 'alice.johnson@example.com', 'password789', 1, ''),
+('Michael', 'Brown', '1987-07-05', 'michael.brown@example.com', '123456', 1, ''),
+('Emily', 'Davis', '1992-09-25', 'emily.davis@example.com', 'qwerty', 1, ''),
+('David', 'Wilson', '1998-11-15', 'david.wilson@example.com', 'pass1234', 1, ''),
+('Sarah', 'Taylor', '1985-06-30', 'sarah.taylor@example.com', 'abcd1234', 1, ''),
+('Ryan', 'Anderson', '1993-04-18', 'ryan.anderson@example.com', 'password12', 1, ''),
+('Jennifer', 'Harris', '1991-08-22', 'jennifer.harris@example.com', 'test123', 1, ''),
+('Matthew', 'Clark', '1986-10-12', 'matthew.clark@example.com', 'letmein567', 1, ''),
+('Laura', 'Parker', '1997-02-28', 'laura.parker@example.com', 'password890', 1, ''),
+('James', 'Jones', '1984-03-08', 'james.jones@example.com', 'hello123', 1, ''),
+('Jessica', 'Evans', '1996-07-19', 'jessica.evans@example.com', '1234abcd', 1, ''),
+('Daniel', 'Morris', '1983-09-02', 'daniel.morris@example.com', 'qwerty123', 1, ''),
+('Natalie', 'Baker', '1994-01-05', 'natalie.baker@example.com', 'welcome123', 1, ''),
+('Andrew', 'Cooper', '1990-05-29', 'andrew.cooper@example.com', 'letmeinnow', 1, ''),
+('Olivia', 'Hill', '1988-08-14', 'olivia.hill@example.com', 'password7890', 1, ''),
+('William', 'Wright', '1987-12-03', 'william.wright@example.com', 'testpassword', 1, ''),
+('Ava', 'Lopez', '1995-06-17', 'ava.lopez@example.com', 'mypassword', 1, '');
 
 
 -- Insertando direcciones de clientes

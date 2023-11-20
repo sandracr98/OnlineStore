@@ -49,6 +49,9 @@ public class User implements Serializable {
     private boolean enabled = true;
 
 
+    private String photo;
+
+
 
 
     @OneToMany(mappedBy = "user",
