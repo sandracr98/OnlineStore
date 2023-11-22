@@ -1,6 +1,7 @@
 package com.sandrajavaschool.OnlineStore.controllers;
 
 import com.sandrajavaschool.OnlineStore.entities.*;
+import com.sandrajavaschool.OnlineStore.errorsException.OrderNotFoundException;
 import com.sandrajavaschool.OnlineStore.service.implService.IOrderService;
 import com.sandrajavaschool.OnlineStore.service.implService.IPaymentMethodService;
 import com.sandrajavaschool.OnlineStore.service.implService.IUserService;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -27,11 +29,61 @@ public class OrderController {
 
     @GetMapping("/ordersList")
     public String list(Model model) {
-       List<Order> orders = orderService.findAll();
-       model.addAttribute("orders", orders);
+        List<Order> orders = orderService.findAll();
+        model.addAttribute("orders", orders);
 
-       return "/order/ordersList";
+        return "/order/ordersList";
     }
+
+    //////////////////////////INTENTO DE HACER EL ORDER SIN LOGEARSE
+
+
+    //CONTROLA SI ESTA LOGUEADO O NO
+    @GetMapping("/receiptControl")
+    public String showReceipt(Principal principal) {
+        if (principal != null) {
+            // Usuario autenticado, obtener su ID y redirigir a su carrito de compras
+            String email = principal.getName();
+            User user = userService.findByEmail(email);
+            Long userId = user.getId();
+            return "redirect:/order/receipt/" + userId;
+        } else {
+            // Usuario no autenticado, redirigir a la creación de un carrito no vinculado a un usuario
+            return "redirect:/order/receipt/anonymous";
+        }
+    }
+
+    @GetMapping("/receipt/anonymous")
+    public String createNewOrder(Model model) {
+
+        Order order = new Order();
+
+        PaymentMethod paymentMethod = new PaymentMethod();
+        order.setPaymentMethod(paymentMethod);
+
+        model.addAttribute("order", order);
+        model.addAttribute("paymentMethod", paymentMethod);
+
+        model.addAttribute("title", "Shopping cart");
+
+        return "order/receiptNewUser";
+    }
+
+    @PostMapping("/createUserBeforeReceipt")
+    public String saveUserAndReceipt() {
+
+        return "";
+    }
+
+
+
+
+
+
+
+
+
+    ///////////////////////////////////////////////////////////////
 
     @GetMapping("/receipt/{userId}")
     public String create(@PathVariable(value = "userId") Long userId,
@@ -129,7 +181,7 @@ public class OrderController {
         }
 
         model.addAttribute("order", order);
-        model.addAttribute("title", "Order: " .concat(order.getDescription()));
+        model.addAttribute("title", "Order: ".concat(order.getDescription()));
 
         return "order/viewOrderDetails";
 
@@ -140,17 +192,20 @@ public class OrderController {
                             Model model,
                             RedirectAttributes flash) {
 
-        Order order = orderService.findOne(id);
+        try {
+            Order order = orderService.findOne(id);
+            if (order == null) {
+                throw new OrderNotFoundException("Order with id " + id + " not found");
+            }
 
-        if (order == null) {
-            flash.addFlashAttribute("error", "Order does not exist into DDBB");
-            return "redirect:/list";
+            model.addAttribute("order", order);
+            model.addAttribute("title", "Order Details");
+
+            return "order/orderDetails"; // Ajusta según tu configuración de vistas
+        } catch (OrderNotFoundException e) {
+            // Manejar la excepción, por ejemplo, redirigir a una página de error
+            return "errorPage"; // Ajusta según tu configuración de vistas
         }
-
-        model.addAttribute("order", order);
-        model.addAttribute("title", "Edit Order");
-
-        return "order/orderDetails";
     }
 
     @PostMapping("/saveOrderDetails")

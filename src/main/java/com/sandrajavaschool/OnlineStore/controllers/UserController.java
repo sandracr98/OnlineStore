@@ -16,8 +16,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.Map;
 
@@ -147,9 +152,24 @@ public class UserController {
 
     @PostMapping(value = "/save")
     public String save(@ModelAttribute User user,
-
+                       @RequestParam("file") MultipartFile photo,
                        RedirectAttributes flash) {
 
+        if (!photo.isEmpty()) {
+
+            Path photoDirectory = Paths.get("src//main//resources//static/uploads");
+            String rootPath = photoDirectory.toFile().getAbsolutePath();
+            try {
+                byte[] bytes = photo.getBytes();
+                Path completeRoot = Paths.get(rootPath + "//" + photo.getOriginalFilename());
+                Files.write(completeRoot, bytes);
+                flash.addFlashAttribute("info", "You have successfully uploaded the photo");
+
+                user.setPhoto(photo.getOriginalFilename());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
 
         String flashmessage = "Congratulation! You have an account";
 

@@ -59,9 +59,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authz) -> {
                     authz
                             .requestMatchers("/css/**", "/js/**", "/images/**",
-                                    "/productsList", "/order/receipt/**",
+                                    "/order/receipt/**",
                                     "/create/**", "/api/auth/**",
-                                    "/", "/login").permitAll()
+                                    "/", "/api/login", "productsList",
+                                    "/order/receiptControl",
+                                    "/order/receipt/anonymous").permitAll()
 
                             //aqui van las rutas privadas
                             .requestMatchers("/list").hasAnyRole("ADMIN")
@@ -74,14 +76,15 @@ public class SecurityConfig {
                             .requestMatchers("/create/**").hasRole("ADMIN")
 
 
-                            //.anyRequest().authenticated();
-                            .anyRequest().permitAll();
+                            .anyRequest().authenticated();
 
                 });
 
-        http.formLogin((form) -> form.loginPage("/login")
-                .loginProcessingUrl("/login")
-                .defaultSuccessUrl("/product/productsList", true)
+        http.formLogin((form) -> form.loginPage("/api/login")
+                .usernameParameter("email")
+                .passwordParameter("pass")
+                .loginProcessingUrl("/api/auth/login")
+                .defaultSuccessUrl("/productsList", true)
                 .successHandler(loginSuccessHandler)
                 .permitAll());
 
@@ -98,12 +101,13 @@ public class SecurityConfig {
                 .csrf().disable();
         http
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS.STATELESS); //desabilitamos el uso de sesion
+                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS); //desabilitamos el uso de sesion
 
 
         return http.build();
 
     }
+
 
 
 ///////////////////////////////////////////////////////////////////

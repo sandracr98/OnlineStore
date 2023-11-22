@@ -45,6 +45,11 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public User findByEmail(String email) {
+        return userDao.findByEmail(email);
+    }
+
+    @Override
     public void delete(Long id) {
         userDao.deleteById(id);
     }

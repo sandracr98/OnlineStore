@@ -4,6 +4,8 @@
 <body>
 
 <header th:replace="layout/layout :: header"></header>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
 
 <div class="container py-4">
 
@@ -75,11 +77,11 @@
 
 
                     <td>
-                        <form action="/order/add-to-cart" method="post">
-                            <input type="hidden" name="productId" th:value="${product.id}"/>
-                            <button type="submit">Buy</button>
-                        </form>
+                        <button type="button" onclick="agregarAlCarrito({id}, {label}, {price})">
+                            Buy
+                        </button>
                     </td>
+
 
                     <td>
                         <a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-primary btn-sm" th:href="@{/editProduct/} + ${product.id}"

@@ -40,37 +40,6 @@
 
 
 <footer th:replace="layout/layout :: footer"></footer>
-<script>
-    $(document).ready(function() {
-        $('form').submit(function(e) {
-            e.preventDefault();
-
-            var formData = {
-                email: $('#email').val(),
-                pass: $('#pass').val()
-            };
-
-            // Hacer la solicitud AJAX al servidor para autenticar
-            $.ajax({
-                type: 'POST',
-                url: '/api/auth/login',
-                data: JSON.stringify(formData),
-                contentType: 'application/json',
-                success: function(response) {
-                    // Manejar la respuesta exitosa (token)
-                    console.log(response);
-
-                    // Redirigir a la página de inicio después de autenticarse
-                    window.location.replace('/');
-                },
-                error: function(error) {
-                    // Manejar errores de autenticación
-                    console.error('Error en la autenticación:', error);
-                }
-            });
-        });
-    });
-</script>
 
 
 </body>

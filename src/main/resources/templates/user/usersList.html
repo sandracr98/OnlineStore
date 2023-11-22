@@ -11,10 +11,9 @@
         <div class="card-header" th:text="${title}"></div>
         <div class="card-body">
 
-            <td>
-                <a class="btn btn-secondary btn-sm" th:href="@{/create}" th:text="'Create'"></a>
-            </td>
-
+            <div>
+                <a class="btn btn-success" th:href="@{/create}" th:text="'Create'"></a>
+            </div>
             <br>
 
             <table class="table table-striped  border border-success">
@@ -27,20 +26,17 @@
                     <th>Email</th>
                     <th></th>
                     <th></th>
-                    <th></th>
 
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="user: ${users}">
 
-                    <td><a class="btn btn-primary btn-sm" th:text="${user.id}" th:href="@{/userDetails/} + ${user.id}"></a></td>
+                    <td><a class="btn btn-info btn-sm" th:text="${user.id}" th:href="@{/userDetails/} + ${user.id}"></a></td>
                     <td th:text="${user.name}"></td>
                     <td th:text="${user.surname}"></td>
                     <td th:text="${user.birthdate}"></td>
                     <td th:text="${user.email}"></td>
-
-                    <td><a class="btn btn-success btn-xs" th:text="'View shopping cart'" th:href="@{/order/receipt/} + ${user.id}"></a></td>
 
                     <td>
                         <a class="btn btn-primary btn-sm" th:href="@{/userDetails/} + ${user.id}" th:text="'Edit'"></a>
@@ -60,9 +56,10 @@
     </div>
 
 </div>
-
+<br>
 <footer th:replace="layout/layout :: footer"></footer>
 
 
 </body>
+
 </html>

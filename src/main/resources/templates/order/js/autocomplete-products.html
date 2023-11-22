@@ -6,6 +6,9 @@
 <script type="text/javascript" th:fragment="javascript">
 
     $(document).ready(function () {
+
+        loadStoredProducts();
+
         $("#search_product").autocomplete({
 
             source: function (request, response) {
@@ -44,10 +47,81 @@
 
                 itemsHelper.importCalc(ui.item.value, ui.item.price, 1);
 
+                storeProductLocally(ui.item.value, ui.item.label, ui.item.price);
+
                 return false;
             }
 
         });
+
+        function loadStoredProducts() {
+            var storedProducts = localStorage.getItem('storedProducts');
+
+            if (storedProducts) {
+                storedProducts = JSON.parse(storedProducts);
+
+                // Agregar productos almacenados a la tabla
+                $.each(storedProducts, function (index, product) {
+                    var line = $("#itemsLineTable").html();
+
+                    line = line.replace(/{ID}/g, product.id);
+                    line = line.replace(/{TITLE}/g, product.title);
+                    line = line.replace(/{PRICE}/g, product.price);
+
+                    // Añadir la cantidad al HTML
+                    line = line.replace(/{AMOUNT}/g, product.amount);
+
+                    $("#itemTable tbody").append(line);
+
+                    // Ejecutar importCalc con la cantidad almacenada
+                    itemsHelper.importCalc(product.id, product.price, product.amount);
+                });
+            }
+        }
+
+        function storeProductLocally(id, title, price, amount) {
+            var storedProducts = localStorage.getItem('storedProducts') || '[]';
+            storedProducts = JSON.parse(storedProducts);
+
+            // Verificar si el producto ya está almacenado
+            var existingProductIndex = storedProducts.findIndex(function (product) {
+                return product.id === id;
+            });
+
+            if (existingProductIndex !== -1) {
+                // Incrementar la cantidad si el producto ya existe
+                storedProducts[existingProductIndex].amount += amount;
+            } else {
+                // Agregar nuevo producto
+                storedProducts.push({ id: id, title: title, price: price, amount: amount });
+            }
+
+            // Guardar en el localStorage
+            localStorage.setItem('storedProducts', JSON.stringify(storedProducts));
+        }
+
+
+
+        function agregarAlCarrito(id, label, price) {
+            if (itemsHelper.hasProduct(id)) {
+                itemsHelper.addAmount(id, price);
+                return;
+            }
+
+            var line = $("#itemsLineTable tr").clone();
+            line.attr("id", "row_" + id);
+            line.find('input[name="item_id[]"]').val(id);
+            line.find('.title').text(label);
+            line.find('.price').text(price);
+
+            $("#itemTable tbody").append(line);
+            itemsHelper.importCalc(id, price, 1);
+
+            storeProductLocally(id, label, price, 1);
+
+        }
+
+
 
         $("form").submit(function () {
             $("#itemsLineTable").remove();
@@ -88,7 +162,30 @@
         deleteItemLine: function (id) {
             $("#row_" + id).remove();
             this.totalImportCalc();
+
+            deleteProductLocally(id);
+
+            function deleteProductLocally(id) {
+                var storedProducts = localStorage.getItem('storedProducts') || '[]';
+                storedProducts = JSON.parse(storedProducts);
+
+                // Encontrar el índice del producto en el arreglo almacenado
+                var existingProductIndex = storedProducts.findIndex(function (product) {
+                    return product.id === id;
+                });
+
+                if (existingProductIndex !== -1) {
+                    // Eliminar el producto del arreglo
+                    storedProducts.splice(existingProductIndex, 1);
+
+                    // Actualizar el localStorage
+                    localStorage.setItem('storedProducts', JSON.stringify(storedProducts));
+                }
+            }
+
         },
+
+
 
 
         totalImportCalc: function () {

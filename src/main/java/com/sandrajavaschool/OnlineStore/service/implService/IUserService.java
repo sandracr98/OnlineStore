@@ -17,6 +17,8 @@ public interface IUserService {
 
     public User findOne(Long id);
 
+    public User findByEmail(String email);
+
     public void delete(Long id);
 
     public Page<User> findAll(Pageable pageable);
