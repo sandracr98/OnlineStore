@@ -12,6 +12,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +25,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.Principal;
 import java.util.Collections;
 import java.util.Map;
 
@@ -152,9 +155,9 @@ public class UserController {
 
     @PostMapping(value = "/save")
     public String save(@ModelAttribute User user,
-                       @RequestParam("file") MultipartFile photo,
+                       //@RequestParam("file") MultipartFile photo,
                        RedirectAttributes flash) {
-
+/*
         if (!photo.isEmpty()) {
 
             Path photoDirectory = Paths.get("src//main//resources//static/uploads");
@@ -171,9 +174,10 @@ public class UserController {
             }
         }
 
+ */
+
         String flashmessage = "Congratulation! You have an account";
 
-        //user.setRoles(Collections.singletonList(roleService.findOne(2L)));
         user.setPass(passwordEncoder.encode(user.getPass()));
 
         Role role = roleDao.findByName("ROLE_USER");
@@ -182,7 +186,14 @@ public class UserController {
         userService.save(user);
 
         flash.addFlashAttribute("success", flashmessage);
-        return "redirect:/list";
+
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                user.getEmail(), user.getPass());
+
+        SecurityContextHolder.getContext().setAuthentication(authToken);
+
+
+        return "redirect:/order/receipt";
     }
 
     @Secured("ROLE_ADMIN")
@@ -196,6 +207,15 @@ public class UserController {
         }
 
         return "redirect:/list";
+    }
+
+    @GetMapping(value = "/getId")
+    public String getId(Principal principal) {
+        String email = principal.getName();
+        User user = userService.findByEmail(email);
+        Long userId = user.getId();
+
+        return "redirect:/userDetails/" + userId;
     }
 
 

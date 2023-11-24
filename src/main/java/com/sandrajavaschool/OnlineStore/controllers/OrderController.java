@@ -6,7 +6,10 @@ import com.sandrajavaschool.OnlineStore.service.implService.IOrderService;
 import com.sandrajavaschool.OnlineStore.service.implService.IPaymentMethodService;
 import com.sandrajavaschool.OnlineStore.service.implService.IUserService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +29,9 @@ public class OrderController {
     final private IUserService userService;
     final private IOrderService orderService;
     final private IPaymentMethodService paymentMethodService;
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     @GetMapping("/ordersList")
     public String list(Model model) {
@@ -74,13 +80,6 @@ public class OrderController {
 
         return "";
     }
-
-
-
-
-
-
-
 
 
     ///////////////////////////////////////////////////////////////
@@ -147,7 +146,6 @@ public class OrderController {
             line.setProduct(product);
 
             order.addReceiptLine(line);
-
         }
 
         Double total = order.getTotal();
@@ -236,31 +234,92 @@ public class OrderController {
         return "redirect:/list/";
     }
 
+
     @RequestMapping("/reorder/{id}")
     public String reorder(@PathVariable(value = "id") Long id,
-                          RedirectAttributes flash) {
+                          RedirectAttributes flash,
+                          Model model) {
+        try {
+            if (id == null || id <= 0) {
+                flash.addFlashAttribute("error", "Invalid order ID");
+                return "redirect:/list"; //INSERTAR PAGINA DE ERROR
+            }
 
-        Order existingOrder = userService.findOrderById(id);
+            Order existingOrder = userService.findOrderById(id);
 
-        if (existingOrder == null) {
-            flash.addFlashAttribute("error", "Order does not exist into DDBB");
-            return "redirect:/list";
+            if (existingOrder == null || userService.findOne(id) == null) {
+                flash.addFlashAttribute("error", "Order does not exist in the database");
+                assert existingOrder != null;
+                return "redirect:/userDetails/" + existingOrder.getUser().getId();
+            }
+
+            Order newOrder = new Order();
+            newOrder.setUser(existingOrder.getUser());
+
+            PaymentMethod paymentMethod = new PaymentMethod();
+            newOrder.setPaymentMethod(paymentMethod);
+
+            newOrder.setDescription(existingOrder.getDescription());
+            newOrder.setGoods(existingOrder.getGoods());
+
+            List<ReceiptLine> receiptLines = existingOrder.getReceiptLines();
+
+            for (ReceiptLine receiptLine : receiptLines) {
+
+                Product product = userService.findProductById(receiptLine.getProduct().getId());
+
+                ReceiptLine line = new ReceiptLine();
+
+                line.setAmount(receiptLine.getAmount());
+                line.setProduct(product);
+
+                newOrder.addReceiptLine(line);
+            }
+
+            Double total = newOrder.getTotal();
+            newOrder.setSum(total);
+
+
+            model.addAttribute("order", newOrder);
+            model.addAttribute("paymentMethod", paymentMethod);
+
+            return "order/receiptReorder";
+
+        } catch (Exception e) {
+            logger.error("Error: " + e.getMessage(), e);
+            flash.addFlashAttribute("error", "Error: " + e.getMessage());
+            return "redirect:/error/error403";
+        }
+    }
+
+
+    @PostMapping("/saveReorder")
+    public String saveReorder(@ModelAttribute Order newOrder,
+                              @ModelAttribute PaymentMethod paymentMethod,
+                              RedirectAttributes flash) {
+
+        if (newOrder == null) {
+            flash.addFlashAttribute("error", "Existing order is null");
+            return "redirect:/order/ordersList";
         }
 
-        Order newOrder = new Order();
 
-        newOrder.setUser(existingOrder.getUser());
-        newOrder.setDescription(existingOrder.getDescription());
-        newOrder.setGoods(existingOrder.getGoods());
+        try {
 
-        existingOrder.setReceiptLines(null);
-//LO SUYO ES QUE LO LLEVARA A CREAR UNA NUEVA ORDER EN CREAR PERO CON LOS PRODUCTOS YA HECHOS
-// SOLO CAMBIAS 4 VARIABLES LOCAAS
-        newOrder.setReceiptLines(existingOrder.getReceiptLines());
+            userService.saveOrder(newOrder);
 
-        orderService.save(newOrder);
+            String flashmessage = "Congratulation! Your order has completed";
 
-        return "redirect:/userDetails/" + existingOrder.getUser().getId();
+
+            flash.addFlashAttribute("success", flashmessage);
+
+            return "redirect:/userDetails/" + newOrder.getUser().getId();
+
+
+        } catch (Exception e) {
+            flash.addFlashAttribute("error", "Error saving order: " + e.getMessage());
+            return "/error/error403";
+        }
 
     }
 }

@@ -29,7 +29,6 @@ public class Order implements Serializable {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "paymentMethod_id", referencedColumnName = "id_paymentMethod")
-    @NotEmpty(message = "Please, choose an option")
     private PaymentMethod paymentMethod;
 
 
@@ -60,6 +59,13 @@ public class Order implements Serializable {
             this.receiptLines = new ArrayList<>();
         }
         this.receiptLines.add(line);
+    }
+
+    public void addReceiptLines(List<ReceiptLine> linesToAdd) {
+        if (this.receiptLines == null) {
+            this.receiptLines = new ArrayList<>();
+        }
+        this.receiptLines.addAll(linesToAdd);
     }
 
 

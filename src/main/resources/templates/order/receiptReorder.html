@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+
+<body>
+
+<header th:replace="layout/layout :: header"></header>
+
+<div class="container py-4">
+  <div class="card bg-dark text-white">
+    <div class="card-header" th:text="${title}"></div>
+    <div class="card-body">
+      <h4 class="card-title"></h4>
+
+      <div class="form-group row">
+        <div class="col-sm-6">
+          <a th:text="'Back'" class="btn btn-light btn-xs" th:href="@{/userDetails/} + ${order.user.id}"></a>
+        </div>
+      </div>
+
+      <br>
+
+      <form th:action="@{/order/saveReorder}" th:object="${order}" method="post">
+
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label" th:text="'Name'"></label>
+          <div class="col-sm-6">
+            <input th:value="${order.user.name} + ' ' + ${order.user.surname}"
+                   class="form-control" disabled='disabled'/>
+          </div>
+        </div>
+
+        <br>
+
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label" th:text="'Description'"></label>
+          <div class="col-sm-6">
+            <input type="text" th:value="${order.description}" class="form-control"/>
+          </div>
+        </div>
+
+        <br>
+
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label" th:text="'Payment Method'"></label>
+          <div class="col-sm-6">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" th:field="*{paymentMethod.type}"
+                     value="Cash" id="cash">
+              <label class="form-check-label" for="cash">Cash</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" th:field="*{paymentMethod.type}"
+                     value="By card" id="bycard">
+              <label class="form-check-label" for="bycard">By Card</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label" th:text="'Delivery Method'"></label>
+          <div class="col-sm-6">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" th:field="*{deliveryMethod}"
+                     value="Home Delivery" id="homeDelivery">
+              <label class="form-check-label" for="homeDelivery">Home Delivery</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" th:field="*{deliveryMethod}"
+                     value="In-Store Pickup" id="inStorePickup">
+              <label class="form-check-label" for="inStorePickup">In-Store Pickup</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label" th:text="'Goods'"></label>
+          <div class="col-sm-6">
+            <input type="text" th:value="${order.goods}" class="form-control"/>
+          </div>
+        </div>
+
+        <table id="itemTable"
+               class="table table-sm table-striped table-hover">
+
+          <thead>
+          <tr>
+            <th>Title</th>
+            <th>Price/und.</th>
+            <th>Amount</th>
+          </tr>
+          </thead>
+
+          <tbody>
+          <tr th:each="receiptLine: ${order.receiptLines}">
+            <td th:text="${receiptLine.product.title}"></td>
+            <td th:text="${receiptLine.product.price}"></td>
+            <td th:text="${receiptLine.amount}"></td>
+
+          </tbody>
+
+        </table>
+
+        <br>
+        <h5>TOTAL: <span th:text="${order.sum}"></span></h5>
+
+        <br>
+
+        <div class="form-group row">
+          <div class="col-sm-6">
+            <input type="submit" class="btn btn-light btn-xs" th:value="'Add'">
+          </div>
+        </div>
+
+        <input type="hidden" th:field="*{id}">
+
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<footer th:replace="layout/layout :: footer"></footer>
+<script th:replace="order/js/autocomplete-products :: javascript"></script>
+
+
+</body>
+</html>

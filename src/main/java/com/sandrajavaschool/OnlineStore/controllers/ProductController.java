@@ -79,7 +79,7 @@ public class ProductController {
     public String save(@ModelAttribute Product product,
                        RedirectAttributes flash) {
 
-        String flashmessage = "Your item has been created";
+        String flashmessage = "Your item has been created/edited correctly!";
 
         //para que se guarde la fecha cada vez que lo modificas
         product.prePersist();

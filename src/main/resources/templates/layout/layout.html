@@ -53,6 +53,10 @@
                         <a class="btn btn-outline-light" th:href="@{/api/login}">Sign In</a>
                     </li>
 
+                    <li sec:authorize="hasRole('ROLE_USER')" class="nav-item">
+                        <a class="nav-link" th:href="@{/getId}">Profile</a>
+                    </li>
+
                     <li sec:authorize="isAuthenticated()" class="dropdown">
 
                         <a class="btn btn-outline-light dropdown-toggle" href="#" role="button"
@@ -63,13 +67,11 @@
 
                     <li sec:authorize="isAuthenticated()">
 
-                        <div class="nav-item">
-                            <form id="logout" th:action="@{/logout}" method="post">
-                                <button class="text-white" onclick="document.getElementById('logout').submit();"
-                                        type="submit">Sign out
-                                </button>
-                            </form>
-                        </div>
+                        <form id="logout" th:action="@{/logout}" method="post">
+                            <button class="text-white" onclick="document.getElementById('logout').submit();"
+                                    type="submit">Sign out
+                            </button>
+                        </form>
 
                     <li>
                     <li sec:authorize="!hasRole('ROLE_ADMIN')">

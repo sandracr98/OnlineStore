@@ -63,7 +63,9 @@ public class SecurityConfig {
                                     "/create/**", "/api/auth/**",
                                     "/", "/api/login", "productsList",
                                     "/order/receiptControl",
-                                    "/order/receipt/anonymous").permitAll()
+                                    "/order/receipt/anonymous",
+                                    "/order/load-products/**",
+                                    "/save").permitAll()
 
                             //aqui van las rutas privadas
                             .requestMatchers("/list").hasAnyRole("ADMIN")
@@ -71,7 +73,7 @@ public class SecurityConfig {
                             .requestMatchers("/editProduct/**").hasAnyRole("ADMIN")
                             .requestMatchers("/deleteProduct/**").hasAnyRole("ADMIN")
                             .requestMatchers("/category/**").hasRole("ADMIN")
-                            .requestMatchers("/order/orderList/**").hasRole("ADMIN")
+                            .requestMatchers("/order/ordersList/**").hasRole("ADMIN")
                             .requestMatchers("/form/**").hasRole("ADMIN")
                             .requestMatchers("/create/**").hasRole("ADMIN")
 

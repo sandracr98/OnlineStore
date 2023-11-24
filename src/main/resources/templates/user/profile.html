@@ -93,8 +93,12 @@
                     <td th:text="${order.id}"></td>
                     <td th:text="${order.description}"></td>
                     <td th:text="${order.date}"></td>
-                    <td th:text="${order.orderStatus}"></td>
-                    <td th:text="${order.total}"></td>
+                    <td>
+                        <span th:if="${order.orderStatus == null}">Pending verification</span>
+                        <span th:if="${order.orderStatus != null}" th:text="${order.orderStatus}"></span>
+                    </td>
+
+                    <td th:text="${order.sum}"></td>
 
                     <td><a class="btn btn-primary btn-xs" th:href="@{'/order/viewReceipt/' + ${order.id}}"
                            th:text="'Detail'"></a></td>
