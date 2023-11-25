@@ -4,6 +4,9 @@ import com.sandrajavaschool.OnlineStore.entities.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Date;
+import java.util.List;
+
 public interface IOrderDao extends JpaRepository<Order,Long> {
 
     //vamos a crear un metodo para evitar que JPA haga tantas consultas a la bbdd
@@ -12,4 +15,7 @@ public interface IOrderDao extends JpaRepository<Order,Long> {
 
     @Query("select f from Order f join fetch f.user u join fetch f.receiptLines l join fetch l.product where f.id=?1")
     public Order fetchByIdWithUserReceiptLineProduct(Long id);
+
+    List<Order> findByDateBetween(Date startDate, Date endDate);
+
 }

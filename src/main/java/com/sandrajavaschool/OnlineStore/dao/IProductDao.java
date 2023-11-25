@@ -22,5 +22,7 @@ public interface IProductDao extends JpaRepository<Product, Long> {
             + "or p.color like %?1%")
     Page<Product> findByNameContaining(String term, Pageable pageable);
 
+    List<Product> findTop10ByOrderByTotalSalesDesc();
+
 
 }

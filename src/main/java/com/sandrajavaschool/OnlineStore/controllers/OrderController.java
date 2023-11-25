@@ -4,12 +4,12 @@ import com.sandrajavaschool.OnlineStore.entities.*;
 import com.sandrajavaschool.OnlineStore.errorsException.OrderNotFoundException;
 import com.sandrajavaschool.OnlineStore.service.implService.IOrderService;
 import com.sandrajavaschool.OnlineStore.service.implService.IPaymentMethodService;
+import com.sandrajavaschool.OnlineStore.service.implService.IProductService;
 import com.sandrajavaschool.OnlineStore.service.implService.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +28,7 @@ public class OrderController {
 
     final private IUserService userService;
     final private IOrderService orderService;
+    final private IProductService productService;
     final private IPaymentMethodService paymentMethodService;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -145,7 +146,12 @@ public class OrderController {
             line.setAmount(amount[i]);
             line.setProduct(product);
 
+
             order.addReceiptLine(line);
+
+            product.setTotalSales(product.getTotalSales() + amount[i]);
+            productService.save(product);
+
         }
 
         Double total = order.getTotal();
@@ -274,6 +280,9 @@ public class OrderController {
                 line.setProduct(product);
 
                 newOrder.addReceiptLine(line);
+
+                product.setTotalSales(product.getTotalSales() + line.getAmount());
+                productService.save(product);
             }
 
             Double total = newOrder.getTotal();

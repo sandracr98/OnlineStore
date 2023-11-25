@@ -8,6 +8,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -35,6 +39,15 @@ public class OrderService implements IOrderService {
     @Override
     public void delete(Long id) {
         orderDao.deleteById(id);
+    }
+
+    @Override
+    public List<Order> findByDateBetween(LocalDate startDate, LocalDate endDate) {
+
+        Date startOfDay = Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date endOfDay = Date.from(endDate.atStartOfDay(ZoneId.systemDefault()).plusDays(1).toInstant());
+
+        return orderDao.findByDateBetween(startOfDay, endOfDay);
     }
 
 }

@@ -51,7 +51,7 @@ public class User implements Serializable {
 
     private String photo;
 
-
+    private double totalSpent;
 
 
     @OneToMany(mappedBy = "user",

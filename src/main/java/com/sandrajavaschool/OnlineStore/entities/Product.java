@@ -33,6 +33,8 @@ public class Product implements Serializable {
     private String color;
     private String weight;
 
+    private Integer totalSales;
+
     private boolean status;
 
     @Temporal(TemporalType.DATE)

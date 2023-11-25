@@ -6,32 +6,33 @@ INSERT INTO roles (name) VALUES
 ('ROLE_USER');
 
 -- Insertando usuarios
-INSERT INTO users (name, surname, birthdate, email, pass, enabled, photo) VALUES
-('User', 'user', '1998-03-20', 'user', '$2a$10$/I57cTVQxky9hCrESg..Uu.ozMVWLzmWK8cfzH1bwmWyvjenRmohG', 1, ''),
-('Admin', 'admin', '1998-03-20', 'admin', '$2a$10$2x/R0J3I8YebbF8vfkIYF.fOWIlqkc1dqPLC0IytLBGH.POjJSlXy', 1, ''),
-('Sandra', 'Checa', '1998-03-20', 'sandrachr@example.com', 'password123', 1, ''),
-('Fernando', 'Alonso', '1981-07-29', 'fernandoalonso@example.com', 'password456', 1, ''),
-('Carlos', 'Sainz', '1994-09-01', 'carlossainz94@example.com', 'letmein', 1, ''),
-('John', 'Doe', '1990-01-01', 'john.doe@example.com', 'password123', 1, ''),
-('Jane', 'Doe', '1988-05-15', 'jane.doe@example.com', 'password456', 1, ''),
-('Bob', 'Smith', '1995-03-20', 'bob.smith@example.com', 'letmein', 1, ''),
-('Alice', 'Johnson', '1989-12-10', 'alice.johnson@example.com', 'password789', 1, ''),
-('Michael', 'Brown', '1987-07-05', 'michael.brown@example.com', '123456', 1, ''),
-('Emily', 'Davis', '1992-09-25', 'emily.davis@example.com', 'qwerty', 1, ''),
-('David', 'Wilson', '1998-11-15', 'david.wilson@example.com', 'pass1234', 1, ''),
-('Sarah', 'Taylor', '1985-06-30', 'sarah.taylor@example.com', 'abcd1234', 1, ''),
-('Ryan', 'Anderson', '1993-04-18', 'ryan.anderson@example.com', 'password12', 1, ''),
-('Jennifer', 'Harris', '1991-08-22', 'jennifer.harris@example.com', 'test123', 1, ''),
-('Matthew', 'Clark', '1986-10-12', 'matthew.clark@example.com', 'letmein567', 1, ''),
-('Laura', 'Parker', '1997-02-28', 'laura.parker@example.com', 'password890', 1, ''),
-('James', 'Jones', '1984-03-08', 'james.jones@example.com', 'hello123', 1, ''),
-('Jessica', 'Evans', '1996-07-19', 'jessica.evans@example.com', '1234abcd', 1, ''),
-('Daniel', 'Morris', '1983-09-02', 'daniel.morris@example.com', 'qwerty123', 1, ''),
-('Natalie', 'Baker', '1994-01-05', 'natalie.baker@example.com', 'welcome123', 1, ''),
-('Andrew', 'Cooper', '1990-05-29', 'andrew.cooper@example.com', 'letmeinnow', 1, ''),
-('Olivia', 'Hill', '1988-08-14', 'olivia.hill@example.com', 'password7890', 1, ''),
-('William', 'Wright', '1987-12-03', 'william.wright@example.com', 'testpassword', 1, ''),
-('Ava', 'Lopez', '1995-06-17', 'ava.lopez@example.com', 'mypassword', 1, '');
+INSERT INTO users (name, surname, birthdate, email, pass, enabled, total_spent) VALUES
+('User', 'user', '1998-03-20', 'user', '$2a$10$/I57cTVQxky9hCrESg..Uu.ozMVWLzmWK8cfzH1bwmWyvjenRmohG', 1, 245),
+('Admin', 'admin', '1998-03-20', 'admin', '$2a$10$2x/R0J3I8YebbF8vfkIYF.fOWIlqkc1dqPLC0IytLBGH.POjJSlXy', 1, 503),
+('Sandra', 'Checa', '1998-03-20', 'sandrachr@example.com', 'password123', 1, 29),
+('Fernando', 'Alonso', '1981-07-29', 'fernandoalonso@example.com', 'password456', 1, 0),
+('Carlos', 'Sainz', '1994-09-01', 'carlossainz94@example.com', 'letmein', 1, 0),
+('John', 'Doe', '1990-01-01', 'john.doe@example.com', 'password123', 1, 0),
+('Jane', 'Doe', '1988-05-15', 'jane.doe@example.com', 'password456', 1, 0),
+('Bob', 'Smith', '1995-03-20', 'bob.smith@example.com', 'letmein', 1, 0),
+('Alice', 'Johnson', '1989-12-10', 'alice.johnson@example.com', 'password789', 1, 0),
+('Michael', 'Brown', '1987-07-05', 'michael.brown@example.com', '123456', 1, 0),
+('Emily', 'Davis', '1992-09-25', 'emily.davis@example.com', 'qwerty', 1, 0),
+('David', 'Wilson', '1998-11-15', 'david.wilson@example.com', 'pass1234', 1, 0),
+('Sarah', 'Taylor', '1985-06-30', 'sarah.taylor@example.com', 'abcd1234', 1, 0),
+('Ryan', 'Anderson', '1993-04-18', 'ryan.anderson@example.com', 'password12', 1, 0),
+('Jennifer', 'Harris', '1991-08-22', 'jennifer.harris@example.com', 'test123', 1, 0),
+('Matthew', 'Clark', '1986-10-12', 'matthew.clark@example.com', 'letmein567', 1, 0),
+('Laura', 'Parker', '1997-02-28', 'laura.parker@example.com', 'password890', 1, 0),
+('James', 'Jones', '1984-03-08', 'james.jones@example.com', 'hello123', 1, 0),
+('Jessica', 'Evans', '1996-07-19', 'jessica.evans@example.com', '1234abcd', 1, 0),
+('Daniel', 'Morris', '1983-09-02', 'daniel.morris@example.com', 'qwerty123', 1, 0),
+('Natalie', 'Baker', '1994-01-05', 'natalie.baker@example.com', 'welcome123', 1, 0),
+('Andrew', 'Cooper', '1990-05-29', 'andrew.cooper@example.com', 'letmeinnow', 1, 0),
+('Olivia', 'Hill', '1988-08-14', 'olivia.hill@example.com', 'password7890', 1, 0),
+('William', 'Wright', '1987-12-03', 'william.wright@example.com', 'testpassword', 1, 0),
+('Ava', 'Lopez', '1995-06-17', 'ava.lopez@example.com', 'mypassword', 1, 0);
+
 
 
 -- Insertando direcciones de clientes
@@ -80,67 +81,86 @@ INSERT INTO categories (name, status)
 VALUES ('Clothes', true);
 
 -- Insertando productos
-INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status)
-VALUES ('Producto 1', 25.50, 1 , '1L', 10, 'Marca A', 'Negro', '2kg', '2023-10-05', true);
+-- Product 1
+INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales)
+VALUES ('Product 1', 25.50, 1, '1L', 10, 'Brand A', 'Black', '2kg', '2023-10-05', true, 5);
 
-INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status)
-VALUES ('Producto 2', 35.00, 3, 'M', 20, 'Marca B', 'Azul', '500g', '2023-10-06', true);
+-- Product 2
+INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales)
+VALUES ('Product 2', 35.00, 3, 'M', 20, 'Brand B', 'Blue', '500g', '2023-10-06', true, 2);
 
-INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status)
-VALUES ('Producto 3', 10.99, 2, '500ml', 15, 'Marca C', 'Blanco', '1kg', '2023-10-07', true);
+-- Product 3
+INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales)
+VALUES ('Product 3', 10.99, 2, '500ml', 15, 'Brand C', 'White', '1kg', '2023-10-07', true, 3);
 
-INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status)
-VALUES ('Producto 4', 45.75, 2, '2L', 12, 'Marca D', 'Plateado', '3kg', '2023-10-08', true);
+-- Product 4
+INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales)
+VALUES ('Product 4', 45.75, 2, '2L', 12, 'Brand D', 'Silver', '3kg', '2023-10-08', true, 9);
 
-INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status)
-VALUES ('Producto 5', 15.99, 3, 'L', 18, 'Marca E', 'Rojo', '700g', '2023-10-09', true);
+-- Product 5
+INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales)
+VALUES ('Product 5', 15.99, 3, 'L', 18, 'Brand E', 'Red', '700g', '2023-10-09', true, 0);
 
-INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status)
-VALUES ('Producto 6', 8.50, 1, '1L', 25, 'Marca F', 'Verde', '800g', '2023-10-10', true);
+-- Product 6
+INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales)
+VALUES ('Product 6', 8.50, 1, '1L', 25, 'Brand F', 'Green', '800g', '2023-10-10', true, 0);
 
-INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status)
-VALUES ('Producto 7', 19.95, 2, '500ml', 30, 'Marca G', 'Dorado', '600g', '2023-10-11', true);
+-- Product 7
+INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales)
+VALUES ('Product 7', 19.95, 2, '500ml', 30, 'Brand G', 'Gold', '600g', '2023-10-11', true, 0);
 
-INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status)
-VALUES ('Producto 8', 29.75, 1, 'XL', 22, 'Marca H', 'Negro', '900g', '2023-10-12', true);
+-- Product 8
+INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales)
+VALUES ('Product 8', 29.75, 1, 'XL', 22, 'Brand H', 'Black', '900g', '2023-10-12', true, 0);
 
-INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status)
-VALUES ('Producto 9', 12.25, 1, '750ml', 20, 'Marca I', 'Plateado', '1.2kg', '2023-10-13', true);
+-- Product 9
+INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales)
+VALUES ('Product 9', 12.25, 1, '750ml', 20, 'Brand I', 'Silver', '1.2kg', '2023-10-13', true, 0);
 
-INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status)
-VALUES ('Producto 10', 32.99, 2, '1L', 14, 'Marca J', 'Blanco', '1.1kg', '2023-10-14', true);
+-- Product 10
+INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales)
+VALUES ('Product 10', 32.99, 2, '1L', 14, 'Brand J', 'White', '1.1kg', '2023-10-14', true, 0);
 
-INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status)
-VALUES ('Producto 11', 14.50, 3, 'M', 18, 'Marca K', 'Gris', '700g', '2023-10-15', true);
+-- Product 11
+INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales)
+VALUES ('Product 11', 14.50, 3, 'M', 18, 'Brand K', 'Gray', '700g', '2023-10-15', true, 0);
 
-INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status)
-VALUES ('Producto 12', 18.75, 1, '500ml', 15, 'Marca L', 'Azul', '900g', '2023-10-16', true);
+-- Product 12
+INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales)
+VALUES ('Product 12', 18.75, 1, '500ml', 15, 'Brand L', 'Blue', '900g', '2023-10-16', true, 0);
 
-INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status)
-VALUES ('Producto 13', 22.99, 2, '2L', 10, 'Marca M', 'Verde', '1.3kg', '2023-10-17', true);
+-- Product 13
+INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales)
+VALUES ('Product 13', 22.99, 2, '2L', 10, 'Brand M', 'Green', '1.3kg', '2023-10-17', true, 0);
 
-INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status)
-VALUES ('Producto 14', 9.95, 3, 'L', 20, 'Marca N', 'Amarillo', '800g', '2023-10-18', true);
+-- Product 14
+INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales)
+VALUES ('Product 14', 9.95, 3, 'L', 20, 'Brand N', 'Yellow', '800g', '2023-10-18', true, 0);
 
-INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status)
-VALUES ('Producto 15', 27.25, 1, '750ml', 18, 'Marca O', 'Blanco', '1kg', '2023-10-19', true);
+-- Product 15
+INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales)
+VALUES ('Product 15', 27.25, 1, '750ml', 18, 'Brand O', 'White', '1kg', '2023-10-19', true, 0);
 
-INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status)
-VALUES ('Producto 16', 11.50, 2, '1L', 22, 'Marca P', 'Rojo', '1.2kg', '2023-10-20', true);
+-- Product 16
+INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales)
+VALUES ('Product 16', 11.50, 2, '1L', 22, 'Brand P', 'Red', '1.2kg', '2023-10-20', true, 0);
 
-INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status)
-VALUES ('Producto 17', 16.99, 3, 'M', 25, 'Marca Q', 'Negro', '900g', '2023-10-21', true);
+-- Product 17
+INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales)
+VALUES ('Product 17', 16.99, 3, 'M', 25, 'Brand Q', 'Black', '900g', '2023-10-21', true, 0);
 
-INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status)
-VALUES ('Producto 18', 24.75, 1, '500ml', 28, 'Marca R', 'Plateado', '1kg', '2023-10-22', true);
+-- Product 18
+INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales)
+VALUES ('Product 18', 24.75, 1, '500ml', 28, 'Brand R', 'Silver', '1kg', '2023-10-22', true, 0);
+
 
 
 -- Insertando órdenes
 INSERT INTO orders (user_id_user, payment_Method_id, delivery_Method, goods, payment_Status, order_Status, sum, description, date)
-VALUES (1, 1, 'Envío a domicilio', 'Productos varios', 0, 'En proceso', 150.00, 'Descripción de la orden 1', '2023-10-03');
+VALUES (1, 1, 'Envío a domicilio', 'Productos varios', 'Pending', 'En proceso', 150.00, 'Descripción de la orden 1', '2023-10-03');
 
 INSERT INTO orders (user_id_user, payment_Method_id, delivery_Method, goods, payment_Status, order_Status, sum, description, date)
-VALUES (1, 2, 'Recogida en tienda', 'Productos de electrónica', 1, 'Pendiente', 45, 'Descripción de la orden 2', '2023-10-04');
+VALUES (1, 2, 'Recogida en tienda', 'Productos de electrónica', 'Paid', 'Pendiente', 45, 'Descripción de la orden 2', '2023-10-04');
 
 
 -- Insertando líneas de recibo
