@@ -136,24 +136,16 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
     document.addEventListener('DOMContentLoaded', function () {
         var ctx = document.getElementById('monthlyRevenueChart').getContext('2d');
 
-        // Obtén los datos mensuales de ingresos, por ejemplo, desde tu backend
-        var monthlyData = [
-            {month: 'Month 1', revenue: 1000},
-            {month: 'Month 2', revenue: 1500},
-            // ... Agrega datos para los últimos 5 meses
-        ];
+        /* Obtén los datos mensuales de ingresos desde el modelo de Thymeleaf */
+        var monthlyData = /*[[${monthlyRevenueData}]]*/ {};
 
-        var labels = monthlyData.map(function (entry) {
-            return entry.month;
-        });
-
-        var data = monthlyData.map(function (entry) {
-            return entry.revenue;
-        });
+        var labels = Object.keys(monthlyData);
+        var data = Object.values(monthlyData);
 
         var chart = new Chart(ctx, {
             type: 'bar',
@@ -162,7 +154,7 @@
                 datasets: [{
                     label: 'Monthly Revenue',
                     data: data,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)', // Puedes cambiar el color según tu preferencia
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
                     borderColor: 'rgba(75, 192, 192, 1)',
                     borderWidth: 1
                 }]
@@ -176,7 +168,9 @@
             }
         });
     });
+    /*]]>*/
 </script>
+
 
 </body>
 </html>

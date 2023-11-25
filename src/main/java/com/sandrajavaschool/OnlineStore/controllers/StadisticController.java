@@ -4,14 +4,15 @@ import com.sandrajavaschool.OnlineStore.entities.Product;
 import com.sandrajavaschool.OnlineStore.entities.User;
 import com.sandrajavaschool.OnlineStore.service.implService.IStadisticService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
-@RestController
+@Controller
 @RequestMapping("/sales")
 @RequiredArgsConstructor
 public class StadisticController {
@@ -29,10 +30,14 @@ public class StadisticController {
         double monthlyRevenue = stadisticService.calculateMonthlyRevenue();
         double weeklyRevenue = stadisticService.calculateWeeklyRevenue();
 
+        Map<String, Double> monthlyRevenueData = stadisticService.calculateLast5MonthsRevenue();
+
+
         model.addAttribute("products", products);
         model.addAttribute("users", users);
         model.addAttribute("monthlyRevenue", monthlyRevenue);
         model.addAttribute("weeklyRevenue", weeklyRevenue);
+        model.addAttribute("monthlyRevenueData", monthlyRevenueData);
 
         return "sales/sales";
     }

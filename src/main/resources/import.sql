@@ -155,17 +155,4 @@ VALUES ('Product 18', 24.75, 1, '500ml', 28, 'Brand R', 'Silver', '1kg', '2023-1
 
 
 
--- Insertando órdenes
-INSERT INTO orders (user_id_user, payment_Method_id, delivery_Method, goods, payment_Status, order_Status, sum, description, date)
-VALUES (1, 1, 'Envío a domicilio', 'Productos varios', 'Pending', 'En proceso', 150.00, 'Descripción de la orden 1', '2023-10-03');
-
-INSERT INTO orders (user_id_user, payment_Method_id, delivery_Method, goods, payment_Status, order_Status, sum, description, date)
-VALUES (1, 2, 'Recogida en tienda', 'Productos de electrónica', 'Paid', 'Pendiente', 45, 'Descripción de la orden 2', '2023-10-04');
-
-
--- Insertando líneas de recibo
-INSERT INTO receipt_Lines (amount, product_id, order_id) VALUES (5, 1, 1);
-INSERT INTO receipt_Lines (amount, product_id, order_id) VALUES (3, 2, 2);
-INSERT INTO receipt_Lines (amount, product_id, order_id) VALUES (2, 3, 1);
-
 

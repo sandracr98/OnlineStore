@@ -53,6 +53,7 @@ public class Product implements Serializable {
     @JsonIgnore
     private List<ReceiptLine> receiptLine;
 
+
     @PrePersist
     public void prePersist() {
         date = new Date();

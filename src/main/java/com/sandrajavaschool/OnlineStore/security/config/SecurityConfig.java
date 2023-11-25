@@ -76,6 +76,7 @@ public class SecurityConfig {
                             .requestMatchers("/order/ordersList/**").hasRole("ADMIN")
                             .requestMatchers("/form/**").hasRole("ADMIN")
                             .requestMatchers("/create/**").hasRole("ADMIN")
+                            .requestMatchers("/sales/**").hasRole("ADMIN")
 
 
                             .anyRequest().authenticated();

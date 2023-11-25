@@ -255,12 +255,12 @@ public class OrderController {
 
             if (existingOrder == null || userService.findOne(id) == null) {
                 flash.addFlashAttribute("error", "Order does not exist in the database");
-                assert existingOrder != null;
-                return "redirect:/userDetails/" + existingOrder.getUser().getId();
+                return "redirect:/userDetails/" + (existingOrder != null ? existingOrder.getUser().getId() : "");
             }
 
             Order newOrder = new Order();
             newOrder.setUser(existingOrder.getUser());
+
 
             PaymentMethod paymentMethod = new PaymentMethod();
             newOrder.setPaymentMethod(paymentMethod);

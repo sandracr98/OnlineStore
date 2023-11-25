@@ -16,7 +16,9 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -59,6 +61,32 @@ public class StadisticService implements IStadisticService {
 
         return monthlyOrders.stream().mapToDouble(Order::getTotal).sum();
     }
+
+    public Map<String, Double> calculateLast5MonthsRevenue() {
+        Map<String, Double> last5MonthsRevenue = new LinkedHashMap<>();
+
+        // Obtén el primer día del mes actual
+        LocalDate startOfMonth = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
+
+        // Itera sobre los últimos 5 meses
+        for (int i = 0; i < 5; i++) {
+            // Obtén el último día del mes actual
+            LocalDate endOfMonth = startOfMonth.with(TemporalAdjusters.lastDayOfMonth());
+
+            // Obtén los pedidos para el mes actual
+            List<Order> monthlyOrders = orderService.findByDateBetween(startOfMonth, endOfMonth);
+
+            // Calcula el ingreso mensual y agrégalo al mapa
+            double monthlyRevenue = monthlyOrders.stream().mapToDouble(Order::getTotal).sum();
+            last5MonthsRevenue.put(startOfMonth.getMonth().toString(), monthlyRevenue);
+
+            // Avanza al mes anterior
+            startOfMonth = startOfMonth.minusMonths(1);
+        }
+
+        return last5MonthsRevenue;
+    }
+
 
     @Override
     public double calculateWeeklyRevenue() {
