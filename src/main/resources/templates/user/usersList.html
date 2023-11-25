@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body>
+
+<header th:replace="layout/layout :: header"></header>
+
+<div class="container py-4">
+
+    <div class="card bg-light">
+        <div class="card-header" th:text="${title}"></div>
+        <div class="card-body">
+
+            <div>
+                <a class="btn btn-success" th:href="@{/create}" th:text="'Create'"></a>
+            </div>
+            <br>
+
+            <table class="table table-striped  border border-success">
+                <thead class="thead-inverse">
+                <tr>
+                    <th>id</th>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Birthday</th>
+                    <th>Email</th>
+                    <th></th>
+                    <th></th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user: ${users}">
+
+                    <td><a class="btn btn-info btn-sm" th:text="${user.id}" th:href="@{/userDetails/} + ${user.id}"></a></td>
+                    <td th:text="${user.name}"></td>
+                    <td th:text="${user.surname}"></td>
+                    <td th:text="${user.birthdate}"></td>
+                    <td th:text="${user.email}"></td>
+
+                    <td>
+                        <a class="btn btn-primary btn-sm" th:href="@{/userDetails/} + ${user.id}" th:text="'Edit'"></a>
+                    </td>
+
+                    <td>
+                        <a class="btn btn-danger btn-sm" th:href="@{/delete/} + ${user.id}" th:text="'Delete'"></a>
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+
+            <nav th:replace="layout/paginator_nav :: paginator"></nav>
+
+        </div>
+    </div>
+
+</div>
+<br>
+<footer th:replace="layout/layout :: footer"></footer>
+
+
+</body>
+
+</html>

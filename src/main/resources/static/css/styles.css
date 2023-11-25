@@ -1,0 +1,18 @@
+.carousel-inner img {
+    max-width: 40%;
+    height: auto;
+}
+
+/* Cambiar el color de las flechas a negro */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: #000;
+}
+
+/* Cambiar el tamaño de las flechas */
+.carousel-control-prev {
+    font-size: 70px; /* Tamaño de la flecha */
+}
+
+
+

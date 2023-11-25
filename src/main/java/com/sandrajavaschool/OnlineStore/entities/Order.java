@@ -4,11 +4,11 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -27,26 +27,21 @@ public class Order implements Serializable {
     private User user;
 
 
-    @OneToOne(cascade = CascadeType.ALL,
-                fetch = FetchType.LAZY)
-    private ClientsAddress clientsAddress;
-
-
-    @OneToOne(cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "paymentMethod_id", referencedColumnName = "id_paymentMethod")
     private PaymentMethod paymentMethod;
 
 
-    @OneToMany(cascade = CascadeType.ALL,
-                fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL) //al estar en cascada en el controlador basta con agregar los items a la factura, y se guardará todo solo
     @JoinColumn(name = "order_id")
     private List<ReceiptLine> receiptLines;
 
 
     private String deliveryMethod;
     private String goods;
-    private Boolean paymentStatus;
-    private String orderStatus; //con un check box
+    private String paymentStatus;
+    private String orderStatus;
     private double sum;
     private String description;
 
@@ -56,9 +51,21 @@ public class Order implements Serializable {
     @Column(name = "date")
     private Date date;
 
+
+
     //this method let you to adding lines to the order
-    public void addReceiptLine(ReceiptLine receiptLine) {
-        this.receiptLines.add(receiptLine);
+    public void addReceiptLine(ReceiptLine line) {
+        if (this.receiptLines == null) {
+            this.receiptLines = new ArrayList<>();
+        }
+        this.receiptLines.add(line);
+    }
+
+    public void addReceiptLines(List<ReceiptLine> linesToAdd) {
+        if (this.receiptLines == null) {
+            this.receiptLines = new ArrayList<>();
+        }
+        this.receiptLines.addAll(linesToAdd);
     }
 
 
@@ -71,9 +78,10 @@ public class Order implements Serializable {
         int size = receiptLines.size();
 
         for (int i = 0; i < size; i++) {
-            total =+ receiptLines.get(i).importCalc();
+            total = total + receiptLines.get(i).importCalc();
         }
         return total;
+
     }
 
 
@@ -83,6 +91,9 @@ public class Order implements Serializable {
     public void prePersist() {
         date = new Date();
     }
+
+
+    private static final long serialVersionUID = 1L; // Puedes cambiar el número según sea necesario
 
 
 }

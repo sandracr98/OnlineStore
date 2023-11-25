@@ -1,16 +1,17 @@
 package com.sandrajavaschool.OnlineStore.entities;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Getter
@@ -25,32 +26,69 @@ public class User implements Serializable {
     @Column(name = "id_user", nullable = false)
     private Long id;
 
+    @NotNull
     private String name;
+
+
     private String surname;
-    private Date birthDate;
+
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    private Date birthdate;
+
+
+    @NotNull
+    @Column(length = 30,unique = true)
     private String email;
+
+    @NotNull
+    @Column(length = 60)
     private String pass;
 
-    @ManyToMany(mappedBy = "users",
-            cascade = {CascadeType.ALL},
+    @NotNull
+    private boolean enabled = true;
+
+
+    private String photo;
+
+    private double totalSpent;
+
+
+    @OneToMany(mappedBy = "user",
+            cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
-    private Set<Role> roles = new HashSet<>();
+    private List<ClientsAddress> clientsAddresses;
+
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @JoinTable(name = "Users_has_Roles",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id_user"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id_role"))
+    private List<Role> roles;
 
 
     @OneToMany(mappedBy = "user",
             cascade = {CascadeType.ALL},
             fetch = FetchType.LAZY)
-    private Set<Order> orders = new HashSet<>();
+    private List<Order> orders = new ArrayList<Order>();
 
 
-    public void addRole(Role role){
+    public void addRole(Role role) {
         roles.add(role);
         role.getUsers().add(this);
     }
 
     public void addOrder(Order order) {
         orders.add(order);
-        order.setUser(this);
     }
 
+    public void addAddress(ClientsAddress clientsAddress) {
+        clientsAddresses.add(clientsAddress);
+        clientsAddress.setUser(this);
+    }
+
+    @Override
+    public String toString() {
+        return  name + ' ' + surname;
+    }
 }

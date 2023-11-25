@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "paymentMethods")
+@Table(name = "payment_Methods")
 public class PaymentMethod implements Serializable {
 
     @Id
@@ -21,6 +21,9 @@ public class PaymentMethod implements Serializable {
     private Long id;
 
     private String type;
+
+    @OneToOne(mappedBy = "paymentMethod")
+    private Order order;
 
 
 }

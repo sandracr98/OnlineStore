@@ -6,9 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Getter
@@ -23,14 +24,11 @@ public class Role implements Serializable {
     @Column(name = "id_role", nullable = false)
     private Long id;
 
-    private String roleName;
+    private String name;
 
-    @ManyToMany //algún cascade?
-    @JoinTable(name = "Users_has_Roles",
-            joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id_role"),
-            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id_user"))
-    private Set<User> users = new HashSet<>();
 
+    @ManyToMany(mappedBy = "roles")
+    private List<User> users;
 
 
     public void addUsers(User user){

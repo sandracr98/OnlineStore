@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body>
+
+<header th:replace="layout/layout :: header"></header>
+
+<div class="container py-4">
+
+    <div class="card bg-light">
+        <div class="card-header" th:text="${title}"></div>
+
+        <div class="card-body">
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-12">
+
+
+                            <table class="table table-striped  border border-secondary">
+                                <thead class="thead-inverse">
+                                <tr>
+                                    <th colspan="3">TOP 10 PRODUCTS</th>
+                                </tr>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Price</th>
+                                    <th>Sales</th>
+
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                <tr th:each="product: ${products}">
+
+                                    <td th:text="${product.title}"></td>
+                                    <td th:text="${product.price}"></td>
+                                    <td th:text="${product.totalSales}"></td>
+
+
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <table class="table table-striped  border border-secondary">
+                                <thead class="thead-inverse">
+                                <tr>
+                                    <th colspan="4">TOP 10 CUSTOMERS</th>
+                                </tr>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Surname</th>
+                                    <th>Email</th>
+                                    <th>Total-Spent</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                <tr th:each="customer: ${users}">
+
+                                    <td th:text="${customer.name}"></td>
+                                    <td th:text="${customer.surname}"></td>
+                                    <td th:text="${customer.email}"></td>
+                                    <td th:text="${customer.totalSpent}"></td>
+
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-striped  border border-secondary">
+                                <thead class="thead-inverse">
+                                <tr>
+                                    <th colspan="1">Weekly Revenue</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                <tr>
+                                    <td th:text="${weeklyRevenue}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <table class="table table-striped  border border-secondary">
+
+                                <thead class="thead-inverse">
+                                <tr>
+                                    <th colspan="1">Monthly Revenue</th>
+                                </tr>
+                                </thead>
+                                <tr>
+                                    <td th:text="${monthlyRevenue}"></td>
+                                </tr>
+
+                            </table>
+
+                            <canvas id="monthlyRevenueChart" width="400" height="200"></canvas>
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<br>
+
+<footer th:replace="layout/layout :: footer"></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var ctx = document.getElementById('monthlyRevenueChart').getContext('2d');
+
+        // Obtén los datos mensuales de ingresos, por ejemplo, desde tu backend
+        var monthlyData = [
+            {month: 'Month 1', revenue: 1000},
+            {month: 'Month 2', revenue: 1500},
+            // ... Agrega datos para los últimos 5 meses
+        ];
+
+        var labels = monthlyData.map(function (entry) {
+            return entry.month;
+        });
+
+        var data = monthlyData.map(function (entry) {
+            return entry.revenue;
+        });
+
+        var chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Monthly Revenue',
+                    data: data,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)', // Puedes cambiar el color según tu preferencia
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

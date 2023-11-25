@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head th:replace="layout/layout :: head"></head>
+
+<body>
+
+<header th:replace="layout/layout :: header"></header>
+
+<div class="container py-4">
+    <div class="card bg-dark text-white">
+        <div class="card-header" th:text="${title}"></div>
+        <div class="card-body">
+
+            <form th:action="@{/category/saveCategory}" th:object="${category}" method="post" enctype="multipart/form-data">
+
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        <div class="card d-flex justify-content-center h-100">
+                            <div class="card-header" th:text="'Category'"></div>
+                            <div class="card-body align-items-center">
+
+                                <div class="form-group">
+                                    <label class="col-sm-6 col-form-label">Category name:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" th:field="*{name}"
+                                               th:errorclass="'form-control alert-danger'"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-6 col-form-label">Category Status:</label>
+                                    <div class="col-sm-6">
+                                        <select id="status" name="brand" th:field="*{status}">
+                                            <option value="">Choose an option...</option>
+                                            <option value="ACTIVE">ACTIVE</option>
+                                            <option value="INACTIVE">INACTIVE</option>
+                                            <option value="REMOVED">REMOVED</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col-md-12 text-center">
+                        <input type="submit" value="Save" class="btn btn-secondary"/>
+                    </div>
+                </div>
+
+                <input type="hidden" th:field="*{id}">
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="layout/layout :: footer"></footer>
+
+
+</body>
+</html>

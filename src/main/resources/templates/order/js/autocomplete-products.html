@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+
+<script type="text/javascript" th:fragment="javascript">
+
+    $(document).ready(function () {
+
+        loadStoredProducts();
+
+        $("#search_product").autocomplete({
+
+            source: function (request, response) {
+                $.ajax({
+                    url: "/order/load-products/" + request.term,
+                    dataType: "json",
+                    data: {
+                        term: request.term
+                    },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                value: item.id,
+                                label: item.title,
+                                price: item.price,
+                            }
+                        }));
+                    },
+                });
+            },
+
+            select: function (event, ui) {
+
+                if (itemsHelper.hasProduct(ui.item.value)) {
+                    itemsHelper.addAmount(ui.item.value, ui.item.price);
+                    return false;
+                }
+
+                var line = $("#itemsLineTable").html();
+
+                line = line.replace(/{ID}/g, ui.item.value);
+                line = line.replace(/{TITLE}/g, ui.item.label);
+                line = line.replace(/{PRICE}/g, ui.item.price);
+
+                $("#itemTable tbody").append(line);
+
+                itemsHelper.importCalc(ui.item.value, ui.item.price, 1);
+
+                storeProductLocally(ui.item.value, ui.item.label, ui.item.price, 1);
+
+                return false;
+            }
+
+        });
+
+        function agregarAlCarrito(id, label, price) {
+            if (itemsHelper.hasProduct(id)) {
+                itemsHelper.addAmount(id, price);
+                return;
+            }
+
+            var line = $("#itemsLineTable tr").clone();
+            line.attr("id", "row_" + id);
+            line.find('input[name="item_id[]"]').val(id);
+            line.find('.title').text(label);
+            line.find('.price').text(price);
+
+            $("#itemTable tbody").append(line);
+            itemsHelper.importCalc(id, price, 1);
+        }
+
+
+
+        $("form").submit(function () {
+            $("#itemsLineTable").remove();
+            return;
+        });
+
+    });
+
+    var itemsHelper = {
+
+        importCalc: function (id, price, amount) {
+            var total = parseFloat(price) * parseFloat(amount);
+
+            total = parseFloat(total.toFixed(2));
+
+            $("#total_" + id).html(total);
+            this.totalImportCalc();
+
+            // Puedes usar 'total' en otros cálculos aquí
+        },
+
+        hasProduct: function (id) {
+
+            var result = false;
+
+            $('input[name="item_id[]"]').each(function () {
+                if (parseInt(id) === parseInt($(this).val())) {
+                    result = true;
+                }
+            });
+
+            return result;
+        },
+
+        addAmount: function (id, price) {
+
+            var amount = $("#amount_" + id).val() ? parseInt($("#amount_" + id).val()) : 0;
+            $("#amount_" + id).val(++amount);
+
+            this.importCalc(id, price, amount);
+
+        },
+
+
+        deleteItemLine: function (id) {
+            $("#row_" + id).remove();
+            this.totalImportCalc();
+            deleteProductLocally(id);
+
+        },
+
+        totalImportCalc: function () {
+
+            var total = 0;
+
+            $('span[id^="total_"]').each(function () {
+
+                total += parseFloat($(this).html());
+            });
+
+            total = total.toFixed(2);
+
+            $('#gran_total').html(total);
+
+        }
+
+
+    }
+
+    function loadStoredProducts() {
+        var storedProducts = localStorage.getItem('storedProducts');
+
+        if (storedProducts) {
+            storedProducts = JSON.parse(storedProducts);
+
+            // Agregar productos almacenados a la tabla
+            $.each(storedProducts, function (index, product) {
+                var line = $("#itemsLineTable").html();
+
+                line = line.replace(/{ID}/g, product.id);
+                line = line.replace(/{TITLE}/g, product.title);
+                line = line.replace(/{PRICE}/g, product.price);
+
+                // Añadir la cantidad al HTML
+                line = line.replace(/{AMOUNT}/g, product.amount);
+
+                $("#itemTable tbody").append(line);
+
+                // Ejecutar importCalc con la cantidad almacenada
+                itemsHelper.importCalc(product.id, product.price, product.amount);
+            });
+        }
+    }
+    function storeProductLocally(id, title, price, amount) {
+        var storedProducts = localStorage.getItem('storedProducts') || '[]';
+        storedProducts = JSON.parse(storedProducts);
+
+        // Verificar si el producto ya está almacenado
+        var existingProductIndex = storedProducts.findIndex(function (product) {
+            return product.id === id;
+        });
+
+        if (existingProductIndex !== -1) {
+            // Incrementar la cantidad si el producto ya existe
+            storedProducts[existingProductIndex].amount += amount;
+        } else {
+            // Agregar nuevo producto
+            storedProducts.push({ id: id, title: title, price: price, amount: amount });
+        }
+
+        // Guardar en el localStorage
+        localStorage.setItem('storedProducts', JSON.stringify(storedProducts));
+    }
+
+    function deleteProductLocally(id) {
+        var storedProducts = localStorage.getItem('storedProducts') || '[]';
+        storedProducts = JSON.parse(storedProducts);
+
+        // Encontrar el índice del producto en el arreglo almacenado
+        var existingProductIndex = storedProducts.findIndex(function (product) {
+            return product.id === id;
+        });
+
+        if (existingProductIndex !== -1) {
+            // Eliminar el producto del arreglo
+            storedProducts.splice(existingProductIndex, 1);
+
+            // Actualizar el localStorage
+            localStorage.setItem('storedProducts', JSON.stringify(storedProducts));
+        }
+    }
+
+
+</script>
+
+
+<!--itemsHelper es un objeto con algunos metodos de ayuda, como calcular el total
+ eliminar una linea de la factura, incrementar la cantidad cada vez que se
+ crea una linea etc -->
+
+<!-- el metodo hasProduct se encarga de buscar item por item en la linea de factura
+ para ver si hay un repetido y asi incrementar la cantidad y no ponerlo 2 veces-->
+
+<!-- el metodo addAmount, incrementa la cantidad de un producto si es encontrado
+1. validamos si la cantidad contiene un valor numerico, seria el id que pasamos por parametro y
+si tiene cantidad se pasa a integer y se la asignamos a la variable cantidad, si no retornamos un 0-->
+
+<!-- en la linea 98 asignamos el gran total al span de la linea del html correspondiente para que se
+pueda iterar y calcular el importe total-->
+
+<!--La linea 57 ("form") es muy importante porque hace que una vez la factura este guardada
+y queramos verla no se guarden las lineas de id y de cantidad, que dará error pq chocan,
+lo que hace es eliminar el t-body del products-lines y así se muestra tal cual-->
+
+
+
+</body>
+</html>

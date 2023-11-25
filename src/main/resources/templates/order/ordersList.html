@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body>
+
+<header th:replace="layout/layout :: header"></header>
+
+<div class="container py-4">
+
+    <div class="card bg-light">
+        <div class="card-header" th:text="'Orders List'"></div>
+
+        <div class="card-body">
+
+            <table class="table table-striped  border border-success">
+                <thead class="thead-inverse">
+                <tr>
+                    <th>User</th>
+                    <th>Order Status</th>
+                    <th>Payment method</th>
+                    <th>Payment Status</th>
+                    <th>Total</th>
+                    <th>Date</th>
+                    <th>Edit</th>
+
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="order: ${orders}">
+
+                    <td th:text="${order.user}"></td>
+                    <td th:text="${order.orderStatus}"></td>
+                    <td th:if="${order.paymentMethod != null}" th:text="${order.paymentMethod.type}"></td>
+                    <td th:text="${order.paymentStatus}"></td>
+                    <td th:text="${order.sum}"></td>
+                    <td th:text="${order.date}"></td>
+
+                    <td>
+                        <a class="btn btn-primary btn-sm" th:href="@{/order/orderDetails/} + ${order.id}"
+                           th:text="'Edit'"></a>
+                    </td>
+
+                </tr>
+
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+</div>
+
+<footer th:replace="layout/layout :: footer"></footer>
+
+
+</body>
+</html>

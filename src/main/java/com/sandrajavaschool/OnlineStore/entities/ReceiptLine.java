@@ -13,14 +13,13 @@ import java.io.Serializable;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "receiptLines")
+@Table(name = "receipt_Lines")
 public class ReceiptLine implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id_receiptLine", nullable = false)
     private Long id;
-
 
     private Integer amount;
 
@@ -34,3 +33,4 @@ public class ReceiptLine implements Serializable {
     }
 
 }
+

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/layout :: head"></head>
+
+<body>
+
+<header th:replace="layout/layout :: header"></header>
+
+<div class="container py-4">
+    <div class="card bg-dark text-white">
+        <div class="card-header" th:text="${title}"></div>
+        <div class="card-body">
+
+            <table class="table table-striped  border border-success">
+
+                <h4 class="card-title">
+                    <a class="btn btn-success btn-xs" th:text="'View shopping cart'"
+                       th:href="@{/order/receipt/} + ${user.id}"></a></td>
+                </h4>
+
+                <tbody>
+
+                <ul class="list-group">
+                    <li class="list-group-item" th:text="${user.name}"></li>
+                    <li class="list-group-item" th:text="${user.surname}"></li>
+                    <li class="list-group-item" th:text="${user.email}"></li>
+                    <li class="list-group-item" th:text="${user.birthdate}"></li>
+                    <li class="list-group-item" th:text="${user.pass}"></li>
+                    <li class="list-group-item">
+                        <ul class="list-group" th:each="role : ${user.roles}" th:text="${role.name}"></ul>
+                    </li>
+                </ul>
+                </tbody>
+            </table>
+
+            <a class="btn btn-secondary btn-sm" th:href="@{/view/} + ${user.id}" th:text="'Edit'"></a>
+
+
+
+            <table class="table table-bordered table-striped my-4">
+
+                <thead class="thead-dark">
+                <tr>
+                    <th>country</th>
+                    <th>city</th>
+                    <th>postal Code</th>
+                    <th>street</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="address: ${user.clientsAddresses}">
+                    <td th:text="${address.country}"></td>
+                    <td th:text="${address.city}"></td>
+                    <td th:text="${address.postal_code}"></td>
+                    <td th:text="${address.street}"></td>
+                    <td><a class="btn btn-danger btn-xs" th:href="@{'/address/delete/' + ${address.id}}" th:text="'Delete'"
+                           onclick="return confirm('Are you sure do you want to delete this address?')"></a></td>
+
+                    <td><a class="btn btn-primary btn-xs" th:href="@{'/address/edit/' + ${address.id}}"
+                           th:text="'Edit Address'"></a></td>
+
+                </tr>
+                </tbody>
+
+            </table>
+
+            <a class="btn btn-secondary btn-sm" th:href="@{/address/create/} + ${user.id}" th:text="'Add Address'"></a>
+
+            <div th:if="${#lists.isEmpty(user.orders)}" class="alert alert-info my-4"
+                 th:text="'There is no orders for this client'"></div>
+
+            <table th:if="${not #lists.isEmpty(user.orders)}"
+                   class="table table-bordered table-striped my-4">
+
+                <thead class="thead-dark">
+                <tr>
+                    <th>File</th>
+                    <th>Description</th>
+                    <th>Date</th>
+                    <th>Order Status</th>
+                    <th>Total</th>
+                    <th>Order view</th>
+                    <th sec:authorize="hasRole('ROLE_ADMIN')">Delete</th>
+                    <th sec:authorize="hasRole('ROLE_USER')">Reorder</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="order: ${user.orders}">
+                    <td th:text="${order.id}"></td>
+                    <td th:text="${order.description}"></td>
+                    <td th:text="${order.date}"></td>
+                    <td>
+                        <span th:if="${order.orderStatus == null}">Pending verification</span>
+                        <span th:if="${order.orderStatus != null}" th:text="${order.orderStatus}"></span>
+                    </td>
+
+                    <td th:text="${order.total}"></td>
+
+                    <td><a class="btn btn-primary btn-xs" th:href="@{'/order/viewReceipt/' + ${order.id}}"
+                           th:text="'Detail'"></a></td>
+
+                    <td sec:authorize="hasRole('ROLE_ADMIN')">
+                        <a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-danger btn-xs" th:href="@{'/order/delete/' + ${order.id}}" th:text="'Delete'"
+                           onclick="return confirm('Are you sure do you want to delete this order?')">
+                        </a>
+                    </td>
+
+                    <td sec:authorize="hasRole('ROLE_USER')">
+                        <a sec:authorize="hasRole('ROLE_USER')" class="btn btn-secondary btn-xs" th:href="@{'/order/reorder/' + ${order.id}}"
+                           th:text="'Reorder'">
+                        </a>
+                    </td>
+
+                </tr>
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+</div>
+
+<footer th:replace="layout/layout :: footer"></footer>
+
+
+</body>
+</html>

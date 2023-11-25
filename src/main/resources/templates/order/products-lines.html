@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<!-- es una plantilla que queda oculta, luego con js reemplazamos los valores y los mostramos -->
+
+<table th:fragment="productsLines" class="d-none">
+
+
+    <tbody id="itemsLineTable">
+
+    <tr id="row_{ID}">
+        <td class="d-none"><input type="hidden" value="{ID}" name="item_id[]"></td>
+        <td class="title">{TITLE}</td>
+        <td class="price">{PRICE}</td>
+        <td><input type="number" value="1" name="amount[]" id="amount_{ID}"
+                   class="form-control col-sm-4"
+                   onchange="itemsHelper.importCalc({ID}, {PRICE}, this.value);"></td>
+
+        <td><span id="total_{ID}">0</span></td>
+        <td><a href="#" class="btn btn-danger btn-xs" onclick="itemsHelper.deleteItemLine({ID});">x</a></td>
+    </tr>
+
+    </tbody>
+
+</table>
+
+
+</body>
+</html>

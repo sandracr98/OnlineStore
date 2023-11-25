@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+
+<body>
+
+<header th:replace="layout/layout :: header"></header>
+
+<div class="container py-4">
+    <div class="card bg-light">
+        <div class="card-header" th:text="${title}"></div>
+        <div class="card-body">
+
+            <h4 class="card-title">
+                <a th:href="@{'/userDetails/' + ${order.user.id}}" class="btn btn-light btn-xs">Back</a>
+            </h4>
+
+            <ul class="list-group my-2">
+                <li class="list-group-item list-group-item-primary" th:text="'User details'"></li>
+                <li class="list-group-item" th:text="${order.user}"></li>
+                <li class="list-group-item" th:text="${order.user.email}"></li>
+            </ul>
+
+            <ul class="list-group my-2">
+                <li class="list-group-item list-group-item-success" th:text="'Order details'"></li>
+                <li class="list-group-item" th:text="'Order: ' + ${order.id}"></li>
+                <li class="list-group-item" th:text="'Description: ' + ${order.description}"></li>
+                <li class="list-group-item" th:text="'Date: ' + ${order.date}"></li>
+                <li class="list-group-item" th:text="'Order Status: ' + ${order.deliveryMethod}"></li>
+                <li class="list-group-item" th:text="'Payment Status: ' + ${order.paymentStatus}"></li>
+                <li class="list-group-item" th:text="'Payment Method: ' + ${order.paymentMethod.type}"></li>
+
+            </ul>
+
+            <div class="alert alert-info my-4" th:if="${#lists.isEmpty(order.receiptLines)}"
+                 th:text="'There are no receipt lines'"></div>
+
+            <table class="table table-striped table-hover table-bordered my-4"
+                   th:if="${not  #lists.isEmpty(order.receiptLines)}">
+                <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Amount</th>
+                    <th>Total</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="line: ${order.receiptLines}">
+                    <td th:text="${line.product.title}"></td>
+                    <td th:text="${line.product.price}"></td>
+                    <td th:text="${line.amount}"></td>
+                    <td th:text="${line.importCalc()}"></td>
+                </tr>
+                </tbody>
+            </table>
+
+            <h5 class="float-right">Total: <span th:text="${order.total}" class="badge badge-secondary"></span></h5>
+
+            <div class="card border-info mb-4" style="max-width: 20rem;">
+                <div class="card-header">Observations</div>
+                <div class="card-body">
+                    <p class="card-text" th:text="${order.description}"
+                       th:if="${ not #strings.isEmpty(order.description)}"></p>
+                    <h4 class="card-title" th:if="${#strings.isEmpty(order.description)}"
+                        th:text="'There is no observations'"></h4>
+                </div>
+            </div>
+            <div class="card border-info mb-4" style="max-width: 20rem;">
+                <div class="card-header">Payment Status</div>
+                <div class="card-body">
+                    <p class="card-text" th:text="${order.orderStatus}"
+                       th:if="${ not #strings.isEmpty(order.orderStatus)}"></p>
+                    <h4 class="card-title" th:if="${#strings.isEmpty(order.orderStatus)}"
+                        th:text="'The order has not been processed yet'"></h4>
+                </div>
+            </div>
+
+            <a th:href="@{'/userDetails/' + ${order.user.id}}" class="btn btn-light btn-xs">Back</a>
+
+
+        </div>
+    </div>
+
+
+</div>
+
+<footer th:replace="layout/layout :: footer"></footer>
+
+</body>
+</html>

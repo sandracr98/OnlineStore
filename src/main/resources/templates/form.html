@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+
+<body>
+
+<header th:replace="layout/layout :: header"></header>
+
+<div class="container py-4">
+
+
+
+</div>
+
+<footer th:replace="layout/layout :: footer"></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"
+        integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+
+</body>
+</html>
+
+
+<div class="col-m-6 form-group">
+    <label class="col-sm-6 col-form-label">Country</label>
+    <div class="col-sm-6">
+        <input type="text" th:field="${clientsAddress.country}"
+               th:errorclass="'form-control alert-danger'"/>
+    </div>
+</div>
+
+<div class="col-m-6 form-group">
+    <label class="col-sm-6 col-form-label">City</label>
+    <div class="col-sm-6">
+        <input type="text" th:field="${clientsAddress.city}"
+               th:errorclass="'form-control alert-danger'"/>
+    </div>
+</div>
+
+<div class="col-m-6 form-group">
+    <label class="col-sm-6 col-form-label">Postal Code</label>
+    <div class="col-sm-6">
+        <input type="text" th:field="${clientsAddress.postal_code}"
+               th:errorclass="'form-control alert-danger'"/>
+    </div>
+</div>
+
+<div class="col-m-6 form-group">
+    <label class="col-sm-6 col-form-label">Street</label>
+    <div class="col-sm-6">
+        <input type="text" th:field="${clientsAddress.street}"
+               th:errorclass="'form-control alert-danger'"/>
+    </div>
+</div>
+
+<div class="col-m-6 form-group">
+    <label class="col-sm-6 col-form-label">Home</label>
+    <div class="col-sm-6">
+        <input type="text" th:field="${clientsAddress.home}"
+               th:errorclass="'form-control alert-danger'"/>
+    </div>
+</div>
+
+<div class="col-m-6 form-group">
+    <label class="col-sm-6 col-form-label">Apartment</label>
+    <div class="col-sm-6">
+        <input type="text" th:field="${clientsAddress.apartment}"
+               th:errorclass="'form-control alert-danger'"/>
+    </div>
+</div>
+
+
+<div class="form-group row">
+    <div class="col-sm-8">
+        <div class="row">
+
+            <div class="col-md-3">
+                <label for="priceFilter">Price:</label>
+                <select class="form-select" id="priceFilter">
+                    <option value="all">All</option>
+                    <option value="low">Low to High</option>
+                    <option value="high">High to Low</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="categoryFilter">Category:</label>
+                <select class="form-select" id="categoryFilter">
+                    <option value="all">All</option>
+                    <option value="electronics">Electronics</option>
+                    <option value="clothing">Clothing</option>
+                    <option value="home">Home</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="brandFilter">Brand:</label>
+                <select class="form-select" id="brandFilter">
+                    <option value="all">All</option>
+                    <option value="brandA">Brand A</option>
+                    <option value="brandB">Brand B</option>
+                    <option value="brandC">Brand C</option>
+                    <option value="brandD">Brand D</option>
+                    <option value="brandE">Brand E</option>
+                    <option value="brandF">Brand F</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="colorFilter">Color:</label>
+                <select class="form-select" id="colorFilter">
+                    <option value="all">All</option>
+                    <option value="white">White</option>
+                    <option value="Black">Black</option>
+                    <option value="blue">Blue</option>
+                    <option value="red">Red</option>
+                    <option value="green">Green</option>
+
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="form-group row">
+    <div class="col-sm-4">
+        <button class="btn btn-primary" onclick="applyFilters()">Apply Filters</button>
+    </div>
+</div>

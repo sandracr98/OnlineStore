@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/layout :: head"></head>
+<body>
+
+<header th:replace="layout/layout :: header"></header>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+
+<div class="container py-4">
+
+    <div class="card bg-light">
+        <div class="card-header" th:text="${title}"></div>
+
+        <div class="card-body">
+
+            <div>
+                <a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-success" th:href="@{/createProduct}" th:text="'Create'"></a>
+            </div>
+
+
+            <form class="form-group" th:action="@{/productsList}">
+                <div class="row">
+
+                    <label for="term" class="col-sm-2 col-form-label" th:text="'Search Product'"></label>
+
+                    <div class="col-sm-4">
+                        <input type="text" name="term" id="term" class="form-control"
+                               th:value="${term}"/>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <input type="submit" class="btn btn-info" value="Search">
+                        <input type="button" class="btn btn-secondary" value="Clear" onclick="clearTerms()">
+                    </div>
+
+                </div>
+            </form>
+            <br>
+
+
+            <table class="table table-striped  border border-success">
+                <thead class="thead-inverse">
+                <tr>
+                    <th sec:authorize="hasRole('ROLE_USER')">id</th>
+                    <th>Title</th>
+                    <th>Price</th>
+                    <th>Category</th>
+                    <th>Volume</th>
+                    <th>Stock</th>
+                    <th>Brand</th>
+                    <th>Color</th>
+                    <th>Weight</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+                    <th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+                    <th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="product: ${products}">
+
+                    <td sec:authorize="hasRole('ROLE_USER')" th:text="${product.id}"></td>
+                    <td th:text="${product.title}"></td>
+                    <td th:text="${product.price}"></td>
+                    <td th:text="${product.category.name}"></td>
+                    <td th:text="${product.volume}"></td>
+                    <td th:text="${product.stock}"></td>
+                    <td th:text="${product.brand}"></td>
+                    <td th:text="${product.color}"></td>
+                    <td th:text="${product.weight}"></td>
+                    <td th:text="${product.date}"></td>
+                    <td th:text="${product.status}"></td>
+
+
+                    <td>
+                        <button type="button" onclick="agregarAlCarrito({id}, {label}, {price})">
+                            Buy
+                        </button>
+                    </td>
+
+
+                    <td>
+                        <a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-primary btn-sm" th:href="@{/editProduct/} + ${product.id}"
+                           th:text="'Edit'"></a>
+                    </td>
+
+                    <td>
+                        <a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-danger btn-sm" th:href="@{/deleteProduct/} + ${product.id}"
+                           th:text="'Delete'" onclick="return confirm('Are you sure do you want to delete this product? ' +
+                            'If this product is associated with a product, its status will be changed to removed, but it will persist in the database.')"></a>
+                    </td>
+
+                </tr>
+
+
+                </tbody>
+
+            </table>
+
+            <nav th:replace="layout/paginator_nav :: paginator"></nav>
+        </div>
+
+    </div>
+</div>
+
+<footer th:replace="layout/layout :: footer"></footer>
+
+<script th:replace="product/js/clearFilter :: clearFilter"></script>
+
+</body>
+</html>
