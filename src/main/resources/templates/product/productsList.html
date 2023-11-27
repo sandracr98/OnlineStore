@@ -39,7 +39,7 @@
             <br>
 
 
-            <table class="table table-striped  border border-success">
+            <table class="table table-striped  border border-secondary">
                 <thead class="thead-inverse">
                 <tr>
                     <th sec:authorize="hasRole('ROLE_USER')">id</th>
@@ -53,7 +53,7 @@
                     <th>Weight</th>
                     <th>Date</th>
                     <th>Status</th>
-                    <th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+                    <th></th>
                     <th sec:authorize="hasRole('ROLE_ADMIN')"></th>
                     <th sec:authorize="hasRole('ROLE_ADMIN')"></th>
 
@@ -77,7 +77,11 @@
 
 
                     <td>
-                        <button type="button" onclick="agregarAlCarrito({id}, {label}, {price})">
+                        <button class="buyButton" type="button"
+                                data-id="${product.id}"
+                                data-title="${product.title}"
+                                data-price="${product.price}"
+                                onclick="handleBuyButtonClick(this)">
                             Buy
                         </button>
                     </td>
@@ -110,6 +114,8 @@
 <footer th:replace="layout/layout :: footer"></footer>
 
 <script th:replace="product/js/clearFilter :: clearFilter"></script>
+<script th:replace="order/js/autocomplete-products :: javascript"></script>
+
 
 </body>
 </html>

@@ -5,6 +5,37 @@
 
 <script type="text/javascript" th:fragment="javascript">
 
+    function handleBuyButtonClick(button) {
+
+        loadStoredProducts();
+
+
+        var productId = $(button).data('id');
+        var productName = $(button).data('title');
+        var productPrice = $(button).data('price');
+
+
+        if (itemsHelper.hasProduct(productId)) {
+            itemsHelper.addAmount(productId, productPrice);
+            return false;
+        }
+
+
+        var line = $("#itemsLineTable").html();
+
+        line = line.replace(/{ID}/g, productId);
+        line = line.replace(/{TITLE}/g, productName);
+        line = line.replace(/{PRICE}/g, productPrice);
+
+        $("#itemTable tbody").append(line);
+
+        itemsHelper.importCalc(productId, productPrice, 1);
+        storeProductLocally(productId, productName, productPrice, 1);
+
+        return false;
+
+    }
+
     $(document).ready(function () {
 
         loadStoredProducts();
@@ -54,23 +85,6 @@
 
         });
 
-        function agregarAlCarrito(id, label, price) {
-            if (itemsHelper.hasProduct(id)) {
-                itemsHelper.addAmount(id, price);
-                return;
-            }
-
-            var line = $("#itemsLineTable tr").clone();
-            line.attr("id", "row_" + id);
-            line.find('input[name="item_id[]"]').val(id);
-            line.find('.title').text(label);
-            line.find('.price').text(price);
-
-            $("#itemTable tbody").append(line);
-            itemsHelper.importCalc(id, price, 1);
-        }
-
-
 
         $("form").submit(function () {
             $("#itemsLineTable").remove();
@@ -78,6 +92,8 @@
         });
 
     });
+
+
 
     var itemsHelper = {
 
@@ -141,6 +157,7 @@
     }
 
     function loadStoredProducts() {
+
         var storedProducts = localStorage.getItem('storedProducts');
 
         if (storedProducts) {
