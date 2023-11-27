@@ -72,7 +72,7 @@
                     <li sec:authorize="isAuthenticated()">
 
                         <form id="logout" th:action="@{/logout}" method="post">
-                            <button class="text-white" onclick="document.getElementById('logout').submit();"
+                            <button class="text-white"
                                     type="submit">Sign out
                             </button>
                         </form>
@@ -87,6 +87,17 @@
                     </li>
 
                     <script>
+                        document.getElementById('logout').addEventListener('submit', function(event) {
+                            // Prevenir el envío del formulario para dar tiempo a ejecutar la función logout()
+                            event.preventDefault();
+
+                            // Llamar a la función logout()
+                            logout();
+
+                            // Enviar el formulario después de ejecutar la función logout()
+                            this.submit();
+                        });
+
                         function logout() {
                             // Borrar el token almacenado (puede ser en localStorage, sessionStorage, o cookies)
                             localStorage.removeItem('jwtToken');
