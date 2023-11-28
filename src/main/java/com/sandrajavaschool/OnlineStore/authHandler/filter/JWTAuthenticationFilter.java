@@ -88,18 +88,16 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         String token = jwtService.create(authResult);
 
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.setContentType("application/json");
         response.addHeader(JWTServiceImpl.HEADER_STRING, JWTServiceImpl.TOKEN_PREFIX + token);
 
-        Map<String, Object> body = new HashMap<String, Object>();
+        Map<String, Object> body = new HashMap<>();
         body.put("token", token);
         body.put("user", (User) authResult.getPrincipal());
-        body.put("message", String.format("Hello %s, you have login successfully", authResult.getName()));
+        body.put("message", String.format("Hello %s, you have logged in successfully", authResult.getName()));
 
-        //lo transforma del tipo mapper a json
         response.getWriter().write(new ObjectMapper().writeValueAsString(body));
-
-        response.setStatus(200);
-        response.setContentType("application/json");
 
     }
 
@@ -109,13 +107,14 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                               AuthenticationException failed)
             throws IOException, ServletException {
 
-        Map<String, Object> body = new HashMap<String, Object>();
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType("application/json");
+
+        Map<String, Object> body = new HashMap<>();
         body.put("message", "Authentication error: your email or password is incorrect");
         body.put("error", failed.getMessage());
 
         response.getWriter().write(new ObjectMapper().writeValueAsString(body));
-        response.setStatus(401);
-        response.setContentType("application/json");
 
 
     }

@@ -1,5 +1,6 @@
 package com.sandrajavaschool.OnlineStore.controllers;
 import com.sandrajavaschool.OnlineStore.dao.IRoleDao;
+import com.sandrajavaschool.OnlineStore.dao.IUserDao;
 import com.sandrajavaschool.OnlineStore.entities.Role;
 import com.sandrajavaschool.OnlineStore.entities.User;
 import com.sandrajavaschool.OnlineStore.paginator.PageRender;
@@ -12,8 +13,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,6 +45,7 @@ public class UserController {
     final private IUserService userService;
     private final PasswordEncoder passwordEncoder;
     private final IRoleDao roleDao;
+    private final IUserDao userDao;
 
 
 
@@ -68,11 +68,6 @@ public class UserController {
                        Authentication authentication) {
 
         model.addAttribute("title", "Users List");
-
-        //PARA VALIDAR EL ROL ++++
-
-
-
 
         Pageable pageRequest = PageRequest.of(page, 8);
         Page<User> users = userService.findAll(pageRequest);
@@ -151,7 +146,7 @@ public class UserController {
     @PostMapping(value = "/save")
     public String save(@ModelAttribute User user,
                        //@RequestParam("file") MultipartFile photo,
-                       RedirectAttributes flash) {
+                       Model model) {
 /*
         if (!photo.isEmpty()) {
 
@@ -170,8 +165,13 @@ public class UserController {
         }
 
  */
+        if (userDao.existsByEmail(user.getEmail())) {
+            String message = "The user already exist";
+            model.addAttribute("error", message);
+            return "user/signup";
+        }
 
-        String flashmessage = "Congratulation! You have an account";
+        String message = "Congratulation! You have an account";
 
         user.setPass(passwordEncoder.encode(user.getPass()));
 
@@ -180,13 +180,7 @@ public class UserController {
 
         userService.save(user);
 
-        flash.addFlashAttribute("success", flashmessage);
-
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                user.getEmail(), user.getPass());
-
-        SecurityContextHolder.getContext().setAuthentication(authToken);
-
+        model.addAttribute("success", message);
 
         return "redirect:/order/receipt";
     }

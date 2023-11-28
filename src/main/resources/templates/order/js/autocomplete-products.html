@@ -23,9 +23,13 @@
 
         var line = $("#itemsLineTable").html();
 
-        line = line.replace(/{ID}/g, productId);
-        line = line.replace(/{TITLE}/g, productName);
-        line = line.replace(/{PRICE}/g, productPrice);
+        if (line) {
+            line = line.replace(/{ID}/g, productId);
+            line = line.replace(/{TITLE}/g, productName);
+            line = line.replace(/{PRICE}/g, productPrice);
+        } else {
+            console.error("La línea HTML es undefined o null.");
+        }
 
         $("#itemTable tbody").append(line);
 
