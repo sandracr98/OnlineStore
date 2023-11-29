@@ -33,11 +33,11 @@ public class LoginController {
         }
 
         if (error != null) {
-            model.addAttribute("error", "The username or password you entered is incorrect. Please double-check and try again.");
+            flash.addFlashAttribute("error", "The username or password you entered is incorrect. Please double-check and try again.");
         }
 
         if(logout != null) {
-            model.addAttribute("success", "You have logged out successfully");
+            flash.addFlashAttribute("success", "You have logged out successfully");
         }
 
         model.addAttribute("loginDto", new LoginDto());

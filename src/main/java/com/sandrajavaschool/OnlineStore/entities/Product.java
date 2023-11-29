@@ -33,7 +33,9 @@ public class Product implements Serializable {
     private String color;
     private String weight;
 
-    private Integer totalSales;
+    private String photo;
+
+    private Integer totalSales = 0;
 
     private boolean status;
 

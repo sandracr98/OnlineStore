@@ -11,6 +11,8 @@
         <div class="card-header" th:text="${title}"></div>
         <div class="card-body">
 
+
+
             <table class="table table-striped  border border-success">
 
                 <h4 class="card-title">
@@ -20,15 +22,16 @@
 
                 <tbody>
 
+                <img th:if="${user.photo != null}"
+                     class="img-thumbnail rounded float-left" style="max-width: 25%;"
+                     th:src="@{'/uploads/' + ${user.photo}}" th:alt="${user.photo}"/>
+
                 <ul class="list-group">
                     <li class="list-group-item" th:text="${user.name}"></li>
                     <li class="list-group-item" th:text="${user.surname}"></li>
                     <li class="list-group-item" th:text="${user.email}"></li>
                     <li class="list-group-item" th:text="${user.birthdate}"></li>
-                    <li class="list-group-item" th:text="${user.pass}"></li>
-                    <li class="list-group-item">
-                        <ul class="list-group" th:each="role : ${user.roles}" th:text="${role.name}"></ul>
-                    </li>
+                    <li sec:authorize="hasRole('ROLE_USER')" class="list-group-item" th:text="${user.pass}"></li>
                 </ul>
                 </tbody>
             </table>

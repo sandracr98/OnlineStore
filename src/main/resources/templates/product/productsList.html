@@ -39,71 +39,44 @@
             <br>
 
 
-            <table class="table table-striped  border border-secondary">
-                <thead class="thead-inverse">
-                <tr>
-                    <th sec:authorize="hasRole('ROLE_USER')">id</th>
-                    <th>Title</th>
-                    <th>Price</th>
-                    <th>Category</th>
-                    <th>Volume</th>
-                    <th>Stock</th>
-                    <th>Brand</th>
-                    <th>Color</th>
-                    <th>Weight</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th></th>
-                    <th sec:authorize="hasRole('ROLE_ADMIN')"></th>
-                    <th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+            <div class="card-deck">
+                <div th:each="product: ${products}" class="card mb-3">
 
+                    <img th:if="${product.photo != null}"
+                         class="card-img-top"
+                         th:src="@{'/uploads/' + ${product.photo}}"
+                         th:alt="${product.photo}" style="object-fit: cover; height: 200px;">
 
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="product: ${products}">
-
-                    <td sec:authorize="hasRole('ROLE_USER')" th:text="${product.id}"></td>
-                    <td th:text="${product.title}"></td>
-                    <td th:text="${product.price}"></td>
-                    <td th:text="${product.category.name}"></td>
-                    <td th:text="${product.volume}"></td>
-                    <td th:text="${product.stock}"></td>
-                    <td th:text="${product.brand}"></td>
-                    <td th:text="${product.color}"></td>
-                    <td th:text="${product.weight}"></td>
-                    <td th:text="${product.date}"></td>
-                    <td th:text="${product.status}"></td>
-
-
-                    <td>
-                        <button class="buyButton" type="button"
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${product.title}"></h5>
+                        <p class="card-text">
+                            <strong>Price:</strong> <span th:text="${product.price} + '$'"></span><br>
+                            <strong>Category:</strong> <span th:text="${product.category.name}"></span><br>
+                            <strong>Volume:</strong> <span th:text="${product.volume}"></span><br>
+                            <strong>Stock:</strong> <span th:text="${product.stock}"></span><br>
+                            <strong>Brand:</strong> <span th:text="${product.brand}"></span><br>
+                            <strong>Color:</strong> <span th:text="${product.color}"></span><br>
+                            <strong>Weight:</strong> <span th:text="${product.weight}"></span><br>
+                            <strong>Date:</strong> <span th:text="${product.date}"></span><br>
+                            <strong>Status:</strong> <span th:text="${product.status}"></span>
+                        </p>
+                        <button sec:authorize="hasRole('ROLE_USER')"
+                                class="btn btn-primary" type="button"
                                 data-id="${product.id}"
                                 data-title="${product.title}"
                                 data-price="${product.price}"
                                 onclick="handleBuyButtonClick(this)">
                             Buy
                         </button>
-                    </td>
 
+                        <a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-primary btn-sm" th:href="@{/editProduct/} + ${product.id}" th:text="'Edit'"></a>
 
-                    <td>
-                        <a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-primary btn-sm" th:href="@{/editProduct/} + ${product.id}"
-                           th:text="'Edit'"></a>
-                    </td>
-
-                    <td>
                         <a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-danger btn-sm" th:href="@{/deleteProduct/} + ${product.id}"
                            th:text="'Delete'" onclick="return confirm('Are you sure do you want to delete this product? ' +
-                            'If this product is associated with a product, its status will be changed to removed, but it will persist in the database.')"></a>
-                    </td>
-
-                </tr>
-
-
-                </tbody>
-
-            </table>
+                    'If this product is associated with a product, its status will be changed to removed, but it will persist in the database.')"></a>
+                    </div>
+                </div>
+            </div>
 
             <nav th:replace="layout/paginator_nav :: paginator"></nav>
         </div>

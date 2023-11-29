@@ -1,4 +1,5 @@
 package com.sandrajavaschool.OnlineStore.controllers;
+
 import com.sandrajavaschool.OnlineStore.dao.IRoleDao;
 import com.sandrajavaschool.OnlineStore.dao.IUserDao;
 import com.sandrajavaschool.OnlineStore.entities.Role;
@@ -17,11 +18,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.Principal;
 import java.util.Collections;
 import java.util.Map;
+import java.util.UUID;
 
 @Controller
 @SessionAttributes("User")
@@ -48,12 +56,11 @@ public class UserController {
     private final IUserDao userDao;
 
 
-
     //@Autowired
     //public UserController(IUserService userService, IRoleService roleService, IClientAddressService clientAddressService) {
-      //  this.userService = userService;
-        //this.roleService = roleService;
-        //this.clientAddressService = clientAddressService;
+    //  this.userService = userService;
+    //this.roleService = roleService;
+    //this.clientAddressService = clientAddressService;
     //}
 
     @GetMapping(value = {"/mainPage", "/"})
@@ -91,7 +98,7 @@ public class UserController {
         //con esto en una sola consulta jpa trae al cliente con todas sus facturas
         //User user = userService.fetchByIdWithOrder(id);
 
-        if(user == null) {
+        if (user == null) {
             flash.addFlashAttribute("error", "The user does not exist into DDBB");
             return "redirect:/list";
         }
@@ -143,37 +150,64 @@ public class UserController {
         return "user/signup";
     }
 
+
     @PostMapping(value = "/save")
     public String save(@ModelAttribute User user,
-                       //@RequestParam("file") MultipartFile photo,
-                       Model model) {
+                       Principal principal,
+                       Model model,
+                       @RequestParam("file") MultipartFile photo,
+                       RedirectAttributes flash) {
+
 /*
-        if (!photo.isEmpty()) {
+        if (user.getId() != null && user.getId() > 0) {
+            if (userDao.existsByEmail(user.getEmail())) {
+                String message = "The user already exist";
+                flash.addFlashAttribute("info", message);
+                return "user/signup";
+            }
+        }
 
-            Path photoDirectory = Paths.get("src//main//resources//static/uploads");
-            String rootPath = photoDirectory.toFile().getAbsolutePath();
+ */
+
+        if (photo != null && !photo.isEmpty()) {
+            if (user.getId() != null
+                    && user.getId() > 0
+                    && user.getPhoto() != null
+                    && user.getPhoto().length() > 0) {
+
+                Path rootPath = Paths.get("C:/temp/uploads/", user.getPhoto());
+                File file = rootPath.toFile();
+
+                if (file.exists() && file.canRead()) {
+                    file.delete();
+                }
+
+
+            }
             try {
-                byte[] bytes = photo.getBytes();
-                Path completeRoot = Paths.get(rootPath + "//" + photo.getOriginalFilename());
-                Files.write(completeRoot, bytes);
-                flash.addFlashAttribute("info", "You have successfully uploaded the photo");
+                // Generar un nombre único para el archivo
+                String fileName = UUID.randomUUID().toString() + "_" + photo.getOriginalFilename();
 
-                user.setPhoto(photo.getOriginalFilename());
+                // Obtener la ruta completa del archivo
+                Path completeRoot = Paths.get("C:/temp/uploads/", fileName);
+
+                // Guardar la imagen en el sistema de archivos
+                Files.write(completeRoot, photo.getBytes());
+
+                // Establecer la ruta del archivo en el campo 'photo' del objeto 'User'
+                user.setPhoto(fileName);
+
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
 
- */
-        if (userDao.existsByEmail(user.getEmail())) {
-            String message = "The user already exist";
-            model.addAttribute("error", message);
-            return "user/signup";
-        }
 
         String message = "Congratulation! You have an account";
 
-        user.setPass(passwordEncoder.encode(user.getPass()));
+        if (!userDao.existsByEmail(user.getEmail())) {
+            user.setPass(passwordEncoder.encode(user.getPass()));
+        }
 
         Role role = roleDao.findByName("ROLE_USER");
         user.setRoles(Collections.singletonList(role));
@@ -182,7 +216,8 @@ public class UserController {
 
         model.addAttribute("success", message);
 
-        return "redirect:/order/receipt";
+        return "redirect:/userDetails/" + user.getId();
+
     }
 
     @Secured("ROLE_ADMIN")
@@ -193,6 +228,15 @@ public class UserController {
         if (id > 0) {
             userService.delete(id);
             flash.addFlashAttribute("success", "The user has been deleted");
+
+            Path rootPath = Paths.get("uploads").resolve(userService.findOne(id).getPhoto());
+            File file = rootPath.toFile();
+
+            if (file.exists() && file.canRead()) {
+                if (file.delete()) {
+                    flash.addFlashAttribute("info", "The photo was deleted");
+                }
+            }
         }
 
         return "redirect:/list";

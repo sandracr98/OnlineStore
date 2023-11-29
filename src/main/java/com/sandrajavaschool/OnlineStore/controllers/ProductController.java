@@ -17,9 +17,17 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 
 @Controller
@@ -42,7 +50,7 @@ public class ProductController {
         session.setAttribute("term", term);
 
         Page<Product> products;
-        Pageable pageRequest = PageRequest.of(page, 5);
+        Pageable pageRequest = PageRequest.of(page, 4);
 
 
         if (term != null && !term.isEmpty()) {
@@ -61,6 +69,23 @@ public class ProductController {
         return "product/productsList";
     }
 
+    @GetMapping(value = "productPhoto/{id}")
+    public String view(@PathVariable(value = "id") Long id,
+                       Map<String, Object> model,
+                       RedirectAttributes flash) {
+
+        Product product = productService.findOne(id);
+        if (product == null) {
+            flash.addFlashAttribute("error", "The product does not exist");
+            return "redirect:/productsList";
+        }
+        model.put("tittle", "");
+        model.put("product", product);
+
+        return "product/productCreate";
+
+    }
+
     @GetMapping(value = "/createProduct")
     public String create(Model model) {
 
@@ -77,9 +102,44 @@ public class ProductController {
 
     @PostMapping(value = "/saveProduct")
     public String save(@ModelAttribute Product product,
-                       RedirectAttributes flash) {
+                       RedirectAttributes flash,
+                       @RequestParam("file") MultipartFile photo) {
 
         String flashmessage = "Your item has been created/edited correctly!";
+
+        if (photo != null && !photo.isEmpty()) {
+            if (product.getId() != null
+                    && product.getId() > 0
+                    && product.getPhoto() != null
+                    && product.getPhoto().length() > 0) {
+
+                Path rootPath = Paths.get("C:/temp/uploads/", product.getPhoto());
+                File file = rootPath.toFile();
+
+                if (file.exists() && file.canRead()) {
+                    file.delete();
+                }
+
+            }
+            try {
+                // Generar un nombre único para el archivo
+                String fileName = UUID.randomUUID().toString() + "_" + photo.getOriginalFilename();
+
+                // Obtener la ruta completa del archivo
+                Path completeRoot = Paths.get("C:/temp/uploads/", fileName);
+
+                // Guardar la imagen en el sistema de archivos
+                Files.write(completeRoot, photo.getBytes());
+
+                // Establecer la ruta del archivo en el campo 'photo' del objeto 'User'
+                product.setPhoto(fileName);
+
+                flash.addFlashAttribute("info", flashmessage);
+
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
 
         //para que se guarde la fecha cada vez que lo modificas
         product.prePersist();
