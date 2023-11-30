@@ -87,16 +87,23 @@
                     </li>
 
                     <script>
-                        document.getElementById('logout').addEventListener('submit', function(event) {
-                            // Prevenir el envío del formulario para dar tiempo a ejecutar la función logout()
-                            event.preventDefault();
 
-                            // Llamar a la función logout()
-                            logout();
+                        var logoutElement = document.getElementById('logout');
 
-                            // Enviar el formulario después de ejecutar la función logout()
-                            this.submit();
-                        });
+                        if (logoutElement) {
+                            logoutElement.addEventListener('submit', function(event) {
+                                // Prevenir el envío del formulario para dar tiempo a ejecutar la función logout()
+                                event.preventDefault();
+
+                                // Llamar a la función logout()
+                                logout();
+
+                                // Enviar el formulario después de ejecutar la función logout()
+                                this.submit();
+                            });
+                        } else {
+                            console.warn("Element with ID 'logout' not found. Event listener not added.");
+                        }
 
                         function logout() {
                             // Borrar el token almacenado (puede ser en localStorage, sessionStorage, o cookies)

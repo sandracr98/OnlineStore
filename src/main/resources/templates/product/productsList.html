@@ -50,7 +50,7 @@
                     <div class="card-body">
                         <h5 class="card-title" th:text="${product.title}"></h5>
                         <p class="card-text">
-                            <strong>Price:</strong> <span th:text="${product.price} + '$'"></span><br>
+                            <strong>Price:</strong> <span th:text="${product.price} + '€'"></span><br>
                             <strong>Category:</strong> <span th:text="${product.category.name}"></span><br>
                             <strong>Volume:</strong> <span th:text="${product.volume}"></span><br>
                             <strong>Stock:</strong> <span th:text="${product.stock}"></span><br>
@@ -60,11 +60,11 @@
                             <strong>Date:</strong> <span th:text="${product.date}"></span><br>
                             <strong>Status:</strong> <span th:text="${product.status}"></span>
                         </p>
-                        <button sec:authorize="hasRole('ROLE_USER')"
-                                class="btn btn-primary" type="button"
-                                data-id="${product.id}"
-                                data-title="${product.title}"
-                                data-price="${product.price}"
+
+                        <button class="buyButton" type="button"
+                                th:data-id="${product.id}"
+                                th:data-title="${product.title}"
+                                th:data-price="${product.price}"
                                 onclick="handleBuyButtonClick(this)">
                             Buy
                         </button>

@@ -5,40 +5,83 @@
 
 <script type="text/javascript" th:fragment="javascript">
 
+
     function handleBuyButtonClick(button) {
+        // Obtener datos del botón
+        var productId = button.getAttribute('data-id');
+        var productTitle = button.getAttribute('data-title');
+        var productPrice = button.getAttribute('data-price');
 
-        loadStoredProducts();
+        // Obtener el valor actual de la cookie
+        var existingCookie = getCookie(cookieName);
 
+        // Parsear la cookie existente o inicializar un array vacío
+        var existingProducts = existingCookie ? JSON.parse(existingCookie) : [];
 
-        var productId = $(button).data('id');
-        var productName = $(button).data('title');
-        var productPrice = $(button).data('price');
-
-
-        if (itemsHelper.hasProduct(productId)) {
-            itemsHelper.addAmount(productId, productPrice);
-            return false;
+        // Asegurarse de que existingProducts sea un array
+        if (!Array.isArray(existingProducts)) {
+            existingProducts = [];
         }
 
+        // Verificar si el producto ya está en la cookie
+        var existingProductIndex = existingProducts.findIndex(function (product) {
+            return product.id === productId;
+        });
 
-        var line = $("#itemsLineTable").html();
-
-        if (line) {
-            line = line.replace(/{ID}/g, productId);
-            line = line.replace(/{TITLE}/g, productName);
-            line = line.replace(/{PRICE}/g, productPrice);
+        if (existingProductIndex !== -1) {
+            // Incrementar la cantidad si el producto ya existe
+            existingProducts[existingProductIndex].amount++;
         } else {
-            console.error("La línea HTML es undefined o null.");
+            // Agregar nuevo producto con cantidad 1
+            existingProducts.push({ id: productId, title: productTitle, price: productPrice, amount: 1 });
         }
 
-        $("#itemTable tbody").append(line);
-
-        itemsHelper.importCalc(productId, productPrice, 1);
-        storeProductLocally(productId, productName, productPrice, 1);
-
-        return false;
-
+        // Convertir el array a JSON y establecer la cookie
+        document.cookie = `${cookieName}=${JSON.stringify(existingProducts)}; max-age=${durationInSeconds}; path=/`;
     }
+
+    // Nombre de la cookie que deseas verificar
+    var cookieName = 'productInfo';
+
+    // Duración de la cookie en segundos (3.8 horas)
+    var durationInSeconds = 3.8 * 60 * 60;
+
+    function getCookie(name) {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            if (cookie.indexOf(name + '=') === 0) {
+                return cookie.substring(name.length + 1, cookie.length);
+            }
+        }
+        return null;
+    }
+
+    // Nombre de la cookie que deseas verificar
+    var cookieName = 'productInfo';
+
+    // Obtener el valor de la cookie
+    var cookieValue = getCookie(cookieName);
+
+    // Verificar si la cookie existe
+    if (cookieValue) {
+        // Decodificar el valor de la cookie (asumiendo que contiene JSON)
+        var decodedValue = decodeURIComponent(cookieValue);
+
+        try {
+            // Parsear el JSON
+            var cookieData = JSON.parse(decodedValue);
+
+            // Mostrar los datos en la consola
+            console.log('Datos de la cookie:', cookieData);
+        } catch (error) {
+            console.error('Error al parsear JSON:', error);
+        }
+    } else {
+        console.log('La cookie no existe o está vacía.');
+    }
+
+
 
     $(document).ready(function () {
 
@@ -96,6 +139,8 @@
         });
 
     });
+
+
 
 
 
@@ -161,30 +206,53 @@
     }
 
     function loadStoredProducts() {
+        // Obtener los productos de la cookie y convertirlos a un array
+        var cookieProducts = getCookieProducts();
 
-        var storedProducts = localStorage.getItem('storedProducts');
+        // Obtener los productos almacenados en el localStorage y convertirlos a un array
+        var localStorageProducts = getLocalStorageProducts();
 
-        if (storedProducts) {
-            storedProducts = JSON.parse(storedProducts);
+        // Combinar los productos de la cookie y del localStorage
+        var allProducts = combineProducts(cookieProducts, localStorageProducts);
 
-            // Agregar productos almacenados a la tabla
-            $.each(storedProducts, function (index, product) {
-                var line = $("#itemsLineTable").html();
+        // Agregar productos almacenados a la tabla
+        $.each(allProducts, function (index, product) {
+            var line = $("#itemsLineTable").html();
 
-                line = line.replace(/{ID}/g, product.id);
-                line = line.replace(/{TITLE}/g, product.title);
-                line = line.replace(/{PRICE}/g, product.price);
+            line = line.replace(/{ID}/g, product.id);
+            line = line.replace(/{TITLE}/g, product.title);
+            line = line.replace(/{PRICE}/g, product.price);
 
-                // Añadir la cantidad al HTML
-                line = line.replace(/{AMOUNT}/g, product.amount);
+            // Añadir la cantidad al HTML
+            line = line.replace(/{AMOUNT}/g, product.amount);
 
-                $("#itemTable tbody").append(line);
+            $("#itemTable tbody").append(line);
 
-                // Ejecutar importCalc con la cantidad almacenada
-                itemsHelper.importCalc(product.id, product.price, product.amount);
-            });
-        }
+            // Ejecutar importCalc con la cantidad almacenada
+            itemsHelper.importCalc(product.id, product.price, product.amount);
+        });
     }
+
+    // Función para obtener los productos de la cookie
+    function getCookieProducts() {
+        var cookieData = getCookie('productInfo');
+        return cookieData ? JSON.parse(cookieData) : [];
+    }
+
+    // Función para obtener los productos del localStorage
+    function getLocalStorageProducts() {
+        var localStorageData = localStorage.getItem('storedProducts');
+        return localStorageData ? JSON.parse(localStorageData) : [];
+    }
+
+    // Función para combinar los productos de la cookie y del localStorage
+    function combineProducts(cookieProducts, localStorageProducts) {
+        // Puedes ajustar cómo combinas los productos según tus necesidades
+        return cookieProducts.concat(localStorageProducts);
+    }
+
+
+
     function storeProductLocally(id, title, price, amount) {
         var storedProducts = localStorage.getItem('storedProducts') || '[]';
         storedProducts = JSON.parse(storedProducts);
@@ -223,6 +291,8 @@
             localStorage.setItem('storedProducts', JSON.stringify(storedProducts));
         }
     }
+
+
 
 
 </script>
