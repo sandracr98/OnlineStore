@@ -120,6 +120,8 @@
                 line = line.replace(/{ID}/g, ui.item.value);
                 line = line.replace(/{TITLE}/g, ui.item.label);
                 line = line.replace(/{PRICE}/g, ui.item.price);
+                line = line.replace(/{AMOUNT}/g, 1);
+
 
                 $("#itemTable tbody").append(line);
 
@@ -139,8 +141,6 @@
         });
 
     });
-
-
 
 
 
@@ -252,7 +252,6 @@
     }
 
 
-
     function storeProductLocally(id, title, price, amount) {
         var storedProducts = localStorage.getItem('storedProducts') || '[]';
         storedProducts = JSON.parse(storedProducts);
@@ -291,6 +290,33 @@
             localStorage.setItem('storedProducts', JSON.stringify(storedProducts));
         }
     }
+
+    // Función para eliminar un producto por su ID desde el evento onclick
+    function deleteCookieProduct(id) {
+
+        itemsHelper.deleteItemLine(id);
+
+        var existingCookie = getCookie(cookieName);
+
+        // Parsear la cookie existente o inicializar un array vacío
+        var existingProducts = existingCookie ? JSON.parse(existingCookie) : [];
+
+        // Asegurarse de que existingProducts sea un array
+        if (!Array.isArray(existingProducts)) {
+            existingProducts = [];
+        }
+
+        // Filtrar el array para excluir el producto con el ID especificado
+        existingProducts = existingProducts.filter(function (product) {
+            return product.id.toString() !== id.toString(); // Convertir a cadena para evitar problemas de tipos
+        });
+
+        // Convertir el array a JSON y establecer la cookie actualizada
+        document.cookie = `${cookieName}=${JSON.stringify(existingProducts)}; max-age=${durationInSeconds}; path=/`;
+
+
+    }
+
 
 
 
