@@ -46,8 +46,6 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
                 .getMessage("text.login.success", null, locale),
                 authentication.getName());
 
-
-
         flashMap.put("success", message);
 
         flashMapManager.saveOutputFlashMap(flashMap, request, response);
@@ -64,6 +62,10 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     //importante poder acceder al username para poder hacer consulta a la base de datos, pasarlo a la vista etc.
     //Suele ser util.
+
+
+
+
 }
 
 

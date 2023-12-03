@@ -17,7 +17,9 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -56,30 +58,8 @@ public class OrderController {
             return "redirect:/order/receipt/" + userId;
         } else {
             // Usuario no autenticado, redirigir a la creación de un carrito no vinculado a un usuario
-            return "redirect:/order/receipt/anonymous";
+            return "order/receiptNewUser";
         }
-    }
-
-    @GetMapping("/receipt/anonymous")
-    public String createNewOrder(Model model) {
-
-        Order order = new Order();
-
-        PaymentMethod paymentMethod = new PaymentMethod();
-        order.setPaymentMethod(paymentMethod);
-
-        model.addAttribute("order", order);
-        model.addAttribute("paymentMethod", paymentMethod);
-
-        model.addAttribute("title", "Shopping cart");
-
-        return "order/receiptNewUser";
-    }
-
-    @PostMapping("/createUserBeforeReceipt")
-    public String saveUserAndReceipt() {
-
-        return "";
     }
 
 
@@ -110,8 +90,6 @@ public class OrderController {
         return userService.findByName(term);
     }
 
-//preguntar @RestController y el @ResponseBody
-
     @PostMapping("/receipt")
     public String save(@Valid Order order,
                        @Valid @ModelAttribute PaymentMethod paymentMethod,
@@ -124,10 +102,12 @@ public class OrderController {
 
         //Añadimos en messages.properties un mensaje de validacion, y modificamos la vista
         //receipt, para que nuestros campos esten validados si la descripcion es null
+
         if (result.hasErrors()) {
             model.addAttribute("title", "Create Order");
             return "redirect:/userDetails/" + order.getUser().getId();
         }
+
 
         //Si el id no existe o no hay cantidades de productos lanza esta validacion
 
@@ -139,13 +119,27 @@ public class OrderController {
 
 
         for (int i = 0; i < itemId.length; i++) {
+
             Product product = userService.findProductById(itemId[i]);
+
+            if (product == null) {
+                throw new IllegalStateException("Product is null for product ID: " + itemId[i]);
+            }
+
+            if (product.getPrice() == null) {
+                throw new IllegalStateException("Product price is null for this product");
+                //puedo redirigir a nullPointerException.html
+            }
+
+            if (amount == null || Arrays.stream(amount).anyMatch(value -> value == null || value <= 0)) {
+                flash.addFlashAttribute("error", "ERROR: Invalid or missing amounts");
+                return "redirect:/userDetails/" + order.getUser().getId();
+            }
 
             ReceiptLine line = new ReceiptLine();
 
             line.setAmount(amount[i]);
             line.setProduct(product);
-
 
             order.addReceiptLine(line);
 
@@ -154,8 +148,13 @@ public class OrderController {
 
         }
 
-        Double total = order.getTotal();
+       /* Double total = order.getTotal();
         order.setSum(total);
+        */
+
+        BigDecimal total = BigDecimal.valueOf(order.getTotal());
+        BigDecimal roundedTotal = total.setScale(2, BigDecimal.ROUND_HALF_UP);
+        order.setSum(roundedTotal.doubleValue());
 
         paymentMethodService.save(paymentMethod);
 
@@ -167,17 +166,13 @@ public class OrderController {
         return "redirect:/userDetails/" + order.getUser().getId();
     }
 
+
     @GetMapping("/viewReceipt/{id}")
     public String viewOrder(@PathVariable(value = "id") Long id,
                             Model model,
                             RedirectAttributes flash) {
 
         Order order = userService.findOrderById(id);
-
-        //¿Debo dejarlo así o como siempre lo he hecho, se suele usar asi cuando
-        // trabajamos con un objeto entity con muchas relaciones?
-
-        //Order order = userService.fetchByIdWithUserReceiptLineProduct(id);
 
         if (order == null) {
             flash.addFlashAttribute("error", "Order does not exist into DDBB");
@@ -205,21 +200,24 @@ public class OrderController {
             model.addAttribute("order", order);
             model.addAttribute("title", "Order Details");
 
-            return "order/orderDetails"; // Ajusta según tu configuración de vistas
+            return "order/orderDetails";
+
         } catch (OrderNotFoundException e) {
-            // Manejar la excepción, por ejemplo, redirigir a una página de error
-            return "errorPage"; // Ajusta según tu configuración de vistas
+            return "error/nullPointerExceptions";
         }
     }
 
     @PostMapping("/saveOrderDetails")
     public String saveOrderStatus(@Valid Order order,
                                   RedirectAttributes flash) {
-        String flashmessage = "Congratulation! You change status order";
+        String flashMessage = "Congratulation! You change the status of the order";
 
-        orderService.save(order);
-
-        flash.addFlashAttribute("success", flashmessage);
+        try {
+            orderService.save(order);
+            flash.addFlashAttribute("success", flashMessage);
+        } catch (OrderNotFoundException e) {
+            flash.addFlashAttribute("error", "An error occurred while saving the order: " + e.getMessage());
+        }
 
         return "redirect:/order/ordersList";
     }
@@ -228,16 +226,16 @@ public class OrderController {
     @GetMapping("/delete/{id}")
     public String deleteOrder(@PathVariable(value = "id") Long id,
                               RedirectAttributes flash) {
-        Order order = userService.findOrderById(id);
-
-        if (order != null) {
+        try {
+            Order order = userService.findOrderById(id);
             userService.deleteOrder(id);
             flash.addFlashAttribute("success", "The order was deleted successfully");
             return "redirect:/userDetails/" + order.getUser().getId();
+        } catch (OrderNotFoundException e) {
+            flash.addFlashAttribute("error", "The order does not exist in the database");
+            return "redirect:/list/";
         }
 
-        flash.addFlashAttribute("error", "The order does not exist in DDBB");
-        return "redirect:/list/";
     }
 
 
@@ -246,9 +244,10 @@ public class OrderController {
                           RedirectAttributes flash,
                           Model model) {
         try {
+
             if (id == null || id <= 0) {
                 flash.addFlashAttribute("error", "Invalid order ID");
-                return "redirect:/list"; //INSERTAR PAGINA DE ERROR
+                return "redirect:/error/nullPointerException";
             }
 
             Order existingOrder = userService.findOrderById(id);
@@ -265,25 +264,40 @@ public class OrderController {
             PaymentMethod paymentMethod = new PaymentMethod();
             newOrder.setPaymentMethod(paymentMethod);
 
-            newOrder.setDescription(existingOrder.getDescription());
             newOrder.setGoods(existingOrder.getGoods());
+
 
             List<ReceiptLine> receiptLines = existingOrder.getReceiptLines();
 
-            for (ReceiptLine receiptLine : receiptLines) {
+            if (receiptLines != null) {
 
-                Product product = userService.findProductById(receiptLine.getProduct().getId());
+                for (ReceiptLine receiptLine : receiptLines) {
 
-                ReceiptLine line = new ReceiptLine();
+                    if (receiptLine != null && receiptLine.getProduct() != null) {
 
-                line.setAmount(receiptLine.getAmount());
-                line.setProduct(product);
+                        Product product = userService.findProductById(receiptLine.getProduct().getId());
 
-                newOrder.addReceiptLine(line);
+                        ReceiptLine line = new ReceiptLine();
 
-                product.setTotalSales(product.getTotalSales() + line.getAmount());
-                productService.save(product);
+                        line.setAmount(receiptLine.getAmount());
+                        line.setProduct(product);
+
+                        newOrder.addReceiptLine(line);
+
+                        product.setTotalSales(product.getTotalSales() + line.getAmount());
+                        productService.save(product);
+
+                    } else {
+
+                        flash.addFlashAttribute("error", "Error: Product is null for ReceiptLine");
+                        return "redirect:/error/nullPointerException";
+                    }
+                }
+            } else {
+                flash.addFlashAttribute("error", "Error: Product is null for ReceiptLine");
+                return "redirect:/error/nullPointerException";
             }
+
 
             Double total = newOrder.getTotal();
             newOrder.setSum(total);
@@ -294,11 +308,13 @@ public class OrderController {
 
             return "order/receiptReorder";
 
-        } catch (Exception e) {
+
+        } catch (NullPointerException e) {
             logger.error("Error: " + e.getMessage(), e);
             flash.addFlashAttribute("error", "Error: " + e.getMessage());
-            return "redirect:/error/error403";
+            return "redirect:/error/error405";
         }
+
     }
 
 
@@ -312,23 +328,12 @@ public class OrderController {
             return "redirect:/order/ordersList";
         }
 
+        userService.saveOrder(newOrder);
+        String flashmessage = "Congratulation! Your order has completed";
+        flash.addFlashAttribute("success", flashmessage);
 
-        try {
+        return "redirect:/userDetails/" + newOrder.getUser().getId();
 
-            userService.saveOrder(newOrder);
-
-            String flashmessage = "Congratulation! Your order has completed";
-
-
-            flash.addFlashAttribute("success", flashmessage);
-
-            return "redirect:/userDetails/" + newOrder.getUser().getId();
-
-
-        } catch (Exception e) {
-            flash.addFlashAttribute("error", "Error saving order: " + e.getMessage());
-            return "/error/error403";
-        }
 
     }
 }

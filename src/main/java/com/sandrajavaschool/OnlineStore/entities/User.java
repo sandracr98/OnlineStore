@@ -1,7 +1,5 @@
 package com.sandrajavaschool.OnlineStore.entities;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.*;
 
@@ -26,28 +24,30 @@ public class User implements Serializable {
     @Column(name = "id_user", nullable = false)
     private Long id;
 
-    @NotNull
+    @NotNull(message = "Name is required")
+    @NotEmpty(message = "Name is required")
+    @Size(min = 4, max = 30)
     private String name;
 
-
+    @NotEmpty
     private String surname;
 
     @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @NotNull
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthdate;
 
-
-    @NotNull
-    @Column(length = 30,unique = true)
+    @Column(length = 30, unique = true)
+    @NotEmpty(message = "Email is required")
+    @Email(message = "Invalid email format")
     private String email;
 
-    @NotNull
     @Column(length = 60)
+    @NotEmpty(message = "Password is required")
     private String pass;
 
     @NotNull
     private boolean enabled = true;
-
 
     private String photo;
 
@@ -73,22 +73,15 @@ public class User implements Serializable {
     private List<Order> orders = new ArrayList<Order>();
 
 
-    public void addRole(Role role) {
-        roles.add(role);
-        role.getUsers().add(this);
-    }
-
-    public void addOrder(Order order) {
-        orders.add(order);
-    }
-
     public void addAddress(ClientsAddress clientsAddress) {
-        clientsAddresses.add(clientsAddress);
-        clientsAddress.setUser(this);
+        if (clientsAddress != null) {
+            clientsAddresses.add(clientsAddress);
+            clientsAddress.setUser(this);
+        }
     }
 
     @Override
     public String toString() {
-        return  name + ' ' + surname;
+        return name + ' ' + surname;
     }
 }

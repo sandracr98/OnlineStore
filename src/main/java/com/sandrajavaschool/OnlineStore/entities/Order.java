@@ -61,13 +61,6 @@ public class Order implements Serializable {
         this.receiptLines.add(line);
     }
 
-    public void addReceiptLines(List<ReceiptLine> linesToAdd) {
-        if (this.receiptLines == null) {
-            this.receiptLines = new ArrayList<>();
-        }
-        this.receiptLines.addAll(linesToAdd);
-    }
-
 
 
     //This method let you to calculating the total import of a Receipt

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+
+<body>
+
+<header th:replace="layout/layout :: header"></header>
+
+<div class="container py-4">
+
+    <div class="card bg-danger text-black-50">
+        <div class="card-header">Error: </div>
+        <div class="card-body">
+            <h5 class="card-title">Sorry, the page you want to access might not exist or might not be accessible</h5>
+            <div th:text="${error}"></div>
+            <div th:text="${message}"></div>
+
+            <a th:href="@{/productsList}" class="btn btn-outline-light" role="button">Back</a>
+
+        </div>
+    </div>
+
+
+</div>
+
+<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>

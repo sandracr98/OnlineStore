@@ -38,6 +38,9 @@
 
         // Convertir el array a JSON y establecer la cookie
         document.cookie = `${cookieName}=${JSON.stringify(existingProducts)}; max-age=${durationInSeconds}; path=/`;
+
+        alert(`You have added "${productTitle}" to your cart.`);
+
     }
 
     // Nombre de la cookie que deseas verificar

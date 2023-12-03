@@ -16,8 +16,6 @@ import java.security.Principal;
 @RequestMapping("/api")
 public class LoginController {
 
-    private LoginDto loginDto;
-
     @GetMapping("/login")
     public String login(@RequestParam(value = "error", required = false) String error,
                         @RequestParam(value = "logout", required = false) String logout,
@@ -26,8 +24,6 @@ public class LoginController {
                         RedirectAttributes flash) {
 
         if (principal != null) {
-            //si es asi es pq ya ha iniciado sesion anteriormente
-            //asi evitamos que haga doble inicio de sesion
             flash.addFlashAttribute("info", "You're already logged in");
             return "redirect:/";
         }

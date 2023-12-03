@@ -86,22 +86,28 @@ public class CategoryController {
                          RedirectAttributes flash) {
 
         if (id > 0) {
-            Category category = categoryService.findOne(id);
 
-            if (category != null) {
+            try {
+                Category category = categoryService.findOne(id);
 
-                if (category.getProducts().isEmpty()) {
-                    categoryService.delete(id);
-                    flash.addFlashAttribute("success", "The category has been deleted");
-                } else {
-                    category.setStatus(CategoryStatus.REMOVED);
-                    categoryService.save(category);
-                    flash.addFlashAttribute("error", "The category is associated with one or more products and cannot be deleted.");
+                if (category != null) {
+
+                    if (category.getProducts().isEmpty()) {
+                        categoryService.delete(id);
+                        flash.addFlashAttribute("success", "The category has been deleted");
+                    } else {
+                        category.setStatus(CategoryStatus.REMOVED);
+                        categoryService.save(category);
+                        flash.addFlashAttribute("error", "The category is associated with one or more products and cannot be deleted.");
+                    }
                 }
+            }catch (NullPointerException e) {
+                return "redirect:/category/categoryList";
             }
+
         }
 
-        return"redirect:/category/categoryList";
+        return "redirect:/category/categoryList";
 
     }
 

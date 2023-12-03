@@ -7,9 +7,11 @@ import com.sandrajavaschool.OnlineStore.service.implService.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 
 
 @Controller
@@ -25,23 +27,35 @@ public class ClientAddressController {
     public String create(@PathVariable(value = "userId") Long userId,
                          Model model) {
 
-        User user = userService.findOne(userId);
+        try {
+            User user = userService.findOne(userId);
 
-        ClientsAddress clientsAddress = new ClientsAddress();
-        user.addAddress(clientsAddress);
+            if (user == null) {
+                return "redirect:/list";
+            }
 
+            ClientsAddress clientsAddress = new ClientsAddress();
+            user.addAddress(clientsAddress);
 
-        model.addAttribute("title", "New Address!");
-        model.addAttribute("clientsAddress", clientsAddress);
+            model.addAttribute("title", "New Address!");
+            model.addAttribute("clientsAddress", clientsAddress);
 
-        return "address/addressCreate";
+            return "address/addressCreate";
+
+        } catch (NullPointerException e) {
+            return "redirect:/list";
+        }
+
     }
 
     @PostMapping(value = "/saveAddress")
-    public String save(@ModelAttribute("clientsAddress") ClientsAddress clientsAddress,
+    public String save(@Valid ClientsAddress clientsAddress,
+                       BindingResult result,
                        RedirectAttributes flash) {
 
-
+        if (result.hasErrors()) {
+            return "user/signup";
+        }
         String flashmessage = "Congratulation! You create a new address";
 
         clientAddressService.save(clientsAddress);
@@ -84,15 +98,21 @@ public class ClientAddressController {
     public String delete(@PathVariable(value = "id") Long id,
                          RedirectAttributes flash) {
 
-        ClientsAddress clientsAddress = clientAddressService.findOne(id);
-        User user = clientsAddress.getUser();
+        try {
+            ClientsAddress clientsAddress = clientAddressService.findOne(id);
+            User user = clientsAddress.getUser();
 
-        if (id > 0) {
-            clientAddressService.delete(id);
-            flash.addFlashAttribute("success", "The address has been deleted");
+            if (id > 0) {
+                clientAddressService.delete(id);
+                flash.addFlashAttribute("success", "The address has been deleted");
+            }
+
+
+            return "redirect:/userDetails/" + user.getId();
+
+        }catch (NullPointerException e) {
+            return "redirect:/productsList";
         }
 
-
-        return "redirect:/userDetails/" + user.getId();
     }
 }

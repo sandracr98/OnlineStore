@@ -8,11 +8,14 @@ import com.sandrajavaschool.OnlineStore.entities.User;
 import org.springframework.data.domain.Page;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 
 public interface IUserService {
 
     public List<User> findAll();
+
     public void save(User user);
 
     public User findOne(Long id);
@@ -32,6 +35,11 @@ public interface IUserService {
     public Order findOrderById(Long id);
 
     public void deleteOrder(Long id);
+
+    public void saveInternalPhoto(MultipartFile photo, User user);
+    public void saveExternalPhoto(MultipartFile photo, User user);
+
+
 
     public void saveClientAddress(ClientsAddress clientsAddress);
 

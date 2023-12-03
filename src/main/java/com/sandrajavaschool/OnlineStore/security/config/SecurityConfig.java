@@ -65,6 +65,8 @@ public class SecurityConfig {
                                     "/order/receiptControl",
                                     "/order/receipt/anonymous",
                                     "/order/load-products/**",
+                                    "/uploads/**",
+                                    "order/save/**",
                                     "/save").permitAll()
 
                             //aqui van las rutas privadas

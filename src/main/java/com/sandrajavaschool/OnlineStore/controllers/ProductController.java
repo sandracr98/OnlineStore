@@ -43,7 +43,6 @@ public class ProductController {
                        Model model,
                        @RequestParam(name = "term", required = false) String term,
                        HttpSession session) {
-        //diferencias entre @param y request param
 
         model.addAttribute("title", "Products");
 
@@ -89,15 +88,25 @@ public class ProductController {
     @GetMapping(value = "/createProduct")
     public String create(Model model) {
 
-        model.addAttribute("title", "New Product");
+        try {
+            model.addAttribute("title", "New Product");
 
-        Product product = new Product();
-        model.addAttribute("product", product);
+            Product product = new Product();
+            model.addAttribute("product", product);
 
-        List<Category> categories = categoryService.findAll();
-        model.addAttribute("categories", categories);
+            List<Category> categories = categoryService.findAll();
 
-        return "product/productCreate";
+            if (categories == null) {
+                throw new IllegalStateException("CategoryList is null");
+            }
+
+            model.addAttribute("categories", categories);
+
+            return "product/productCreate";
+
+        } catch (Exception e) {
+            return "error/error405";
+        }
     }
 
     @PostMapping(value = "/saveProduct")
@@ -107,39 +116,7 @@ public class ProductController {
 
         String flashmessage = "Your item has been created/edited correctly!";
 
-        if (photo != null && !photo.isEmpty()) {
-            if (product.getId() != null
-                    && product.getId() > 0
-                    && product.getPhoto() != null
-                    && product.getPhoto().length() > 0) {
-
-                Path rootPath = Paths.get("C:/temp/uploads/", product.getPhoto());
-                File file = rootPath.toFile();
-
-                if (file.exists() && file.canRead()) {
-                    file.delete();
-                }
-
-            }
-            try {
-                // Generar un nombre único para el archivo
-                String fileName = UUID.randomUUID().toString() + "_" + photo.getOriginalFilename();
-
-                // Obtener la ruta completa del archivo
-                Path completeRoot = Paths.get("C:/temp/uploads/", fileName);
-
-                // Guardar la imagen en el sistema de archivos
-                Files.write(completeRoot, photo.getBytes());
-
-                // Establecer la ruta del archivo en el campo 'photo' del objeto 'User'
-                product.setPhoto(fileName);
-
-                flash.addFlashAttribute("info", flashmessage);
-
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
+        productService.saveInternalPhoto(photo, product);
 
         //para que se guarde la fecha cada vez que lo modificas
         product.prePersist();
@@ -184,22 +161,25 @@ public class ProductController {
     public String delete(@PathVariable(value = "id") Long id,
                          RedirectAttributes flash) {
 
-        if (id > 0) {
-
-            Product product = productService.findOne(id);
-
-            if (product.getReceiptLine().isEmpty()) {
-
-                productService.delete(id);
-                flash.addFlashAttribute("success", "The product has been deleted");
-
-            } else {
-                product.setStatus(false);
-                productService.save(product);
-                flash.addFlashAttribute("error", "The product is associated with one or more products and cannot be deleted.");
-            }
+        if (id <= 0) {
+            return "redirect:/productsList";
         }
+
+        Product product = productService.findOne(id);
+
+        if (product == null || product.getReceiptLine() == null || product.getReceiptLine().isEmpty()) {
+            productService.delete(id);
+            flash.addFlashAttribute("success", "The product has been deleted");
+
+        } else {
+            product.setStatus(false);
+            productService.save(product);
+            flash.addFlashAttribute("error", "The product is associated with one or more products and cannot be deleted.");
+        }
+
 
         return "redirect:/productsList";
     }
+
+
 }

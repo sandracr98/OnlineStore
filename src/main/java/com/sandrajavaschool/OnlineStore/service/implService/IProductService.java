@@ -4,6 +4,7 @@ import com.sandrajavaschool.OnlineStore.entities.Product;
 import com.sandrajavaschool.OnlineStore.entities.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -21,5 +22,7 @@ public interface IProductService {
 
     public Page<Product> findByName(String term, Pageable pageable);
 
+    public void saveInternalPhoto(MultipartFile photo, Product product);
+    public void saveExternalPhoto(MultipartFile photo, Product product);
 
 }

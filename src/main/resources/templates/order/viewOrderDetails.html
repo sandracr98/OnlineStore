@@ -27,7 +27,7 @@
                 <li class="list-group-item" th:text="'Description: ' + ${order.description}"></li>
                 <li class="list-group-item" th:text="'Date: ' + ${order.date}"></li>
                 <li class="list-group-item" th:text="'Order Status: ' + ${order.deliveryMethod}"></li>
-                <li class="list-group-item" th:text="'Payment Status: ' + ${order.paymentStatus}"></li>
+                <li class="list-group-item" th:text="'Description: ' + ${order.description}"></li>
                 <li class="list-group-item" th:text="'Payment Method: ' + ${order.paymentMethod.type}"></li>
 
             </ul>
@@ -60,9 +60,9 @@
             <div class="card border-info mb-4" style="max-width: 20rem;">
                 <div class="card-header">Observations</div>
                 <div class="card-body">
-                    <p class="card-text" th:text="${order.description}"
-                       th:if="${ not #strings.isEmpty(order.description)}"></p>
-                    <h4 class="card-title" th:if="${#strings.isEmpty(order.description)}"
+                    <p class="card-text" th:text="${order.paymentStatus}"
+                       th:if="${ not #strings.isEmpty(order.paymentStatus)}"></p>
+                    <h4 class="card-title" th:if="${#strings.isEmpty(order.paymentStatus)}"
                         th:text="'There is no observations'"></h4>
                 </div>
             </div>

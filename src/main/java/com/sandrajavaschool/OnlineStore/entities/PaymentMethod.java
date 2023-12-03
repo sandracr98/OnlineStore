@@ -22,6 +22,10 @@ public class PaymentMethod implements Serializable {
 
     private String type;
 
+    private String cardNumber;
+    private String expirationDate;
+    private String cvv;
+
     @OneToOne(mappedBy = "paymentMethod")
     private Order order;
 

@@ -22,19 +22,21 @@
                             <div class="card-body align-items-center">
 
                                 <div class="form-group">
-                                    <label class="col-sm-6 col-form-label">Name</label>
+                                    <label for="name" class="col-sm-6 col-form-label">Name</label>
                                     <div class="col-sm-6">
-                                        <input type="text" th:field="*{name}"
+                                        <input id="name" type="text" th:field="*{name}"
                                                th:errorclass="'form-control alert-danger'"/>
+                                        <span class="form-text text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
                                     </div>
                                 </div>
 
-
                                 <div class="form-group">
-                                    <label class="col-sm-6 col-form-label">Surname</label>
+                                    <label  for="surname" class="col-sm-6 col-form-label">Surname</label>
                                     <div class="col-sm-6">
-                                        <input type="text" th:field="*{surname}"
+                                        <input id="surname" type="text" th:field="*{surname}"
                                                th:errorclass="'form-control alert-danger'"/>
+                                        <small class="form-text text-danger" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></small>
+
                                     </div>
                                 </div>
 
@@ -42,7 +44,8 @@
                                     <label class="col-sm-6 col-form-label">Email</label>
                                     <div class="col-sm-6">
                                         <input type="text" th:field="*{email}"
-                                               th:errorclass="'form-control alert-danger'"/>
+                                               th:errorclass="'form-control alert-danger'">
+                                        <small class="form-text text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
                                     </div>
                                 </div>
 
@@ -51,6 +54,8 @@
                                     <div class="col-sm-6">
                                         <input type="date" th:field="*{birthdate}"
                                                th:errorclass="'form-control alert-danger'"/>
+                                        <small class="form-text text-danger" th:if="${#fields.hasErrors('birthdate')}" th:errors="*{birthdate}"></small>
+
                                     </div>
                                 </div>
 
@@ -59,6 +64,8 @@
                                     <div class="col-sm-6">
                                         <input type="text" th:field="*{pass}"
                                                th:errorclass="'form-control alert-danger'"/>
+                                        <small class="form-text text-danger" th:if="${#fields.hasErrors('pass')}" th:errors="*{pass}"></small>
+
                                     </div>
                                 </div>
 

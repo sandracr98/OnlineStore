@@ -11,12 +11,9 @@ public class OnlineStoreApplication implements CommandLineRunner {
 
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
-
-
 	public static void main(String[] args) {
 		SpringApplication.run(OnlineStoreApplication.class, args);
 	}
-
 
 	@Override
 	public void run(String... args) throws Exception {

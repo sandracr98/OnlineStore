@@ -17,19 +17,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.Principal;
-import java.util.Collections;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
 @SessionAttributes("User")
@@ -131,7 +125,6 @@ public class UserController {
 
         User user = null;
 
-
         if (id > 0) {
             user = userService.findOne(id);
             if (user == null) {
@@ -152,60 +145,28 @@ public class UserController {
 
 
     @PostMapping(value = "/save")
-    public String save(@ModelAttribute User user,
-                       Principal principal,
+    public String save(@ModelAttribute("user") User user,
+                       BindingResult result,
                        Model model,
                        @RequestParam("file") MultipartFile photo,
                        RedirectAttributes flash) {
 
-/*
-        if (user.getId() != null && user.getId() > 0) {
-            if (userDao.existsByEmail(user.getEmail())) {
-                String message = "The user already exist";
-                flash.addFlashAttribute("info", message);
-                return "user/signup";
-            }
+        if (result.hasErrors()) {
+            model.addAttribute("title", "Sign Up!");
+            return "redirect:/create";
         }
 
- */
-
-        if (photo != null && !photo.isEmpty()) {
-            if (user.getId() != null
-                    && user.getId() > 0
-                    && user.getPhoto() != null
-                    && user.getPhoto().length() > 0) {
-
-                Path rootPath = Paths.get("C:/temp/uploads/", user.getPhoto());
-                File file = rootPath.toFile();
-
-                if (file.exists() && file.canRead()) {
-                    file.delete();
-                }
-
-
-            }
-            try {
-                // Generar un nombre único para el archivo
-                String fileName = UUID.randomUUID().toString() + "_" + photo.getOriginalFilename();
-
-                // Obtener la ruta completa del archivo
-                Path completeRoot = Paths.get("C:/temp/uploads/", fileName);
-
-                // Guardar la imagen en el sistema de archivos
-                Files.write(completeRoot, photo.getBytes());
-
-                // Establecer la ruta del archivo en el campo 'photo' del objeto 'User'
-                user.setPhoto(fileName);
-
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+        if (user.getId() == null && userDao.existsByEmail(user.getEmail())) {
+            String message = "The user already exist";
+            flash.addFlashAttribute("error", message);
+            return "redirect:/create";
         }
 
+        userService.saveInternalPhoto(photo, user);
 
         String message = "Congratulation! You have an account";
 
-        if (!userDao.existsByEmail(user.getEmail())) {
+        if (user.getId() == null) {
             user.setPass(passwordEncoder.encode(user.getPass()));
         }
 
@@ -229,14 +190,6 @@ public class UserController {
             userService.delete(id);
             flash.addFlashAttribute("success", "The user has been deleted");
 
-            Path rootPath = Paths.get("uploads").resolve(userService.findOne(id).getPhoto());
-            File file = rootPath.toFile();
-
-            if (file.exists() && file.canRead()) {
-                if (file.delete()) {
-                    flash.addFlashAttribute("info", "The photo was deleted");
-                }
-            }
         }
 
         return "redirect:/list";

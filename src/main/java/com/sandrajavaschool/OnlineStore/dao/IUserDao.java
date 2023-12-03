@@ -7,6 +7,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/**
+ * Interfaz que define las operaciones de acceso a datos para la entidad User.
+ */
 @Repository
 public interface IUserDao extends JpaRepository<User,Long> {
 
