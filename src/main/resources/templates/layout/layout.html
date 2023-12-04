@@ -53,6 +53,10 @@
                     <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item">
                         <a class="nav-link" th:href="@{/category/categoryList}">Edit Categories</a>
                     </li>
+                    <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item">
+                        <a class="nav-link" th:href="@{/uploadFileForm}">Import products from JSON</a>
+                    </li>
+
 
                 </ul>
 

@@ -7,11 +7,18 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/**
+ * Interface defining data access operations for the Role entity.
+ */
 @Repository
 public interface IRoleDao extends JpaRepository<Role,Long> {
 
-    //Metodo para buscar un rol por su nombre en la bbdd
-
+    /**
+     * Finds a role by its name in the database.
+     *
+     * @param name The name of the role.
+     * @return The role corresponding to the provided name.
+     */
     Role findByName(String name);
 
 }

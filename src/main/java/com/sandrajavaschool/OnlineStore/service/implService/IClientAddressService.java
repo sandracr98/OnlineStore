@@ -5,12 +5,39 @@ import com.sandrajavaschool.OnlineStore.entities.User;
 
 import java.util.List;
 
+/**
+ * Service interface defining operations related to client addresses.
+ */
 public interface IClientAddressService {
 
-    public List<ClientsAddress> findAll();
-    public void save(ClientsAddress clientsAddress);
+    /**
+     * Retrieves all client addresses.
+     *
+     * @return a list of all client addresses
+     */
+    List<ClientsAddress> findAll();
 
-    public ClientsAddress findOne(Long id);
+    /**
+     * Saves a client address.
+     *
+     * @param clientsAddress the client address to be saved
+     */
+    void save(ClientsAddress clientsAddress);
 
-    public void delete(Long id);
+    /**
+     * Retrieves a client address by its ID.
+     *
+     * @param id the ID of the client address
+     * @return the client address with the specified ID, or null if not found
+     */
+    ClientsAddress findOne(Long id);
+
+    /**
+     * Deletes a client address by its ID.
+     *
+     * @param id the ID of the client address to be deleted
+     */
+    void delete(Long id);
 }
+
+

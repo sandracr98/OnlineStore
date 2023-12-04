@@ -7,22 +7,70 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-
+/**
+ * Service interface defining operations related to products.
+ */
 public interface IProductService {
 
-    public List<Product> findAll();
+    /**
+     * Retrieves all products.
+     *
+     * @return a list of all products
+     */
+    List<Product> findAll();
 
-    public void save(Product product);
+    /**
+     * Saves a product.
+     *
+     * @param product the product to be saved
+     */
+    void save(Product product);
 
-    public Product findOne(Long id);
+    /**
+     * Retrieves a product by its ID.
+     *
+     * @param id the ID of the product
+     * @return the product with the specified ID, or null if not found
+     */
+    Product findOne(Long id);
 
-    public void delete(Long id);
+    /**
+     * Deletes a product by its ID.
+     *
+     * @param id the ID of the product to be deleted
+     */
+    void delete(Long id);
 
-    public Page<Product> findAll(Pageable pageable);
+    /**
+     * Retrieves a page of products.
+     *
+     * @param pageable the pageable information
+     * @return a page of products
+     */
+    Page<Product> findAll(Pageable pageable);
 
-    public Page<Product> findByName(String term, Pageable pageable);
+    /**
+     * Searches for products by name and returns a page of results.
+     *
+     * @param term     the search term for product names
+     * @param pageable the pageable information
+     * @return a page of products matching the search term
+     */
+    Page<Product> findByName(String term, Pageable pageable);
 
-    public void saveInternalPhoto(MultipartFile photo, Product product);
-    public void saveExternalPhoto(MultipartFile photo, Product product);
+    /**
+     * Saves an internal photo for a product.
+     *
+     * @param photo   the internal photo file
+     * @param product the product to which the photo belongs
+     */
+    void saveInternalPhoto(MultipartFile photo, Product product);
 
+    /**
+     * Saves an external photo for a product.
+     *
+     * @param photo   the external photo file
+     * @param product the product to which the photo belongs
+     */
+    void saveExternalPhoto(MultipartFile photo, Product product);
 }

@@ -2,7 +2,7 @@ package com.sandrajavaschool.OnlineStore.controllers;
 
 import com.sandrajavaschool.OnlineStore.entities.Product;
 import com.sandrajavaschool.OnlineStore.entities.User;
-import com.sandrajavaschool.OnlineStore.service.implService.IStadisticService;
+import com.sandrajavaschool.OnlineStore.service.implService.IStatisticService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,15 +15,15 @@ import java.util.Map;
 @Controller
 @RequestMapping("/sales")
 @RequiredArgsConstructor
-public class StadisticController {
+public class StatisticController {
 
 
-    private final IStadisticService stadisticService;
+    private final IStatisticService stadisticService;
 
     @GetMapping(value = "/top10Products")
     public String list(Model model) {
 
-        model.addAttribute("title", "Sales Stadistics");
+        model.addAttribute("title", "Sales Statistics");
 
         List<Product> products = stadisticService.getTop10Products();
         List<User> users = stadisticService.getTop10Clients();

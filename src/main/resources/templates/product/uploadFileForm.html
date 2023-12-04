@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head th:replace="layout/layout :: head"></head>
+
+<body>
+
+<header th:replace="layout/layout :: header"></header>
+
+<div class="container py-4">
+    <div class="card bg-dark text-white">
+        <div class="card-header" th:text="${title}"></div>
+        <div class="card-body">
+
+            <form th:action="@{/uploadFile}" method="post" enctype="multipart/form-data">
+
+                <table>
+                    <tr>
+                        <td>Select a file to upload</td>
+                        <td><input type="file" name="file" /></td>
+                    </tr>
+                    <br>
+                    <tr>
+                        <td><input type="submit" value="Submit" /></td>
+                    </tr>
+                </table>
+
+                <br>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="layout/layout :: footer"></footer>
+
+
+</body>
+</html>

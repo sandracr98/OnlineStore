@@ -6,8 +6,7 @@ import com.sandrajavaschool.OnlineStore.entities.Product;
 import com.sandrajavaschool.OnlineStore.entities.User;
 import com.sandrajavaschool.OnlineStore.entities.Order;
 import com.sandrajavaschool.OnlineStore.service.implService.IOrderService;
-import com.sandrajavaschool.OnlineStore.service.implService.IStadisticService;
-import jakarta.transaction.Transaction;
+import com.sandrajavaschool.OnlineStore.service.implService.IStatisticService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +23,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 @AllArgsConstructor
-public class StadisticService implements IStadisticService {
+public class StatisticService implements IStatisticService {
 
     private final IProductDao productDao;
     private final IUserDao userDao;

@@ -79,6 +79,8 @@ public class SecurityConfig {
                             .requestMatchers("/form/**").hasRole("ADMIN")
                             .requestMatchers("/create/**").hasRole("ADMIN")
                             .requestMatchers("/sales/**").hasRole("ADMIN")
+                            .requestMatchers("/uploadFileForm/**").hasRole("ADMIN")
+
 
 
                             .anyRequest().authenticated();

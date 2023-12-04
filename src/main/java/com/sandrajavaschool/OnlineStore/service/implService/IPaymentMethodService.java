@@ -4,12 +4,37 @@ import com.sandrajavaschool.OnlineStore.entities.PaymentMethod;
 
 import java.util.List;
 
+/**
+ * Service interface defining operations related to payment methods.
+ */
 public interface IPaymentMethodService {
 
-    public List<PaymentMethod> findAll();
-    public void save(PaymentMethod paymentMethod);
+    /**
+     * Retrieves all payment methods.
+     *
+     * @return a list of all payment methods
+     */
+    List<PaymentMethod> findAll();
 
-    public PaymentMethod findOne(Long id);
+    /**
+     * Saves a payment method.
+     *
+     * @param paymentMethod the payment method to be saved
+     */
+    void save(PaymentMethod paymentMethod);
 
-    public void delete(Long id);
+    /**
+     * Retrieves a payment method by its ID.
+     *
+     * @param id the ID of the payment method
+     * @return the payment method with the specified ID, or null if not found
+     */
+    PaymentMethod findOne(Long id);
+
+    /**
+     * Deletes a payment method by its ID.
+     *
+     * @param id the ID of the payment method to be deleted
+     */
+    void delete(Long id);
 }
