@@ -49,13 +49,9 @@ public class ClientAddressController {
     }
 
     @PostMapping(value = "/saveAddress")
-    public String save(@Valid ClientsAddress clientsAddress,
-                       BindingResult result,
+    public String save(@ModelAttribute ClientsAddress clientsAddress,
                        RedirectAttributes flash) {
 
-        if (result.hasErrors()) {
-            return "user/signup";
-        }
         String flashmessage = "Congratulation! You create a new address";
 
         clientAddressService.save(clientsAddress);
@@ -78,7 +74,6 @@ public class ClientAddressController {
 
             if (clientsAddress == null) {
                 flash.addFlashAttribute("error", "The address does not exist");
-                //IMPLEMENTAR MANEJO DE ERRORES
                 return "redirect:/userDetails/" + clientsAddress.getUser().getId();
             }
 
@@ -106,7 +101,6 @@ public class ClientAddressController {
                 clientAddressService.delete(id);
                 flash.addFlashAttribute("success", "The address has been deleted");
             }
-
 
             return "redirect:/userDetails/" + user.getId();
 

@@ -83,27 +83,27 @@ values ('Clothes', true);
 -- Insertando productos
 -- Product 1
 INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
-VALUES ('Product 1', 25.50, 1, '1L', 10, 'Brand A', 'Black', '2kg', '2023-10-05', true, 5, '');
+VALUES ('Wood Sculpture Set', 25.50, 1, '1L', 10, 'Brand A', 'Black', '2kg', '2023-10-05', true, 5, '');
 
 -- Product 2
 insert into products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
-values ('Product 2', 35.00, 3, 'M', 20, 'Brand B', 'Blue', '500g', '2023-10-06', true, 2, '');
+values ('Watercolor Box', 35.00, 3, 'M', 20, 'Brand B', 'Blue', '500g', '2023-10-06', true, 3, '');
 
 -- Product 3
 insert into products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
-values ('Product 3', 10.99, 2, '500ml', 15, 'Brand C', 'White', '1kg', '2023-10-07', true, 3, '');
+values ('Brush set', 10.99, 2, '500ml', 15, 'Brand C', 'White', '1kg', '2023-10-07', true, 2, '');
 
 -- Product 4
 insert into products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
-values ('Product 4', 45.75, 2, '2L', 12, 'Brand D', 'Silver', '3kg', '2023-10-08', true, 9, '');
+values ('Color Palettes', 45.75, 2, '2L', 12, 'Brand D', 'Silver', '3kg', '2023-10-08', true, 0, '');
 
 -- Product 5
 insert into products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
-values ('Product 5', 15.99, 3, 'L', 18, 'Brand E', 'Red', '700g', '2023-10-09', true, 0, '');
+values ('Marker Case', 15.99, 3, 'L', 18, 'Brand E', 'Red', '700g', '2023-10-09', true, 0, '');
 
 -- Product 6
 insert into products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
-values ('Product 6', 8.50, 1, '1L', 25, 'Brand F', 'Green', '800g', '2023-10-10', true, 0, '');
+values ('Easel', 8.50, 1, '1L', 25, 'Brand F', 'Green', '800g', '2023-10-10', true, 0, '');
 
 -- Product 7
 insert into products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
@@ -155,16 +155,19 @@ values ('Product 18', 24.75, 1, '500ml', 28, 'Brand R', 'Silver', '1kg', '2023-1
 
 
 
--- Insertando órdenes
-insert into orders (user_id_user, payment_Method_id, delivery_Method, goods, payment_Status, order_Status, sum, description, date)
-values (1, 1, 'Envío a domicilio', 'Productos varios', 'Pending', 'En proceso', 150.00, 'Descripción de la orden 1', '2023-10-03');
 
-insert into orders (user_id_user, payment_Method_id, delivery_Method, goods, payment_Status, order_Status, sum, description, date)
-values (1, 2, 'Recogida en tienda', 'Productos de electrónica', 'Paid', 'Pendiente', 45.00, 'Descripción de la orden 2', '2023-10-04');
+-- Insertando órdenes
+INSERT INTO orders (user_id_user, payment_Method_id, delivery_Method, goods, payment_Status, order_Status, sum, description, date)
+VALUES (1, 1, 'Envío a domicilio', 'Productos varios', 'Pending', 'En proceso', 150.00, 'Descripción de la orden 1', '2023-10-03');
+
+INSERT INTO orders (user_id_user, payment_Method_id, delivery_Method, goods, payment_Status, order_Status, sum, description, date)
+VALUES (1, 2, 'Recogida en tienda', 'Productos de electrónica', 'Paid', 'Pendiente', 45, 'Descripción de la orden 2', '2023-10-04');
 
 
 -- Insertando líneas de recibo
-insert into receipt_Lines (amount, product_id, order_id) values (5, 1, 1);
-insert into receipt_Lines (amount, product_id, order_id) values (3, 2, 2);
-insert into receipt_Lines (amount, product_id, order_id) values (2, 3, 1);
+INSERT INTO receipt_Lines (amount, product_id, order_id) VALUES (5, 1, 1);
+INSERT INTO receipt_Lines (amount, product_id, order_id) VALUES (3, 2, 2);
+INSERT INTO receipt_Lines (amount, product_id, order_id) VALUES (2, 3, 1);
+
+
 

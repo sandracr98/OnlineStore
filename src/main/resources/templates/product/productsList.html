@@ -9,10 +9,10 @@
 
 <div class="container py-4">
 
-    <div class="card bg-light">
+    <div class="card bg-dark text-white">
         <div class="card-header" th:text="${title}"></div>
 
-        <div class="card-body">
+        <div class="card-body custom-card-body">
 
             <div>
                 <a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-success" th:href="@{/createProduct}" th:text="'Create'"></a>
@@ -50,26 +50,30 @@
                     <div class="card-body">
                         <h5 class="card-title" th:text="${product.title}"></h5>
                         <p class="card-text">
-                            <strong>Price:</strong> <span th:text="${product.price} + '€'"></span><br>
-                            <strong>Category:</strong> <span th:text="${product.category.name}"></span><br>
-                            <strong>Volume:</strong> <span th:text="${product.volume}"></span><br>
-                            <strong>Stock:</strong> <span th:text="${product.stock}"></span><br>
-                            <strong>Brand:</strong> <span th:text="${product.brand}"></span><br>
-                            <strong>Color:</strong> <span th:text="${product.color}"></span><br>
-                            <strong>Weight:</strong> <span th:text="${product.weight}"></span><br>
-                            <strong>Date:</strong> <span th:text="${product.date}"></span><br>
-                            <strong>Status:</strong> <span th:text="${product.status}"></span>
+                            <strong th:if="${product.price != null}">Price:</strong> <span th:if="${product.price != null}" th:text="${product.price} + '€'"></span><br>
+                            <strong th:if="${product.volume != null}">Volume:</strong> <span th:if="${product.volume != null}" th:text="${product.volume}"></span><br>
+                            <strong th:if="${product.brand != null}">Brand:</strong> <span th:if="${product.brand != null}" th:text="${product.brand}"></span><br>
+                            <strong th:if="${product.color != null}">Color:</strong> <span th:if="${product.color != null}" th:text="${product.color}"></span><br>
+                            <strong th:if="${product.weight != null}">Weight:</strong> <span th:if="${product.weight != null}" th:text="${product.weight}"></span><br>
+                            <strong sec:authorize="hasRole('ROLE_ADMIN')">Date:</strong> <span sec:authorize="hasRole('ROLE_ADMIN')" th:text="${product.date}"></span><br>
+                            <strong sec:authorize="hasRole('ROLE_ADMIN')">Status:</strong> <span sec:authorize="hasRole('ROLE_ADMIN')" th:text="${product.status}"></span>
+                            <strong sec:authorize="hasRole('ROLE_ADMIN')" th:if="${product.stock != null}" >Stock:</strong> <span th:if="${product.stock != null}" sec:authorize="hasRole('ROLE_ADMIN')" th:text="${product.stock}"></span>
+                            <strong th:if="${product.category != null}">Category:</strong> <span th:if="${product.category != null}" th:text="${product.category.name}"></span><br>
+
+                            <br>
+
                         </p>
 
-                        <button class="buyButton" type="button"
+                        <button class="buyButton btn-info" type="button"
                                 th:data-id="${product.id}"
                                 th:data-title="${product.title}"
                                 th:data-price="${product.price}"
-                                onclick="handleBuyButtonClick(this)">
-                            Buy
+                                onclick="handleBuyButtonClick(this)"
+                                sec:authorize="isAnonymous() or hasRole('ROLE_USER')">
+                            Add to Cart
                         </button>
 
-                        <a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-primary btn-sm" th:href="@{/editProduct/} + ${product.id}" th:text="'Edit'"></a>
+                        <a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-secondary btn-sm" th:href="@{/editProduct/} + ${product.id}" th:text="'Edit'"></a>
 
                         <a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-danger btn-sm" th:href="@{/deleteProduct/} + ${product.id}"
                            th:text="'Delete'" onclick="return confirm('Are you sure do you want to delete this product? ' +

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+const form = document.getElementById('registrationForm');
+
+form.addEventListener('submit', function (event) {
+// Evitar que el formulario se envíe
+event.preventDefault();
+
+// Resetear los mensajes de error
+resetErrorMessages();
+
+// Validar campos
+const email = document.getElementById('email').value;
+const password = document.getElementById('password').value;
+
+if (!validateEmail(email)) {
+displayError('emailError', 'Ingrese un correo electrónico válido.');
+}
+
+if (!validatePassword(password)) {
+displayError('passwordError', 'La contraseña debe tener al menos 8 caracteres.');
+}
+
+// Si no hay errores, enviar el formulario
+if (form.checkValidity()) {
+alert('Formulario válido. Enviar datos al servidor.');
+// Puedes enviar los datos al servidor aquí utilizando AJAX o fetch
+}
+});
+
+function resetErrorMessages() {
+document.getElementById('emailError').textContent = '';
+document.getElementById('passwordError').textContent = '';
+}
+
+function displayError(elementId, errorMessage) {
+document.getElementById(elementId).textContent = errorMessage;
+}
+
+function validateEmail(email) {
+// Puedes implementar una validación más robusta si es necesario
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+return emailRegex.test(email);
+}
+
+function validatePassword(password) {
+return password.length >= 8;
+}
+});
+
+</script>
+</body>
+</html>

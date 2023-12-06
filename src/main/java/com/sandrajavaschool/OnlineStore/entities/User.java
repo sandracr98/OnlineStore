@@ -24,26 +24,24 @@ public class User implements Serializable {
     @Column(name = "id_user", nullable = false)
     private Long id;
 
-    @NotNull(message = "Name is required")
-    @NotEmpty(message = "Name is required")
+    @NotBlank(message = "Name is required")
     @Size(min = 4, max = 30)
     private String name;
 
-    @NotEmpty
+    @NotBlank(message = "Surname is required")
     private String surname;
 
     @Temporal(TemporalType.DATE)
-    @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthdate;
 
     @Column(length = 30, unique = true)
-    @NotEmpty(message = "Email is required")
     @Email(message = "Invalid email format")
     private String email;
 
     @Column(length = 60)
-    @NotEmpty(message = "Password is required")
+    @Size(min = 8, message = "The password required 8 characters.")
+
     private String pass;
 
     @NotNull

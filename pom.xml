@@ -69,11 +69,20 @@
             <scope>test</scope>
         </dependency>
 
+        <!--
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
             <version>3.1.2</version>
         </dependency>
+
+        -->
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
 
         <!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
         <!-- esto es para el ciclo de vida mirar el ejemplo del profesor de init para crear proyecto -->

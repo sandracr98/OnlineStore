@@ -60,6 +60,7 @@ public class SecurityConfig {
                     authz
                             .requestMatchers("/css/**", "/js/**", "/images/**",
                                     "/order/receipt/**",
+                                    "/mainPage",
                                     "/create/**", "/api/auth/**",
                                     "/", "/api/login", "productsList",
                                     "/order/receiptControl",

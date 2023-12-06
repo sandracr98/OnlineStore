@@ -22,6 +22,7 @@ public class FileReader {
             goodsList = objectMapper.readValue(file.getInputStream(), new TypeReference<List<Product>>() {});
         } catch (IOException e) {
             e.printStackTrace();
+            System.err.println("Error al leer el JSON: " + e.getMessage());
         }
 
 

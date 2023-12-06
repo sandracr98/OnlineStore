@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
 
-    /* ES PARA SUBIDA DE FOTO EN UN DIRECTORIO EXTERNO
+    // ES PARA SUBIDA DE FOTO EN UN DIRECTORIO EXTERNO
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         WebMvcConfigurer.super.addResourceHandlers(registry);
@@ -21,8 +21,6 @@ public class MvcConfig implements WebMvcConfigurer {
                 .addResourceLocations("file:C:/temp/uploads/");
     }
 
-
-   */
 
     //metodo para registrar un controlador de vista y
     //personalizar la pagina de error 403 (De acceso denegado)

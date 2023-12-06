@@ -116,7 +116,7 @@ public class ProductController {
 
         String flashmessage = "Your item has been created/edited correctly!";
 
-        productService.saveInternalPhoto(photo, product);
+        productService.saveExternalPhoto(photo, product);
 
         //para que se guarde la fecha cada vez que lo modificas
         product.prePersist();

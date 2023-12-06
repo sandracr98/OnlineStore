@@ -45,14 +45,39 @@
           <label class="col-sm-2 col-form-label" th:text="'Payment Method'"></label>
           <div class="col-sm-6">
             <div class="form-check">
-              <input class="form-check-input" type="radio" th:field="*{paymentMethod.type}"
-                     value="Cash" id="cash">
+              <input class="form-check-input" type="radio" th:field="*{paymentMethod.type}" value="Cash" id="cash" checked>
               <label class="form-check-label" for="cash">Cash</label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="radio" th:field="*{paymentMethod.type}"
-                     value="By card" id="bycard">
+              <input class="form-check-input" type="radio" th:field="*{paymentMethod.type}" value="By card" id="bycard">
               <label class="form-check-label" for="bycard">By Card</label>
+            </div>
+          </div>
+        </div>
+
+        <div id="paymentDetailsContainer" class="container mt-4 p-4 border rounded" style="display: none;">
+          <div class="form-group row">
+            <h5>Only for By Card Method:</h5>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label" th:text="'Card Number'"></label>
+            <div class="col-sm-6">
+              <textarea th:field="*{paymentMethod.cardNumber}" class="form-control"></textarea>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label" th:text="'Expiration Date'"></label>
+            <div class="col-sm-6">
+              <input id="expirationDate" type="date" th:field="*{paymentMethod.expirationDate}" th:errorclass="'form-control alert-danger'"/>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label" th:text="'CVV'"></label>
+            <div class="col-sm-6">
+              <textarea th:field="*{paymentMethod.cvv}" class="form-control"></textarea>
             </div>
           </div>
         </div>
@@ -108,7 +133,7 @@
 
         <div class="form-group row">
           <div class="col-sm-6">
-            <input type="submit" class="btn btn-light btn-xs" th:value="'Add'">
+            <input type="submit" class="btn btn-light btn-xs" th:value="'Checkout'">
           </div>
         </div>
 
@@ -122,6 +147,8 @@
 
 <footer th:replace="layout/layout :: footer"></footer>
 <script th:replace="order/js/autocomplete-products :: javascript"></script>
+<script th:replace="order/js/paymentMethods :: paymentMethods"></script>
+
 
 
 </body>

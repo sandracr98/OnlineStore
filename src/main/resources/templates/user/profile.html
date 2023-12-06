@@ -15,7 +15,7 @@
 
             <table class="table table-striped  border border-success">
 
-                <div class="form-group row">
+                <div  sec:authorize="hasRole('ROLE_ADMIN')"  class="form-group row">
                     <div class="col-sm-6">
                         <a th:text="'Back'" class="btn btn-light btn-xs" th:href="@{/list}"></a>
                     </div>
@@ -27,23 +27,36 @@
                 </h4>
 
                 <tbody>
+                <div class="user-info-container">
+                    <img th:if="${user.photo != null}"
+                         class="img-thumbnail rounded float-left" style="max-width: 25%; margin-right: 20px;"
+                         th:src="@{'/uploads/' + ${user.photo}}" th:alt="${user.photo}"/>
 
-                <img th:if="${user.photo != null}"
-                     class="img-thumbnail rounded float-left" style="max-width: 25%;"
-                     th:src="@{'/uploads/' + ${user.photo}}" th:alt="${user.photo}"/>
-
-                <ul class="list-group">
-                    <li class="list-group-item" th:text="${user.name}"></li>
-                    <li class="list-group-item" th:text="${user.surname}"></li>
-                    <li class="list-group-item" th:text="${user.email}"></li>
-                    <li class="list-group-item" th:text="${user.birthdate}"></li>
-                    <li sec:authorize="hasRole('ROLE_USER')" class="list-group-item" th:text="${user.pass}"></li>
-                </ul>
+                    <ul class="list-group user-info">
+                        <li class="list-group-item">
+                            <label class="user-label" for="name">Name:</label>
+                            <span id="name" class="user-value" th:text="${user.name}"></span>
+                        </li>
+                        <li class="list-group-item">
+                            <label class="user-label" for="surname">Surname:</label>
+                            <span id="surname" class="user-value" th:text="${user.surname}"></span>
+                        </li>
+                        <li class="list-group-item">
+                            <label class="user-label" for="email">Email:</label>
+                            <span id="email" class="user-value" th:text="${user.email}"></span>
+                        </li>
+                        <li class="list-group-item">
+                            <label class="user-label" for="birthdate">Birthdate:</label>
+                            <span id="birthdate" class="user-value" th:text="${user.birthdate}"></span>
+                        </li>
+                    </ul>
+                </div>
                 </tbody>
+
 
             </table>
 
-            <a class="btn btn-secondary btn-sm" th:href="@{/view/} + ${user.id}" th:text="'Edit'"></a>
+            <a class="btn btn-secondary btn-sm" th:href="@{/view/} + ${user.id}" th:text="'Edit Profile'"></a>
 
 
 

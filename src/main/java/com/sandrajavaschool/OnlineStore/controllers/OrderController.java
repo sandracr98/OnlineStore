@@ -128,7 +128,6 @@ public class OrderController {
 
             if (product.getPrice() == null) {
                 throw new IllegalStateException("Product price is null for this product");
-                //puedo redirigir a nullPointerException.html
             }
 
             if (amount == null || Arrays.stream(amount).anyMatch(value -> value == null || value <= 0)) {
@@ -180,7 +179,7 @@ public class OrderController {
         }
 
         model.addAttribute("order", order);
-        model.addAttribute("title", "Order: ".concat(order.getDescription()));
+        model.addAttribute("title", "Order: ".concat(order.getId().toString()));
 
         return "order/viewOrderDetails";
 
@@ -194,7 +193,7 @@ public class OrderController {
         try {
             Order order = orderService.findOne(id);
             if (order == null) {
-                throw new OrderNotFoundException("Order with id " + id + " not found");
+                throw new OrderNotFoundException("Order with id " + id + " not found", id);
             }
 
             model.addAttribute("order", order);
@@ -259,13 +258,10 @@ public class OrderController {
 
             Order newOrder = new Order();
             newOrder.setUser(existingOrder.getUser());
-
+            newOrder.setGoods(existingOrder.getGoods());
 
             PaymentMethod paymentMethod = new PaymentMethod();
             newOrder.setPaymentMethod(paymentMethod);
-
-            newOrder.setGoods(existingOrder.getGoods());
-
 
             List<ReceiptLine> receiptLines = existingOrder.getReceiptLines();
 
@@ -273,7 +269,7 @@ public class OrderController {
 
                 for (ReceiptLine receiptLine : receiptLines) {
 
-                    if (receiptLine != null && receiptLine.getProduct() != null) {
+                    if (receiptLine.getProduct() != null) {
 
                         Product product = userService.findProductById(receiptLine.getProduct().getId());
 
@@ -293,6 +289,7 @@ public class OrderController {
                         return "redirect:/error/nullPointerException";
                     }
                 }
+
             } else {
                 flash.addFlashAttribute("error", "Error: Product is null for ReceiptLine");
                 return "redirect:/error/nullPointerException";
@@ -301,7 +298,6 @@ public class OrderController {
 
             Double total = newOrder.getTotal();
             newOrder.setSum(total);
-
 
             model.addAttribute("order", newOrder);
             model.addAttribute("paymentMethod", paymentMethod);
@@ -328,7 +324,9 @@ public class OrderController {
             return "redirect:/order/ordersList";
         }
 
+        paymentMethodService.save(paymentMethod);
         userService.saveOrder(newOrder);
+
         String flashmessage = "Congratulation! Your order has completed";
         flash.addFlashAttribute("success", flashmessage);
 

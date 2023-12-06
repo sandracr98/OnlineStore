@@ -140,7 +140,7 @@ public class UserController {
         model.put("title", "Profile");
         model.put("user", user);
 
-        return "user/signup";
+        return "user/editProfile";
     }
 
 
@@ -162,7 +162,7 @@ public class UserController {
             return "redirect:/create";
         }
 
-        userService.saveInternalPhoto(photo, user);
+        userService.saveExternalPhoto(photo, user);
 
         String message = "Congratulation! You have an account";
 
