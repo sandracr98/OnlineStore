@@ -1,80 +1,250 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="layout/layout :: head"></head>
 
 <body>
 
-<header th:replace="layout/layout :: header"></header>
+<header>
 
-<div class="container py-4">
-
-    <div class="row py-lg-5 border-bottom justify-content-center align-items-center">
-        <div class="col-lg-6 col-md-8 mx-auto">
-            <h1 class="text-center">SCR</h1>
-            <p class="lead text-body-secondary text-center">Your Online Store, Our Solution: SCR, Your Ally for
-                Success.</p>
-        </div>
-    </div>
-
-    <div class="row py-lg-5 border-bottom justify-content-center align-items-center">
-        <div class="col-lg-3 col-md-3 mx-auto">
-            <button class="btn btn-dark d-inline-flex align-items-center text" type="button">
-                <a class="btn btn-lg btn-dark" th:href="@{/productsList}">Explore the catalog</a>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">SCR</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
             </button>
-        </div>
-    </div>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
 
-    <div class="row py-lg-5 border-bottom justify-content-center align-items-center bg-dark">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" th:href="@{/mainPage}">Home</a>
+                    </li>
 
-        <div class="d-flex gap-3 justify-content-center py-3">
-            <button class="btn btn-secondary d-inline-flex align-items-center text" type="button">
-                <a class="btn btn-lg btn-secondary" th:href="@{/create}">Sign Up</a>
-            </button>
-        </div>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/productsList}">Products</a>
+                    </li>
 
-        <div class="d-flex gap-3 justify-content-center py-3">
-            <button class="btn btn-secondary d-inline-flex align-items-center text" type="button">
-                <a class="btn btn-lg btn-secondary" th:href="@{/api/login}">Log In</a>
-            </button>
-        </div>
+                    <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item">
+                        <a class="nav-link" th:href="@{/list}">Clients List</a>
+                    </li>
 
-    </div>
+                    <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item">
+                        <a class="nav-link" th:href="@{/order/ordersList}">Orders List</a>
+                    </li>
 
-    <div class="row py-lg-5 border-bottom justify-content-center align-items-center">
+                    <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item">
+                        <a class="nav-link" th:href="@{/sales/top10Products}">Sales Stadistics</a>
+                    </li>
 
-        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-            <ol class="carousel-indicators">
-                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-            </ol>
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img class="d-block w-100" src="/images/dress.jpg" alt="First slide">
-                </div>
-                <div class="carousel-item">
-                    <img class="d-block w-100" src="/images/light2.jpg" alt="Second slide">
-                </div>
-                <div class="carousel-item">
-                    <img class="d-block w-100" src="/images/television.jpg" alt="Third slide">
-                </div>
+                    <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item">
+                        <a class="nav-link" th:href="@{/category/categoryList}">Edit Categories</a>
+                    </li>
+                    <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item">
+                        <a class="nav-link" th:href="@{/uploadFileForm}">Import products from JSON</a>
+                    </li>
+
+
+                </ul>
+
+                <ul class="navbar-nav ml-auto navbar-right">
+                    <li sec:authorize="!isAuthenticated()">
+                        <a class="btn btn-outline-light" th:href="@{/api/login}">Sign In</a>
+                    </li>
+                    <br>
+
+                    <li sec:authorize="hasRole('ROLE_USER')" class="nav-item">
+                        <a class="nav-link" th:href="@{/getId}">Profile</a>
+                    </li>
+                    <br>
+
+                    <li sec:authorize="!hasRole('ROLE_ADMIN')">
+
+                        <div class="nav-item">
+                            <a class="nav-link" th:href="@{/order/receiptControl}">Shopping cart</a>
+                        </div>
+
+                    </li>
+
+                    <br>
+
+                    <li sec:authorize="isAuthenticated()" class="dropdown">
+
+                        <a class="btn btn-outline-light dropdown-toggle" href="#" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            <span sec:authentication="name"></span>
+                        </a>
+
+                        <div class="dropdown-menu">
+                            <form id="logout" th:action="@{/logout}" method="post">
+                                <button class="dropdown-item" type="submit">Sign out</button>
+                            </form>
+                        </div>
+                    </li>
+
+                    <br>
+
+                    <script>
+
+                        var logoutElement = document.getElementById('logout');
+
+                        if (logoutElement) {
+                            logoutElement.addEventListener('submit', function(event) {
+                                // Prevenir el envío del formulario para dar tiempo a ejecutar la función logout()
+                                event.preventDefault();
+
+                                // Llamar a la función logout()
+                                logout();
+
+                                // Enviar el formulario después de ejecutar la función logout()
+                                this.submit();
+                            });
+                        } else {
+                            console.warn("Element with ID 'logout' not found. Event listener not added.");
+                        }
+
+                        function logout() {
+                            // Borrar el token almacenado (puede ser en localStorage, sessionStorage, o cookies)
+                            localStorage.removeItem('jwtToken');
+
+                            //Limpiar productos almacenados
+                            localStorage.removeItem('storedProducts');
+
+                            clearCookie('productInfo');
+
+                            // Redirigir al usuario a la página de inicio de sesión u otra página deseada
+                            window.location.replace('/login');
+                        }
+
+                        function clearCookie(cookieName) {
+                            document.cookie = `${cookieName}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+                        }
+
+                    </script>
+
+                </ul>
             </div>
-            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>
         </div>
+    </nav>
+
+    <div class="alert alert-success" th:if="${success != null}" th:text="${success}"></div>
+    <div class="alert alert-danger" th:if="${danger != null}" th:text="${error}"></div>
+    <div class="alert alert-warming" th:if="${warming != null}" th:text="${warming}"></div>
+    <div class="alert alert-info" th:if="${info != null}" th:text="${info}"></div>
+
+
+</header>
+<div style="position: relative;">
+
+    <div class="container py-4 text-center">
+
+        <div class="row py-lg-5 border-bottom justify-content-center align-items-center">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="text-center">SCR</h1>
+                <p class="lead text-body-secondary text-center">Unlock Your Creative Potential: SCR, Your Premier
+                    Destination for Artistic Expression and Success in Every Brushstroke</p>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="col-lg-6 col-md-3 mx-auto">
+            <button class="btn btn-dark d-inline-flex align-items-center text" type="button">
+                <a class="btn btn-lg text-white" th:href="@{/productsList}">Discover Unique Treasures in Our Catalog</a>
+            </button>
+        </div>
+
+        <br>
+
+        <div class="row py-lg-5 border-bottom justify-content-center align-items-center">
+
+            <div id="carouselExampleIndicators" class="carousel slide col-md-6" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                </ol>
+                <div class="carousel-inner">
+                    <div class="carousel-item active text-center">
+                        <img class="d-block mx-auto" src="/images/Carrousel1.jpg" alt="First slide"
+                             style="max-width: 100%; height: 300px;">
+                    </div>
+                    <div class="carousel-item text-center">
+                        <img class="d-block mx-auto" src="/images/Carrousel2.jpg" alt="Second slide"
+                             style="max-width: 100%; height: 300px;">
+                    </div>
+                    <div class="carousel-item text-center">
+                        <img class="d-block mx-auto" src="/images/Carrousel3.jpg" alt="Third slide"
+                             style="max-width: 100%; height: 300px;">
+                    </div>
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+
+        </div>
+
+
+        <div th:if="${#authorization.expression('isAnonymous()')}"
+             class="row py-lg-5 border-bottom justify-content-center align-items-center">
+
+            <div class="d-flex gap-3 justify-content-center py-3">
+                <button class="btn btn-secondary d-inline-flex align-items-center text" type="button">
+                    <a class="btn btn-lg btn-secondary" th:href="@{/create}">Sign Up</a>
+                </button>
+            </div>
+
+            <div class="d-flex gap-3 justify-content-center py-3">
+                <button class="btn btn-secondary d-inline-flex align-items-center text" type="button">
+                    <a class="btn btn-lg btn-secondary" th:href="@{/api/login}">Sign In</a>
+                </button>
+            </div>
+
+        </div>
+
+        <img src="/images/background1.jpg" alt="Fondo 1"
+             style="position: absolute; top: 100px; left: 50px; width: 300px; height: 225px;">
+        <img src="/images/background2.jpg" alt="Fondo 2"
+             style="position: absolute; top: 250px; left: 300px; width: 225px; height: 300px;">
+
+        <img src="/images/background4.jpg" alt="Fondo 4"
+             style="position: absolute; top: 100px; right: 50px; width: 300px; height: 225px;">
+        <img src="/images/background5.jpg" alt="Fondo 5"
+             style="position: absolute; top: 250px; right: 300px; width: 225px; height: 300px;">
+
 
     </div>
 
+
+    <div class="container-fluid container-expand-lg">
+
+        <div class="row justify-content-center">
+
+            <div class="col-md-12 text-center">
+                <p class="copyright">
+                    Copyright 2023 All rights reserved. SCR</a>
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+
+    <script th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/jquery-ui.min.js}"></script>
+
+    <!-- Agrega el enlace al archivo de script de Bootstrap y Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.9/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 </div>
-
-<footer th:replace="layout/layout :: footer"></footer>
 
 
 </body>

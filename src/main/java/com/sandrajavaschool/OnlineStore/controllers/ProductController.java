@@ -3,6 +3,7 @@ package com.sandrajavaschool.OnlineStore.controllers;
 import com.sandrajavaschool.OnlineStore.entities.Category;
 import com.sandrajavaschool.OnlineStore.entities.CategoryStatus;
 import com.sandrajavaschool.OnlineStore.entities.Product;
+import com.sandrajavaschool.OnlineStore.errorsException.ProductNotFoundException;
 import com.sandrajavaschool.OnlineStore.paginator.PageRender;
 import com.sandrajavaschool.OnlineStore.service.implService.ICategoryService;
 import com.sandrajavaschool.OnlineStore.service.implService.IProductService;
@@ -74,10 +75,11 @@ public class ProductController {
                        RedirectAttributes flash) {
 
         Product product = productService.findOne(id);
+
         if (product == null) {
-            flash.addFlashAttribute("error", "The product does not exist");
-            return "redirect:/productsList";
+            throw new ProductNotFoundException("The product does not exist");
         }
+
         model.put("tittle", "");
         model.put("product", product);
 
@@ -88,33 +90,27 @@ public class ProductController {
     @GetMapping(value = "/createProduct")
     public String create(Model model) {
 
-        try {
-            model.addAttribute("title", "New Product");
+        model.addAttribute("title", "New Product");
 
-            Product product = new Product();
-            model.addAttribute("product", product);
+        Product product = new Product();
+        model.addAttribute("product", product);
 
-            List<Category> categories = categoryService.findAll();
+        List<Category> categories = categoryService.findAll();
 
-            if (categories == null) {
-                throw new IllegalStateException("CategoryList is null");
-            }
-
-            model.addAttribute("categories", categories);
-
-            return "product/productCreate";
-
-        } catch (Exception e) {
-            return "error/error405";
+        if (categories == null) {
+            throw new IllegalStateException("CategoryList is null");
         }
+
+        model.addAttribute("categories", categories);
+
+        return "product/productCreate";
+
     }
 
     @PostMapping(value = "/saveProduct")
     public String save(@ModelAttribute Product product,
                        RedirectAttributes flash,
                        @RequestParam("file") MultipartFile photo) {
-
-        String flashmessage = "Your item has been created/edited correctly!";
 
         productService.saveExternalPhoto(photo, product);
 
@@ -123,7 +119,7 @@ public class ProductController {
 
         productService.save(product);
 
-        flash.addFlashAttribute("success", flashmessage);
+        flash.addFlashAttribute("success", "Your item has been created/edited correctly!");
 
         return "redirect:productsList";
     }
@@ -138,13 +134,12 @@ public class ProductController {
         if (id > 0) {
             product = productService.findOne(id);
             if (product == null) {
-                flash.addFlashAttribute("error", "The product does not exist");
-                return "redirect:/product/productList";
+                throw new ProductNotFoundException("The product is null");
             }
 
         } else {
-            flash.addFlashAttribute("error", "The product does not exist");
-            return "redirect:/product/productList";
+            throw new ProductNotFoundException("The product does not exist");
+
         }
 
 

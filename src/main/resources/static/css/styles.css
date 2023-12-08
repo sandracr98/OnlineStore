@@ -1,3 +1,6 @@
+
+/* Carousel */
+
 .carousel-inner img {
     max-width: 40%;
     height: auto;
@@ -25,3 +28,20 @@
 .user-value {
     margin-left: 10px;
 }
+
+
+/* Paginator */
+
+.custom-pagination .page-item .page-link {
+    color: black;
+}
+
+.custom-pagination .page-item.disabled .page-link {
+    color: #808080;
+}
+
+.custom-pagination .page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+

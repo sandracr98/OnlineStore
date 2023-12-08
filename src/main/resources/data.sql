@@ -34,29 +34,27 @@ insert into users (name, surname, birthdate, email, pass, enabled, total_spent, 
 ('Ava', 'Lopez', '1995-06-17', 'ava.lopez@example.com', 'mypassword', 1, 0, '');
 
 
+-- Inserting customer addresses
+INSERT INTO clients_addresses (country, city, postal_code, street, home, apartment, user_id)
+VALUES ('Spain', 'Barcelona', '08001', 'Calle de la Princesa', '123', '1A', 1);
 
--- Insertando direcciones de clientes
-insert into clients_Addresses (country, city, postal_Code, street, home, apartment, user_id)
-values ('España', 'Barcelona', '08001', 'Calle de la Princesa', '123', '1A', 1);
+INSERT INTO clients_addresses (country, city, postal_code, street, home, apartment, user_id)
+VALUES ('United States', 'New York', '10001', 'Broadway', '456', '2B', 2);
 
-insert into clients_Addresses (country, city, postal_Code, street, home, apartment, user_id)
-values ('Estados Unidos', 'Nueva York', '10001', 'Broadway', '456', '2B', 2);
+INSERT INTO clients_addresses (country, city, postal_code, street, home, apartment, user_id)
+VALUES ('France', 'Paris', '75001', 'Avenue des Champs-Élysées', '789', '3C', 3);
 
-insert into clients_Addresses (country, city, postal_Code, street, home, apartment, user_id)
-values ('Francia', 'París', '75001', 'Avenida de los Campos Elíseos', '789', '3C', 3);
+INSERT INTO clients_addresses (country, city, postal_code, street, home, apartment, user_id)
+VALUES ('Italy', 'Rome', '00118', 'Via del Corso', '1011', '4D', 4);
 
-insert into clients_Addresses (country, city, postal_Code, street, home, apartment, user_id)
-values ('Italia', 'Roma', '00118', 'Via del Corso', '1011', '4D', 4);
+INSERT INTO clients_addresses (country, city, postal_code, street, home, apartment, user_id)
+VALUES ('Germany', 'Berlin', '10115', 'Unter den Linden', '1213', '5E', 5);
 
-insert into clients_Addresses (country, city, postal_Code, street, home, apartment, user_id)
-values ('Alemania', 'Berlín', '10115', 'Unter den Linden', '1213', '5E', 5);
+INSERT INTO clients_addresses (country, city, postal_code, street, home, apartment, user_id)
+VALUES ('United Kingdom', 'London', 'SW1A 1AA', 'Downing Street', '10', '1', 6);
 
-insert into clients_Addresses (country, city, postal_Code, street, home, apartment, user_id)
-values ('Reino Unido', 'Londres', 'SW1A 1AA', 'Downing Street', '10', '1', 6);
-
-insert into clients_Addresses (country, city, postal_Code, street, home, apartment, user_id)
-values ('Japón', 'Tokio', '100-8111', 'Chiyoda', '1-1-1', '101', 7);
-
+INSERT INTO clients_addresses (country, city, postal_code, street, home, apartment, user_id)
+VALUES ('Japan', 'Tokyo', '100-8111', 'Chiyoda', '1-1-1', '101', 7);
 
 
 insert into users_has_roles (user_id, role_id) values
@@ -69,99 +67,107 @@ insert into users_has_roles (user_id, role_id) values
 insert into payment_Methods (type) values ('Cash');
 insert into payment_Methods (type) values ('By Card');
 
--- Insertanfo categorias
+-- Insert categories
+-- Category: Art Supplies
+INSERT INTO categories (name, status) VALUES ('Art Supplies', true);
 
-insert into categories (name, status)
-values ('Home', true);
+-- Category: Painting Supplies
+INSERT INTO categories (name, status) VALUES ('Painting Supplies', true);
 
-INSERT INTO categories (name, status)
-VALUES ('Electronics', true);
+-- Category: Drawing and Coloring Supplies
+INSERT INTO categories (name, status) VALUES ('Drawing and Coloring Supplies', true);
 
-insert into categories (name, status)
-values ('Clothes', true);
+-- Category: Studio Equipment
+INSERT INTO categories (name, status) VALUES ('Studio Equipment', true);
+
+-- Category: Sculpting Materials
+INSERT INTO categories (name, status) VALUES ('Sculpting Materials', true);
+
+-- Category: Fine Arts Materials
+INSERT INTO categories (name, status) VALUES ('Fine Arts Materials', true);
+
+-- Category: Drawing and Writing Supplies
+INSERT INTO categories (name, status) VALUES ('Drawing and Writing Supplies', true);
+
+
 
 -- Insertando productos
 -- Product 1
 INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
-VALUES ('Wood Sculpture Set', 25.50, 1, '1L', 10, 'Brand A', 'Black', '2kg', '2023-10-05', true, 5, '');
+VALUES ('Wood Sculpture Set', 25.50, 1, NULL, 10, 'Winsor & Newton', 'Black', '2kg', '2023-10-05', true, 5, '');
 
 -- Product 2
-insert into products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
-values ('Watercolor Box', 35.00, 3, 'M', 20, 'Brand B', 'Blue', '500g', '2023-10-06', true, 3, '');
+INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
+VALUES ('Watercolor Box', 35.00, 2, 'M', 20, 'Rembrandt', 'Blue', '500g', '2023-10-06', true, 3, '');
 
 -- Product 3
-insert into products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
-values ('Brush set', 10.99, 2, '500ml', 15, 'Brand C', 'White', '1kg', '2023-10-07', true, 2, '');
+INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
+VALUES ('Brush set', 10.99, 2, NULL, 15, 'Princeton', 'White', '1kg', '2023-10-07', true, 2, '');
 
 -- Product 4
-insert into products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
-values ('Color Palettes', 45.75, 2, '2L', 12, 'Brand D', 'Silver', '3kg', '2023-10-08', true, 0, '');
+INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
+VALUES ('Color Palettes', 45.75, 2, NULL, 12, 'Old Holland', 'Silver', '3kg', '2023-10-08', true, 0, '');
 
 -- Product 5
-insert into products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
-values ('Marker Case', 15.99, 3, 'L', 18, 'Brand E', 'Red', '700g', '2023-10-09', true, 0, '');
+INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
+VALUES ('Marker Case', 15.99, 3, 'L', 18, 'Copic', 'Red', '700g', '2023-10-09', true, 0, '');
 
 -- Product 6
-insert into products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
-values ('Easel', 8.50, 1, '1L', 25, 'Brand F', 'Green', '800g', '2023-10-10', true, 0, '');
+INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
+VALUES ('Easel', 8.50, 4, NULL, 25, 'Art Alternatives', 'Green', '800g', '2023-10-10', true, 0, '');
 
 -- Product 7
-insert into products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
-values ('Product 7', 19.95, 2, '500ml', 30, 'Brand G', 'Gold', '600g', '2023-10-11', true, 0, '');
+INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
+VALUES ('Oil Paint Set', 29.99, 2, NULL, 15, 'Gamblin', 'Brown', '1.5kg', '2023-10-11', true, 0, '');
 
 -- Product 8
-insert into products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
-values ('Product 8', 29.75, 1, 'XL', 22, 'Brand H', 'Black', '900g', '2023-10-12', true, 0, '');
+INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
+VALUES ('Sketchbook', 12.50, 7, NULL, 30, 'Strathmore', 'White', '500g', '2023-10-12', true, 0, '');
 
 -- Product 9
-insert into products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
-values ('Product 9', 12.25, 1, '750ml', 20, 'Brand I', 'Silver', '1.2kg', '2023-10-13', true, 0, '');
+INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
+VALUES ('Sculpture Clay', 19.95, 5, NULL, 8, 'Mungyo', 'Brown', '6kg', '2023-10-13', true, 0, '');
 
 -- Product 10
-insert into products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
-values ('Product 10', 32.99, 2, '1L', 14, 'Brand J', 'White', '1.1kg', '2023-10-14', true, 0, '');
+INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
+VALUES ('Watercolor Paper Pack', 8.99, 2, NULL, 25, 'Arches', 'White', '800g', '2023-10-14', true, 0, '');
 
 -- Product 11
-insert into products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
-values ('Product 11', 14.50, 3, 'M', 18, 'Brand K', 'Gray', '700g', '2023-10-15', true, 0, '');
+INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
+VALUES ('Acrylic Brushes Set', 15.75, 2, NULL, 12, 'Daler-Rowney', 'Assorted', '700g', '2023-10-15', true, 0, '');
 
 -- Product 12
-insert into products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
-values ('Product 12', 18.75, 1, '500ml', 15, 'Brand L', 'Blue', '900g', '2023-10-16', true, 0, '');
+INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
+VALUES ('Canvas Roll', 24.50, 6, NULL, 18, 'Fredrix', 'White', '1.2kg', '2023-10-16', true, 0, '');
 
 -- Product 13
-insert into products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
-values ('Product 13', 22.99, 2, '2L', 10, 'Brand M', 'Green', '1.3kg', '2023-10-17', true, 0, '');
+INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
+VALUES ('Calligraphy Pen Set', 18.25, 3, NULL, 22, 'Pentel', 'Black', '400g', '2023-10-17', true, 0, '');
 
 -- Product 14
-insert into products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
-values ('Product 14', 9.95, 3, 'L', 20, 'Brand N', 'Yellow', '800g', '2023-10-18', true, 0, '');
+INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
+VALUES ('Pastel Colors Set', 22.99, 3, NULL, 15, 'Mungyo', 'Assorted', '600g', '2023-10-18', true, 0, '');
 
 -- Product 15
-insert into products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
-values ('Product 15', 27.25, 1, '750ml', 18, 'Brand O', 'White', '1kg', '2023-10-19', true, 0, '');
+INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
+VALUES ('Modeling Clay Kit', 14.50, 5, NULL, 20, 'Sculpey', 'Multicolor', '900g', '2023-10-19', true, 0, '');
 
 -- Product 16
-insert into products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
-values ('Product 16', 11.50, 2, '1L', 22, 'Brand P', 'Red', '1.2kg', '2023-10-20', true, 0, '');
+INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
+VALUES ('Marker Sketchpad', 9.75, 3, NULL, 28, 'Canson', 'White', '350g', '2023-10-20', true, 0, '');
 
 -- Product 17
-insert into products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
-values ('Product 17', 16.99, 3, 'M', 25, 'Brand Q', 'Black', '900g', '2023-10-21', true, 0, '');
-
--- Product 18
-insert into products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
-values ('Product 18', 24.75, 1, '500ml', 28, 'Brand R', 'Silver', '1kg', '2023-10-22', true, 0, '');
-
+INSERT INTO products (title, price, category_id, volume, stock, brand, color, weight, date, status, total_sales, photo)
+VALUES ('Wooden Art Easel', 32.50, 4, NULL, 10, 'Art Advantage', 'Natural Wood', '2.8kg', '2023-10-21', true, 0, '');
 
 
 
 -- Insertando órdenes
 INSERT INTO orders (user_id_user, payment_Method_id, delivery_Method, goods, payment_Status, order_Status, sum, description, date)
-VALUES (1, 1, 'Envío a domicilio', 'Productos varios', 'Pending', 'En proceso', 150.00, 'Descripción de la orden 1', '2023-10-03');
+VALUES (1, 1, 'Home Delivery', '', 'Pending', 'Pending payment', 150.00, 'Art set', '2023-10-03');
 
 INSERT INTO orders (user_id_user, payment_Method_id, delivery_Method, goods, payment_Status, order_Status, sum, description, date)
-VALUES (1, 2, 'Recogida en tienda', 'Productos de electrónica', 'Paid', 'Pendiente', 45, 'Descripción de la orden 2', '2023-10-04');
+VALUES (1, 2, 'In-Store Pickup', '', 'Paid', 'Delivered', 45, 'WaterColor Set', '2023-10-04');
 
 
 -- Insertando líneas de recibo

@@ -117,7 +117,6 @@ public class UserService implements IUserService {
 
     @Override
     public void saveExternalPhoto(MultipartFile photo, User user) {
-        if (photo != null && !photo.isEmpty()) {
             if (user.getId() != null
                     && user.getId() > 0
                     && user.getPhoto() != null
@@ -146,7 +145,7 @@ public class UserService implements IUserService {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        }
+
     }
 
 

@@ -9,14 +9,14 @@
 <div class="container py-4">
 
     <div class="card text-black-50">
-        <div class="card-header bg-danger"><h3>Error: Access denied</h3></div>
+        <div class="card-header bg-danger"><h3>Error: </h3></div>
         <div class="card-body bg-dark text-white">
-            <h5 class="card-title">403 Forbidden:
-                Sorry,
-                <span th:text="${#authentication.name}"></span>,
-                you don't have permission to access this resource. Please contact the administrator if you believe you should have access.
-            </h5>
-            <br>
+            <h5 class="card-title" th:text="${error}"></h5>
+            <div th:text="${message}"></div>
+            <div th:text="${status}"></div>
+            <div th:text="${message2}"></div>
+
+            <hr>
 
             <a th:href="@{/productsList}" class="btn btn-outline-light" role="button">Back</a>
 

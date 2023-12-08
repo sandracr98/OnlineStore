@@ -8,8 +8,14 @@
 
 <div class="container py-4">
     <div class="card bg-dark text-white">
-        <div class="card-header" th:text="${title}"></div>
+        <div class="card-header" th:text="'Edit Product'"></div>
         <div class="card-body">
+
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    <a th:text="'Back'" class="btn btn-light btn-xs" th:href="@{/productsList}"></a>
+                </div>
+            </div>
 
             <form th:action="@{/saveProduct}" th:object="${product}" method="post" enctype="multipart/form-data">
 
@@ -71,11 +77,14 @@
                                     <label for="brand" class="col-sm-6 col-form-label">Brand</label>
                                     <div class="col-sm-6">
                                         <select id="brand" name="brand" th:field="*{brand}">
-                                            <option value="LG">LG</option>
-                                            <option value="Nike">Nike</option>
-                                            <option value="Addidas">Addidas</option>
-                                            <option value="Fila">Fila</option>
-                                            <option value="Balay">Balay</option>
+                                            <option value="">Select a category...</option>
+                                            <option value="Winsor & Newton">Winsor & Newton</option>
+                                            <option value="Rembrandt">Rembrandt</option>
+                                            <option value="Princeton">Princeton</option>
+                                            <option value=" Old Holland">Old Holland</option>
+                                            <option value="Faber-Castell">Faber-Castell</option>
+                                            <option value="Gamblin">Gamblin</option>
+
                                         </select>
                                     </div>
                                 </div>

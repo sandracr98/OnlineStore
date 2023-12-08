@@ -5,9 +5,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class OrderNotFoundException extends RuntimeException{
+public class UserNotFoundException extends RuntimeException{
 
-    public OrderNotFoundException(String message) {
+    public UserNotFoundException(String message) {
         super(message);
     }
 }

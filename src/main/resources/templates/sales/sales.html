@@ -14,37 +14,29 @@
 
             <div class="row">
                 <div class="col-md-6">
+
                     <div class="row">
                         <div class="col-md-12">
-
-
                             <table class="table table-striped  border border-secondary">
                                 <thead class="thead-inverse">
                                 <tr>
-                                    <th colspan="3">TOP 10 PRODUCTS</th>
-                                </tr>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Price</th>
-                                    <th>Sales</th>
-
+                                    <th colspan="1">Weekly Revenue</th>
                                 </tr>
                                 </thead>
 
                                 <tbody>
-                                <tr th:each="product: ${products}">
-
-                                    <td th:text="${product.title}"></td>
-                                    <td th:text="${product.price}"></td>
-                                    <td th:text="${product.totalSales}"></td>
-
-
+                                <tr>
+                                    <td th:text="${weeklyRevenue}"></td>
                                 </tr>
-
                                 </tbody>
                             </table>
+
+                            <canvas id="dailyRevenueChart" width="400" height="200"></canvas>
+
                         </div>
                     </div>
+                    <br>
+                    <br>
 
                     <div class="row">
                         <div class="col-md-12">
@@ -82,24 +74,6 @@
 
                 <div class="col-md-6">
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <table class="table table-striped  border border-secondary">
-                                <thead class="thead-inverse">
-                                <tr>
-                                    <th colspan="1">Weekly Revenue</th>
-                                </tr>
-                                </thead>
-
-                                <tbody>
-                                <tr>
-                                    <td th:text="${weeklyRevenue}"></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
 
                     <div class="row">
                         <div class="col-md-12">
@@ -119,6 +93,40 @@
 
                             <canvas id="monthlyRevenueChart" width="400" height="200"></canvas>
 
+                        </div>
+                    </div>
+
+                    <br>
+                    <br>
+
+                    <div class="row">
+                        <div class="col-md-12">
+
+
+                            <table class="table table-striped  border border-secondary">
+                                <thead class="thead-inverse">
+                                <tr>
+                                    <th colspan="3">TOP 10 PRODUCTS</th>
+                                </tr>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Price</th>
+                                    <th>Sales</th>
+
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                <tr th:each="product: ${products}">
+
+                                    <td th:text="${product.title}"></td>
+                                    <td th:text="${product.price}"></td>
+                                    <td th:text="${product.totalSales}"></td>
+
+                                </tr>
+
+                                </tbody>
+                            </table>
                         </div>
                     </div>
 
@@ -153,6 +161,42 @@
                 labels: labels,
                 datasets: [{
                     label: 'Monthly Revenue',
+                    data: data,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+    /*]]>*/
+</script>
+
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    document.addEventListener('DOMContentLoaded', function () {
+        var ctx = document.getElementById('dailyRevenueChart').getContext('2d');
+
+        /* Obtén los datos diarios de ingresos desde el modelo de Thymeleaf */
+        var dailyData = /*[[${dailyRevenueData}]]*/ {};
+
+        var labels = Object.keys(dailyData);
+        var data = Object.values(dailyData);
+
+        var chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Daily Revenue',
                     data: data,
                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
                     borderColor: 'rgba(75, 192, 192, 1)',

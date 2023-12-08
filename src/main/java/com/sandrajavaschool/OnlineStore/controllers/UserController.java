@@ -4,6 +4,7 @@ import com.sandrajavaschool.OnlineStore.dao.IRoleDao;
 import com.sandrajavaschool.OnlineStore.dao.IUserDao;
 import com.sandrajavaschool.OnlineStore.entities.Role;
 import com.sandrajavaschool.OnlineStore.entities.User;
+import com.sandrajavaschool.OnlineStore.errorsException.UserNotFoundException;
 import com.sandrajavaschool.OnlineStore.paginator.PageRender;
 import com.sandrajavaschool.OnlineStore.service.implService.IUserService;
 import lombok.RequiredArgsConstructor;
@@ -93,8 +94,7 @@ public class UserController {
         //User user = userService.fetchByIdWithOrder(id);
 
         if (user == null) {
-            flash.addFlashAttribute("error", "The user does not exist into DDBB");
-            return "redirect:/list";
+            throw new UserNotFoundException("The user is not found");
         }
 
 
@@ -128,13 +128,11 @@ public class UserController {
         if (id > 0) {
             user = userService.findOne(id);
             if (user == null) {
-                flash.addFlashAttribute("error", "The user does not exist");
-                return "redirect:/usersList";
+                throw new UserNotFoundException("The user does not exist");
             }
 
         } else {
-            flash.addFlashAttribute("error", "The user does not exist");
-            return "redirect:/usersList";
+            throw new UserNotFoundException("The user does not exist");
         }
 
         model.put("title", "Profile");
@@ -159,12 +157,11 @@ public class UserController {
         if (user.getId() == null && userDao.existsByEmail(user.getEmail())) {
             String message = "The user already exist";
             flash.addFlashAttribute("error", message);
-            return "redirect:/create";
+            return "user/signup";
         }
-
-        userService.saveExternalPhoto(photo, user);
-
-        String message = "Congratulation! You have an account";
+        if (photo != null && !photo.isEmpty()) {
+            userService.saveExternalPhoto(photo, user);
+        }
 
         if (user.getId() == null) {
             user.setPass(passwordEncoder.encode(user.getPass()));
@@ -175,7 +172,7 @@ public class UserController {
 
         userService.save(user);
 
-        model.addAttribute("success", message);
+        flash.addFlashAttribute("success", "Congratulation! You have an account");
 
         return "redirect:/userDetails/" + user.getId();
 
@@ -186,11 +183,13 @@ public class UserController {
     public String delete(@PathVariable(value = "id") Long id,
                          RedirectAttributes flash) {
 
-        if (id > 0) {
-            userService.delete(id);
-            flash.addFlashAttribute("success", "The user has been deleted");
-
+        if (id <= 0) {
+            flash.addFlashAttribute("error", "The user has not been deleted");
+            return "redirect:/list";
         }
+
+        userService.delete(id);
+        flash.addFlashAttribute("success", "The user has been deleted");
 
         return "redirect:/list";
     }
@@ -199,6 +198,10 @@ public class UserController {
     public String getId(Principal principal) {
         String email = principal.getName();
         User user = userService.findByEmail(email);
+        if (user == null) {
+            throw new UserNotFoundException("User not found");
+        }
+
         Long userId = user.getId();
 
         return "redirect:/userDetails/" + userId;

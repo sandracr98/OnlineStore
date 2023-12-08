@@ -56,7 +56,7 @@
 
             </table>
 
-            <a class="btn btn-secondary btn-sm" th:href="@{/view/} + ${user.id}" th:text="'Edit Profile'"></a>
+            <a class="btn btn-secondary btn-sm" sec:authorize="hasRole('ROLE_USER')" th:href="@{/view/} + ${user.id}" th:text="'Edit Profile'"></a>
 
 
 
@@ -107,14 +107,19 @@
                     <th>Total</th>
                     <th>Order view</th>
                     <th sec:authorize="hasRole('ROLE_ADMIN')">Delete</th>
-                    <th sec:authorize="hasRole('ROLE_USER')">Reorder</th>
+                    <th sec:authorize="hasRole('ROLE_USER')">Buy Again</th>
+                    <th sec:authorize="hasRole('ROLE_ADMIN')">Edit Order</th>
+
                 </tr>
                 </thead>
 
                 <tbody>
                 <tr th:each="order: ${user.orders}">
                     <td th:text="${order.id}"></td>
-                    <td th:text="${order.description}"></td>
+                    <td>
+                        <span th:if="${order.description == null}">There is no description</span>
+                        <span th:if="${order.description != null}" th:text="${order.description}"></span>
+                    </td>
                     <td th:text="${order.date}"></td>
                     <td>
                         <span th:if="${order.orderStatus == null}">Pending verification</span>
@@ -134,9 +139,12 @@
 
                     <td sec:authorize="hasRole('ROLE_USER')">
                         <a sec:authorize="hasRole('ROLE_USER')" class="btn btn-secondary btn-xs" th:href="@{'/order/reorder/' + ${order.id}}"
-                           th:text="'Reorder'">
+                           th:text="'Buy Again'">
                         </a>
                     </td>
+
+                    <td sec:authorize="hasRole('ROLE_ADMIN')"><a class="btn btn-primary btn-xs" th:href="@{'/order/orderDetails/' + ${order.id}}"
+                           th:text="'Edit'"></a></td>
 
                 </tr>
                 </tbody>

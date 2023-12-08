@@ -44,10 +44,6 @@ public class OrderController {
         return "/order/ordersList";
     }
 
-    //////////////////////////INTENTO DE HACER EL ORDER SIN LOGEARSE
-
-
-    //CONTROLA SI ESTA LOGUEADO O NO
     @GetMapping("/receiptControl")
     public String showReceipt(Principal principal) {
         if (principal != null) {
@@ -62,8 +58,6 @@ public class OrderController {
         }
     }
 
-
-    ///////////////////////////////////////////////////////////////
 
     @GetMapping("/receipt/{userId}")
     public String create(@PathVariable(value = "userId") Long userId,
@@ -100,16 +94,11 @@ public class OrderController {
                        RedirectAttributes flash,
                        SessionStatus status) {
 
-        //Añadimos en messages.properties un mensaje de validacion, y modificamos la vista
-        //receipt, para que nuestros campos esten validados si la descripcion es null
-
         if (result.hasErrors()) {
             model.addAttribute("title", "Create Order");
             return "redirect:/userDetails/" + order.getUser().getId();
         }
 
-
-        //Si el id no existe o no hay cantidades de productos lanza esta validacion
 
         if (itemId == null || itemId.length == 0) {
             model.addAttribute("title", "Create Order");
@@ -147,10 +136,6 @@ public class OrderController {
 
         }
 
-       /* Double total = order.getTotal();
-        order.setSum(total);
-        */
-
         BigDecimal total = BigDecimal.valueOf(order.getTotal());
         BigDecimal roundedTotal = total.setScale(2, BigDecimal.ROUND_HALF_UP);
         order.setSum(roundedTotal.doubleValue());
@@ -174,8 +159,7 @@ public class OrderController {
         Order order = userService.findOrderById(id);
 
         if (order == null) {
-            flash.addFlashAttribute("error", "Order does not exist into DDBB");
-            return "redirect:/list";
+            throw new OrderNotFoundException("Order does not exist");
         }
 
         model.addAttribute("order", order);
@@ -187,13 +171,12 @@ public class OrderController {
 
     @GetMapping("/orderDetails/{id}")
     public String editOrder(@PathVariable(value = "id") Long id,
-                            Model model,
-                            RedirectAttributes flash) {
+                            Model model) {
 
         try {
             Order order = orderService.findOne(id);
             if (order == null) {
-                throw new OrderNotFoundException("Order with id " + id + " not found", id);
+                throw new OrderNotFoundException("Order with id " + id + " not found");
             }
 
             model.addAttribute("order", order);
@@ -202,7 +185,7 @@ public class OrderController {
             return "order/orderDetails";
 
         } catch (OrderNotFoundException e) {
-            return "error/nullPointerExceptions";
+            throw new OrderNotFoundException("Order does not exist");
         }
     }
 
@@ -214,6 +197,7 @@ public class OrderController {
         try {
             orderService.save(order);
             flash.addFlashAttribute("success", flashMessage);
+
         } catch (OrderNotFoundException e) {
             flash.addFlashAttribute("error", "An error occurred while saving the order: " + e.getMessage());
         }
@@ -230,6 +214,7 @@ public class OrderController {
             userService.deleteOrder(id);
             flash.addFlashAttribute("success", "The order was deleted successfully");
             return "redirect:/userDetails/" + order.getUser().getId();
+
         } catch (OrderNotFoundException e) {
             flash.addFlashAttribute("error", "The order does not exist in the database");
             return "redirect:/list/";

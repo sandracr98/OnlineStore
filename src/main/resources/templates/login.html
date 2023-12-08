@@ -6,40 +6,47 @@
 
 <header th:replace="layout/layout :: header"></header>
 
-<div class="container d-flex justify-content-center py-4">
+<div class="container py-4">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-md-6">
+            <img src="/images/background6.jpg" alt="background2" class="img-fluid">
+        </div>
 
-    <div class="col-md-6">
+        <div class="col-md-6">
 
-        <div class="card border-dark">
-            <div class="card-header">Please Sign In</div>
-            <div class="card-body">
-                <form th:action="@{/api/auth/login}" method="post">
+            <div class="card border-dark">
+                <div class="card-header">Please Sign In</div>
+                <div class="card-body">
+                    <form th:action="@{/api/auth/login}" method="post">
 
-                    <div class="form-group">
-                        <input type="text" name="email" id="email" class="form-control" placeholder="Email" autofocus required/>
+                        <div class="form-group">
+                            <input type="text" name="email" id="email" class="form-control" placeholder="Email"
+                                   autofocus required/>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="password" name="pass" id="pass" class="form-control" placeholder="Password"
+                                   required/>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-lg btn-success btn-block" value="Sign In"/>
+                        </div>
+
+                    </form>
+
+                    <div class="text-center">
+                        <p>Don't have an account? <a href="/create">Create one now!</a></p>
                     </div>
 
-                    <div class="form-group">
-                        <input type="password" name="pass" id="pass" class="form-control" placeholder="Password" required/>
-                    </div>
 
-                    <div class="form-group">
-                        <input type="submit" class="btn btn-lg btn-success btn-block" value="Sign In"/>
-                    </div>
-
-                </form>
-
-                <div class="text-center">
-                    <p>Don't have an account? <a href="/create">Create one now!</a></p>
                 </div>
 
-
             </div>
-
         </div>
+
+
     </div>
-
-
 </div>
 
 

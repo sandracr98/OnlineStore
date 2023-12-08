@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+
+<body>
+
+<header th:replace="layout/layout :: header"></header>
+
+<div class="container py-4">
+
+  <div class="card text-black-50">
+    <div class="card-header bg-danger"><h3>Error: </h3></div>
+    <div class="card-body bg-dark text-white">
+      <h5 class="card-title">Sorry, <span th:text="${#authentication.name}"></span></h5>
+      <h5 class="card-title" th:text="${error}"></h5>
+      <div th:text="${message}"></div>
+      <div th:text="${status}"></div>
+      <div th:text="${message2}"></div>
+
+      <hr>
+
+      <a th:href="@{/productsList}" class="btn btn-outline-light" role="button">Back</a>
+
+    </div>
+  </div>
+
+
+</div>
+
+<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>

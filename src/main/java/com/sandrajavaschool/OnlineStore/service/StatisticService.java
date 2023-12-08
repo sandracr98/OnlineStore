@@ -11,8 +11,12 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
@@ -58,7 +62,11 @@ public class StatisticService implements IStatisticService {
 
         List<Order> monthlyOrders = orderService.findByDateBetween(startOfMonth, endOfMonth);
 
-        return monthlyOrders.stream().mapToDouble(Order::getTotal).sum();
+        double totalRevenue = monthlyOrders.stream().mapToDouble(Order::getTotal).sum();
+
+        BigDecimal roundedRevenue = BigDecimal.valueOf(totalRevenue).setScale(2, RoundingMode.HALF_UP);
+
+        return roundedRevenue.doubleValue();
     }
 
     public Map<String, Double> calculateLast5MonthsRevenue() {
@@ -94,7 +102,40 @@ public class StatisticService implements IStatisticService {
 
         List<Order> weeklyOrders = orderService.findByDateBetween(startOfWeek, endOfWeek);
 
-        return weeklyOrders.stream().mapToDouble(Order::getTotal).sum();
+        double totalRevenue = weeklyOrders.stream().mapToDouble(Order::getTotal).sum();
+
+        BigDecimal roundedRevenue = BigDecimal.valueOf(totalRevenue).setScale(2, RoundingMode.HALF_UP);
+
+        return roundedRevenue.doubleValue();
 
     }
+
+    public Map<String, Double> calculateLast7DaysRevenue() {
+        Map<String, Double> last7DaysRevenue = new LinkedHashMap<>();
+
+        LocalDate currentDate = LocalDate.now();
+
+        // Itera sobre los últimos 7 días completos (excluyendo el día de hoy)
+
+        for (int i = 0; i < 7; i++) {
+            // Obtén la fecha del día actual
+            String currentDay = currentDate.format(DateTimeFormatter.ofPattern("EEEE"));
+
+            // Obtén los pedidos para el rango de fechas actual (desde las 00:00 hasta las 23:59:59)
+            LocalDate startDate = currentDate;
+            LocalDate endDate = currentDate;
+            List<Order> dailyOrders = orderService.findByDateBetween(startDate, endDate);
+
+            // Calcula el ingreso diario y agrégalo al mapa
+            double dailyRevenue = dailyOrders.stream().mapToDouble(Order::getTotal).sum();
+            last7DaysRevenue.put(currentDay, dailyRevenue);
+
+            // Retrocede un día
+            currentDate = currentDate.minusDays(1);
+        }
+
+        return last7DaysRevenue;
+    }
+
+
 }

@@ -8,12 +8,18 @@
 
 <div class="container py-4">
 
-    <div class="card bg-danger text-black-50">
-        <div class="card-header">Error: </div>
-        <div class="card-body">
-            <h5 class="card-title">Sorry, the page you want to access might not exist or might not be accessible</h5>
+    <div class="card text-black-50">
+        <div class="card-header bg-danger"><h3>Error: </h3></div>
+        <div class="card-body bg-dark text-white">
+            <h5 class="card-title">Internal Server Error:
+                The server encountered an unexpected condition that prevented it from fulfilling the request. Please try again later, and contact the system administrator if the problem persists.</h5>
             <div th:text="${error}"></div>
+            <div th:text="${status}"></div>
             <div th:text="${message}"></div>
+            <hr>
+
+
+            <br>
 
             <a th:href="@{/productsList}" class="btn btn-outline-light" role="button">Back</a>
 
