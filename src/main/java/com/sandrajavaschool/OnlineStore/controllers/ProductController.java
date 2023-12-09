@@ -50,7 +50,7 @@ public class ProductController {
         session.setAttribute("term", term);
 
         Page<Product> products;
-        Pageable pageRequest = PageRequest.of(page, 4);
+        Pageable pageRequest = PageRequest.of(page, 3);
 
 
         if (term != null && !term.isEmpty()) {
@@ -116,6 +116,10 @@ public class ProductController {
 
         //para que se guarde la fecha cada vez que lo modificas
         product.prePersist();
+
+        if (product.getVolume().isEmpty()) {
+            product.setVolume(null);
+        }
 
         productService.save(product);
 

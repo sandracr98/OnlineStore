@@ -30,8 +30,10 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             throws IOException, ServletException {
 
 
+        // Extract the JWT token from the request header
         String header = request.getHeader(JWTServiceImpl.HEADER_STRING);
 
+        // Check if authentication is not required
         if (!requiresAuthentication(header)) {
             chain.doFilter(request, response);
             return;
@@ -39,23 +41,29 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
         UsernamePasswordAuthenticationToken authentication = null;
 
+        // Validate the JWT token using the jwtService
         if (jwtService.validate(header)) {
 
+            // If the token is valid, create an authentication token with user details
             authentication = new UsernamePasswordAuthenticationToken(jwtService.getEmail(header),
                     null, jwtService.getRoles(header));
         }
 
-        //Autentica al usuario dentro del request (pq no maneja sesiones)
+        // Authenticate the user within the request (since it doesn't handle sessions)
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
         chain.doFilter(request, response);
 
     }
 
     protected boolean requiresAuthentication(String header) {
 
+        // Check if the header is null or doesn't start with the expected token prefix
         if (header == null || !header.startsWith(JWTServiceImpl.TOKEN_PREFIX)) {
             return false;
         }
+        // Authentication is required if the header is not null and starts with the expected token prefix
         return true;
     }
+
 }

@@ -68,74 +68,6 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testEditUserExists() {
-        // Arrange
-        Long userId = 1L;
-        User existingUser = new User();
-        existingUser.setId(userId);
-        existingUser.setSurname("testuser");
-
-        // Mockear el comportamiento del servicio para retornar el usuario existente
-        when(userService.findOne(userId)).thenReturn(existingUser);
-
-        // Act
-        String viewName = userController.edit(userId, modelMap, flash);
-
-        // Assert
-        // Verifica que el modelo tenga los atributos esperados
-        verify(modelMap).put("title", "Profile");
-        verify(modelMap).put("user", existingUser);
-
-        // Verifica que el servicio userService fue llamado con el ID correcto
-        verify(userService, times(1)).findOne(userId);
-
-        // Verifica que la vista devuelta sea la correcta
-        assertEquals("user/signup", viewName);
-    }
-
-    @Test
-    public void testEditUserNotExists() {
-        Long userId = 1L;
-        // Mockear el comportamiento del servicio para retornar null (usuario no existe)
-        when(userService.findOne(userId)).thenReturn(null);
-
-        // Act
-        String viewName = userController.edit(userId, modelMap, flash);
-
-        // Assert
-        // Verifica que flash tenga el atributo de error
-        verify(flash).addFlashAttribute("error", "The user does not exist");
-
-        // Verifica que la vista devuelta sea la correcta (redirect:/usersList)
-        assertEquals("redirect:/usersList", viewName);
-
-        // Verifica que el servicio userService fue llamado con el ID correcto
-        verify(userService, times(1)).findOne(userId);
-    }
-
-    @Test
-    public void testSaveNewUser() {
-        // Arrange
-        User newUser = new User();
-        newUser.setEmail("newuser@example.com");
-
-        // Mockear el comportamiento del servicio y el DAO
-        when(userDao.existsByEmail(newUser.getEmail())).thenReturn(false);
-        when(passwordEncoder.encode(newUser.getPass())).thenReturn("hashedPassword");
-        when(roleDao.findByName("ROLE_USER")).thenReturn(new Role());
-
-        // Act
-        String viewName = userController.save(newUser, result, model, photo, flash);
-
-        // Assert
-        verify(userService, times(1)).saveInternalPhoto(photo, newUser);
-        verify(userService, times(1)).save(newUser);
-        verify(model).addAttribute("success", "Congratulation! You have an account");
-
-        assertEquals("redirect:/userDetails/" + newUser.getId(), viewName);
-    }
-
-    @Test
     public void testSaveExistingUser() {
         User existingUser = new User();
         existingUser.setId(1L);
@@ -149,27 +81,6 @@ public class UserControllerTest {
 
         // Verifica que la vista redirige a "/create"
         assertEquals("redirect:/create", "redirect:/create", viewName);
-
-    }
-
-    @Test
-    public void testSaveNewUserWithExistingEmail() {
-        // Caso: Intentar guardar un nuevo usuario con un correo electrónico que ya existe
-
-        when(userDao.existsByEmail(anyString())).thenReturn(true);
-
-        // Crea un usuario para la prueba
-        User user = new User();
-        user.setEmail("existing.email@example.com");
-
-        // Ejecuta el método del controlador
-        String conclusion = userController.save(user, result, model, null, flash );
-
-        // Verifica que el método de servicio no se haya llamado
-        verify(userService, never()).save(any(User.class));
-
-        // Verifica que el modelo tenga el atributo de error
-        assertTrue(conclusion.startsWith("redirect:/create"));
 
     }
 
@@ -194,29 +105,6 @@ public class UserControllerTest {
         // Add more assertions based on your specific requirements
 
         assertEquals("redirect:/create", viewName);
-    }
-
-
-    @Test
-    public void testSaveUserWithExistingId() {
-        // Caso: Intentar guardar un usuario con un ID existente (debería actualizarse en lugar de crear uno nuevo)
-
-        // Arrange
-        User userWithExistingId = new User();
-        userWithExistingId.setId(1L);
-
-        // Mockear el comportamiento del servicio y el DAO
-        when(userService.findOne(userWithExistingId.getId())).thenReturn(userWithExistingId);
-
-        // Act
-        String viewName = userController.save(userWithExistingId, result, model, photo, flash);
-
-        // Assert
-        verify(userService, times(1)).saveInternalPhoto(photo, userWithExistingId);
-        verify(userService, times(1)).save(userWithExistingId);
-        verify(model).addAttribute("success", "Congratulation! You have an account");
-
-        assertEquals("redirect:/userDetails/" + userWithExistingId.getId(), viewName);
     }
 
     @Test

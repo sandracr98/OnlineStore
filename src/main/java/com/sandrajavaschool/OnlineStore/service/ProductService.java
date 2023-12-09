@@ -57,6 +57,7 @@ public class ProductService implements IProductService {
         return productDao.findByNameContaining(term, pageable);
     }
 
+
     @Override
     public void saveInternalPhoto(MultipartFile photo, Product product) {
         if (!photo.isEmpty()) {

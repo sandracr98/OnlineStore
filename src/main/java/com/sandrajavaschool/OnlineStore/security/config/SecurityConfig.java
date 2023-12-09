@@ -22,9 +22,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 
-@Configuration //le indica al contenedor de spring que esta es una clase de seguridad en el momento de iniciar la app
-@EnableWebSecurity
-//Se activa la seguridad web en nuestra app, y esta clase contiene toda la config referente a la seguridad
+@Configuration // Indicates to the Spring container that this is a security configuration class during app initialization.
+@EnableWebSecurity //Activates Spring Security for the web application
+//Enables method-level security, allowing the use of annotations like @Secured and @PreAuthorize
 @EnableMethodSecurity(securedEnabled = true, prePostEnabled = true) // , (opcional)
 @RequiredArgsConstructor
 public class SecurityConfig {
@@ -40,17 +40,21 @@ public class SecurityConfig {
 
     private final JWTService jwtService;
 
-
+    //Configures the user details service and password encoder for authentication.
     @Autowired
     public void userDetailsService(AuthenticationManagerBuilder build) throws Exception {
         build.userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder);
     }
 
+    //Configures and provides the authentication manager as a bean.
     @Bean
     public AuthenticationManager authenticationManager() throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
+
+    //Configures the security filter chain using HttpSecurity.
+    //Defines authorization rules for various paths, both public and secured
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -70,7 +74,7 @@ public class SecurityConfig {
                                     "order/save/**",
                                     "/save").permitAll()
 
-                            //aqui van las rutas privadas
+                            //secured Paths
                             .requestMatchers("/list").hasAnyRole("ADMIN")
                             .requestMatchers("/createProduct/**").hasAnyRole("ADMIN")
                             .requestMatchers("/editProduct/**").hasAnyRole("ADMIN")
@@ -88,6 +92,7 @@ public class SecurityConfig {
 
                 });
 
+        //Configures form-based login
         http.formLogin((form) -> form.loginPage("/api/login")
                 .usernameParameter("email")
                 .passwordParameter("pass")
@@ -100,6 +105,8 @@ public class SecurityConfig {
                 .logoutSuccessUrl("/"));
 
         http.exceptionHandling().accessDeniedPage("/error/error403");
+
+        // JWT Filters for authentication and authorization
 
         http
                 .addFilter(new JWTAuthenticationFilter(authenticationConfiguration.getAuthenticationManager(), jwtService))

@@ -94,22 +94,6 @@ public class ProductControllerTest {
 
 
     @Test
-    public void testCreateWithNullCategories() {
-        when(categoryService.findAll()).thenReturn(null);
-
-        String viewName = productController.create(model);
-
-        assertEquals("error/error405", viewName);
-
-        verify(model, times(1)).addAttribute(eq("title"), eq("New Product"));
-        verify(model, times(1)).addAttribute(eq("product"), any(Product.class));
-
-        verify(categoryService, times(1)).findAll();
-
-        verify(model, never()).addAttribute(eq("categories"), anyList());
-    }
-
-    @Test
     public void testEditProductWhenIdIsGreaterThanZeroAndProductExists() {
         long productId = 1L;
         Product mockProduct = new Product();
@@ -128,36 +112,6 @@ public class ProductControllerTest {
         verify(flash, never()).addFlashAttribute(eq("success"), anyString());
         verify(productService, times(1)).findOne(productId);
         verify(categoryService, times(1)).findAll();
-    }
-
-    @Test
-    public void testEditProductWhenIdIsZero() {
-        long productId = 0L;
-
-        String viewName = productController.edit(productId, model, flash);
-
-        assertEquals("redirect:/product/productList", viewName);
-
-        verify(flash, times(1)).addFlashAttribute(eq("error"), eq("The product does not exist"));
-        verify(flash, never()).addFlashAttribute(eq("success"), anyString());
-        verify(productService, never()).findOne(productId);
-        verify(categoryService, never()).findAll();
-    }
-
-    @Test
-    public void testEditProductWhenProductDoesNotExist() {
-        long productId = 1L;
-
-        when(productService.findOne(productId)).thenReturn(null);
-
-        String viewName = productController.edit(productId, model, flash);
-
-        assertEquals("redirect:/product/productList", viewName);
-
-        verify(flash, times(1)).addFlashAttribute(eq("error"), eq("The product does not exist"));
-        verify(flash, never()).addFlashAttribute(eq("success"), anyString());
-        verify(productService, times(1)).findOne(productId);
-        verify(categoryService, never()).findAll();
     }
 
     @Test

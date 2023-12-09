@@ -22,7 +22,6 @@ public interface IProductDao extends JpaRepository<Product, Long> {
     @Query("select p from Product p where p.title like %?1%")
     List<Product> findByName(String term);
 
-    //falta  por precio +++
 
     /**
      * Finds products by various attributes containing the specified term, with pagination.

@@ -15,6 +15,10 @@ import java.util.List;
 @NoArgsConstructor
 public class PageRender<T> {
 
+    //Designed to assist with rendering pagination for a given page of items
+
+    // Attributes to store URL, Page object, and pagination details
+
     private String url;
     private Page<T> page;
 
@@ -31,7 +35,10 @@ public class PageRender<T> {
         this.page = page;
         this.pages = new ArrayList<PageItem>();
 
+        // Default values for items per page
         itemsNumberPerPage = 5;
+
+        // Calculating total pages, actual page, and initializing from/to values for page range
         totalPages = page.getTotalPages();
         actualPage = page.getNumber() + 1;
 
@@ -56,13 +63,13 @@ public class PageRender<T> {
         }
 
         // Loop to generate PageItems and add them to the 'pages' list
-
         for (int i = 0; i < to; i++) {
             pages.add(new PageItem(from + i, actualPage == from + i));
         }
 
     }
 
+    // Methods to check if the current page is the first, last, has next, or has previous
     public boolean isFirst() {
         return page.isFirst();
     }

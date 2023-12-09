@@ -39,29 +39,31 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                                 HttpServletResponse response)
             throws AuthenticationException, BadCredentialsException {
 
+        // Extract email and password from request parameters
         String email = request.getParameter("email");
         String pass = request.getParameter("pass");
 
         if (email != null && pass != null) {
 
-            logger.info("Email desde request parameter (form-data): " + email);
-            logger.info("Password desde request parameter (form-data): " + pass);
+            logger.info("Email from request parameter (form-data): " + email);
+            logger.info("Password from request parameter (form-data): " + pass);
 
         } else {
 
             User user = null;
-            //cuando se envian los datos tipo json con el body en raw y formato json (postman)
-            //es a la inversa convertimos un json en un objeto
+            // When data is sent as JSON with the body in raw format and JSON content type (e.g., Postman)
+            // Deserialize JSON into a User object
 
             try {
 
                 user = new ObjectMapper().readValue(request.getInputStream(), User.class);
 
+                // Extract email and password from the deserialized User object
                 email = user.getUsername();
                 pass = user.getPassword();
 
-                logger.info("Email desde request getInputStream (raw): " + email);
-                logger.info("Password desde request getInputStream (raw): " + pass);
+                logger.info("Email from request getInputStream (raw): " + email);
+                logger.info("Password from request getInputStream (raw): " + pass);
 
 
             } catch (IOException e) {
@@ -69,11 +71,14 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             }
         }
 
+        // Trim leading and trailing spaces from the email
         email = email.trim();
 
+        // Create an authentication token with the extracted email and password
         UsernamePasswordAuthenticationToken authToken =
                 new UsernamePasswordAuthenticationToken(email, pass);
 
+        // Use the authentication manager to authenticate the token
         return authenticationManager.authenticate(authToken);
     }
 
@@ -86,17 +91,24 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                             FilterChain chain, Authentication authResult)
             throws IOException, ServletException {
 
+        // Create a JWT token based on the authentication result
         String token = jwtService.create(authResult);
 
+        // Set the HTTP response status and content type
         response.setStatus(HttpServletResponse.SC_OK);
         response.setContentType("application/json");
+
+        // Add the JWT token to the response header
         response.addHeader(JWTServiceImpl.HEADER_STRING, JWTServiceImpl.TOKEN_PREFIX + token);
 
+        // Create a body map to include in the response
         Map<String, Object> body = new HashMap<>();
+
         body.put("token", token);
         body.put("user", (User) authResult.getPrincipal());
         body.put("message", String.format("Hello %s, you have logged in successfully", authResult.getName()));
 
+        // Write the response body as a JSON string
         response.getWriter().write(new ObjectMapper().writeValueAsString(body));
 
     }
