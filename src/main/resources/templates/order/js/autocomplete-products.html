@@ -7,46 +7,46 @@
 
 
     function handleBuyButtonClick(button) {
-        // Obtener datos del botón
+        // Get data from the button
         var productId = button.getAttribute('data-id');
         var productTitle = button.getAttribute('data-title');
         var productPrice = button.getAttribute('data-price');
 
-        // Obtener el valor actual de la cookie
+        // Get the current value of the cookie
         var existingCookie = getCookie(cookieName);
 
-        // Parsear la cookie existente o inicializar un array vacío
+        // Parse the existing cookie or initialize an empty array
         var existingProducts = existingCookie ? JSON.parse(existingCookie) : [];
 
-        // Asegurarse de que existingProducts sea un array
+        // Ensure existingProducts is an array
         if (!Array.isArray(existingProducts)) {
             existingProducts = [];
         }
 
-        // Verificar si el producto ya está en la cookie
+        // Check if the product is already in the cookie
         var existingProductIndex = existingProducts.findIndex(function (product) {
             return product.id === productId;
         });
 
         if (existingProductIndex !== -1) {
-            // Incrementar la cantidad si el producto ya existe
+            // Increment the quantity if the product already exists
             existingProducts[existingProductIndex].amount++;
         } else {
-            // Agregar nuevo producto con cantidad 1
+            // Add a new product with quantity 1
             existingProducts.push({ id: productId, title: productTitle, price: productPrice, amount: 1 });
         }
 
-        // Convertir el array a JSON y establecer la cookie
+        // Convert the array to JSON and set the cookie
         document.cookie = `${cookieName}=${JSON.stringify(existingProducts)}; max-age=${durationInSeconds}; path=/`;
 
         alert(`You have added "${productTitle}" to your cart.`);
 
     }
 
-    // Nombre de la cookie que deseas verificar
+    // Name of the cookie you want to check
     var cookieName = 'productInfo';
 
-    // Duración de la cookie en segundos (3.8 horas)
+    // Duration of the cookie in seconds (3.8 hours)
     var durationInSeconds = 3.8 * 60 * 60;
 
     function getCookie(name) {
@@ -60,22 +60,22 @@
         return null;
     }
 
-    // Nombre de la cookie que deseas verificar
+    // Name of the cookie you want to check
     var cookieName = 'productInfo';
 
-    // Obtener el valor de la cookie
+    // Get the value of the cookie
     var cookieValue = getCookie(cookieName);
 
-    // Verificar si la cookie existe
+    // Check if the cookie exists
     if (cookieValue) {
-        // Decodificar el valor de la cookie (asumiendo que contiene JSON)
+        // Decode the cookie value (assuming it contains JSON)
         var decodedValue = decodeURIComponent(cookieValue);
 
         try {
-            // Parsear el JSON
+            // Parse the JSON
             var cookieData = JSON.parse(decodedValue);
 
-            // Mostrar los datos en la consola
+            // Display the data in the console
             console.log('Datos de la cookie:', cookieData);
         } catch (error) {
             console.error('Error al parsear JSON:', error);

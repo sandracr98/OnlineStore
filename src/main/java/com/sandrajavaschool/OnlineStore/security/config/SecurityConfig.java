@@ -24,8 +24,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration // Indicates to the Spring container that this is a security configuration class during app initialization.
 @EnableWebSecurity //Activates Spring Security for the web application
-//Enables method-level security, allowing the use of annotations like @Secured and @PreAuthorize
-@EnableMethodSecurity(securedEnabled = true, prePostEnabled = true) // , (opcional)
+@EnableMethodSecurity(securedEnabled = true, prePostEnabled = true) // , (opcional) //Enables method-level security, allowing the use of annotations like @Secured and @PreAuthorize
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -55,7 +54,6 @@ public class SecurityConfig {
 
     //Configures the security filter chain using HttpSecurity.
     //Defines authorization rules for various paths, both public and secured
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 

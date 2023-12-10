@@ -126,7 +126,7 @@
                         <span th:if="${order.orderStatus != null}" th:text="${order.orderStatus}"></span>
                     </td>
 
-                    <td th:text="${order.total}"></td>
+                    <td th:text="${order.sum}"></td>
 
                     <td><a class="btn btn-primary btn-xs" th:href="@{'/order/viewReceipt/' + ${order.id}}"
                            th:text="'Detail'"></a></td>

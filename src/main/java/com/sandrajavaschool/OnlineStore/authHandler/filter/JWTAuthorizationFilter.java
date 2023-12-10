@@ -62,7 +62,8 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         if (header == null || !header.startsWith(JWTServiceImpl.TOKEN_PREFIX)) {
             return false;
         }
-        // Authentication is required if the header is not null and starts with the expected token prefix
+        // Authentication is required if the header is not null and starts with
+        // the expected token prefix
         return true;
     }
 

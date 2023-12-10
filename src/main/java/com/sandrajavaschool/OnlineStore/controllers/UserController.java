@@ -66,8 +66,7 @@ public class UserController {
 
     @GetMapping(value = "/list")
     public String list(@RequestParam(name = "page", defaultValue = "0") int page,
-                       Model model,
-                       Authentication authentication) {
+                       Model model) {
 
         model.addAttribute("title", "Users List");
 
@@ -85,18 +84,13 @@ public class UserController {
 
     @GetMapping(value = "/userDetails/{id}")
     public String viewUserDetails(@PathVariable(value = "id") Long id,
-                                  RedirectAttributes flash,
                                   Model model) {
 
         User user = userService.findOne(id);
 
-        //con esto en una sola consulta jpa trae al cliente con todas sus facturas
-        //User user = userService.fetchByIdWithOrder(id);
-
         if (user == null) {
             throw new UserNotFoundException("The user is not found");
         }
-
 
         model.addAttribute("user", user);
         model.addAttribute("title", "Profile: " + user.getName());
@@ -120,21 +114,20 @@ public class UserController {
 
     @GetMapping(value = "/view/{id}")
     public String edit(@PathVariable(value = "id") Long id,
-                       Map<String, Object> model,
-                       RedirectAttributes flash) {
+                       Map<String, Object> model) {
 
+        // 1. Initialize a User object.
         User user = null;
 
-        if (id > 0) {
-            user = userService.findOne(id);
-            if (user == null) {
-                throw new UserNotFoundException("The user does not exist");
-            }
-
-        } else {
+        // 2. Check if the user with the specified ID exists.
+        if (id <= 0 || (userService.findOne(id)) == null) {
             throw new UserNotFoundException("The user does not exist");
         }
 
+        // 3. retrieves the User object using the userService with the provided ID
+        user = userService.findOne(id);
+
+        // Set the title and user attributes in the model.
         model.put("title", "Profile");
         model.put("user", user);
 
@@ -149,30 +142,39 @@ public class UserController {
                        @RequestParam("file") MultipartFile photo,
                        RedirectAttributes flash) {
 
+        // 1. Check for validation errors in the User object
+
         if (result.hasErrors()) {
             model.addAttribute("title", "Sign Up!");
             return "redirect:/create";
         }
+
+        // 2. If the user is new and a user with the same email already exists, redirect with an error message.
 
         if (user.getId() == null && userDao.existsByEmail(user.getEmail())) {
             String message = "The user already exist";
             flash.addFlashAttribute("error", message);
             return "user/signup";
         }
+
+        // 3. If a photo is provided, save it using the userService.
         if (photo != null && !photo.isEmpty()) {
             userService.saveExternalPhoto(photo, user);
         }
 
+        // 4. If the user is new, encode the password before saving it to the database.
         if (user.getId() == null) {
             user.setPass(passwordEncoder.encode(user.getPass()));
         }
 
+        // 5. Assign the "ROLE_USER" role to the user.
         Role role = roleDao.findByName("ROLE_USER");
         user.setRoles(Collections.singletonList(role));
 
         userService.save(user);
 
-        flash.addFlashAttribute("success", "Congratulation! You have an account");
+        // 7. Add a success message and redirect to the user details page.
+        flash.addFlashAttribute("success", "Congratulation! Your user has been saved");
 
         return "redirect:/userDetails/" + user.getId();
 

@@ -32,6 +32,7 @@ public class StatisticService implements IStatisticService {
     private final IProductDao productDao;
     private final IUserDao userDao;
     private final IOrderService orderService;
+
     @Override
     public List<Product> getTop10Products() {
         return productDao.findTop10ByOrderByTotalSalesDesc();
@@ -40,8 +41,10 @@ public class StatisticService implements IStatisticService {
     @Override
     public List<User> getTop10Clients() {
 
+        // Retrieve all users from the userDao
         List<User> top10Clients = userDao.findAll();
 
+        // Calculate and set the total amount spent by each user
         return top10Clients.stream()
                 .peek(user -> {
                     double total = user.getOrders().stream()
@@ -49,45 +52,59 @@ public class StatisticService implements IStatisticService {
                             .sum();
                     user.setTotalSpent(total);
                 })
+
+                // Sort the users based on the total amount spent in descending order
                 .sorted(Comparator.comparingDouble(User::getTotalSpent).reversed())
+
+                // Limit the result to the top 10 clients
                 .limit(10)
+
+                // Collect the result into a list
                 .collect(Collectors.toList());
 
     }
 
     @Override
     public double calculateMonthlyRevenue() {
+
+        // Get the start and end dates of the current month
         LocalDate startOfMonth = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
         LocalDate endOfMonth = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
 
+        // Retrieve orders within the current month from the orderService
         List<Order> monthlyOrders = orderService.findByDateBetween(startOfMonth, endOfMonth);
 
+        // Calculate the total revenue from the monthly orders
         double totalRevenue = monthlyOrders.stream().mapToDouble(Order::getTotal).sum();
 
+        // Round the total revenue to two decimal places
         BigDecimal roundedRevenue = BigDecimal.valueOf(totalRevenue).setScale(2, RoundingMode.HALF_UP);
 
+        // Convert the rounded revenue to a double value and return it
         return roundedRevenue.doubleValue();
     }
 
     public Map<String, Double> calculateLast5MonthsRevenue() {
+
+        // Create a LinkedHashMap to store the revenue for the last 5 months
         Map<String, Double> last5MonthsRevenue = new LinkedHashMap<>();
 
-        // Obtén el primer día del mes actual
+        // Get the first day of the current month
         LocalDate startOfMonth = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
 
-        // Itera sobre los últimos 5 meses
+        // Iterate over the last 5 months
         for (int i = 0; i < 5; i++) {
-            // Obtén el último día del mes actual
+            // Get the last day of the current month
             LocalDate endOfMonth = startOfMonth.with(TemporalAdjusters.lastDayOfMonth());
 
-            // Obtén los pedidos para el mes actual
+            // Retrieve orders for the current month from the orderService
             List<Order> monthlyOrders = orderService.findByDateBetween(startOfMonth, endOfMonth);
 
-            // Calcula el ingreso mensual y agrégalo al mapa
+            // Calculate the monthly revenue and add it to the map
             double monthlyRevenue = monthlyOrders.stream().mapToDouble(Order::getTotal).sum();
             last5MonthsRevenue.put(startOfMonth.getMonth().toString(), monthlyRevenue);
 
-            // Avanza al mes anterior
+            // Move to the previous month
             startOfMonth = startOfMonth.minusMonths(1);
         }
 
@@ -97,45 +114,23 @@ public class StatisticService implements IStatisticService {
 
     @Override
     public double calculateWeeklyRevenue() {
+
+        // Get the start and end dates of the current week (Monday to Sunday)
         LocalDate startOfWeek = LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
         LocalDate endOfWeek = LocalDate.now().with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
 
+        // Retrieve orders within the current week from the orderService
         List<Order> weeklyOrders = orderService.findByDateBetween(startOfWeek, endOfWeek);
 
+        // Calculate the total revenue from the weekly orders
         double totalRevenue = weeklyOrders.stream().mapToDouble(Order::getTotal).sum();
 
+        // Round the total revenue to two decimal places
         BigDecimal roundedRevenue = BigDecimal.valueOf(totalRevenue).setScale(2, RoundingMode.HALF_UP);
 
+        // Convert the rounded revenue to a double value and return it
         return roundedRevenue.doubleValue();
 
     }
-
-    public Map<String, Double> calculateLast7DaysRevenue() {
-        Map<String, Double> last7DaysRevenue = new LinkedHashMap<>();
-
-        LocalDate currentDate = LocalDate.now();
-
-        // Itera sobre los últimos 7 días completos (excluyendo el día de hoy)
-
-        for (int i = 0; i < 7; i++) {
-            // Obtén la fecha del día actual
-            String currentDay = currentDate.format(DateTimeFormatter.ofPattern("EEEE"));
-
-            // Obtén los pedidos para el rango de fechas actual (desde las 00:00 hasta las 23:59:59)
-            LocalDate startDate = currentDate;
-            LocalDate endDate = currentDate;
-            List<Order> dailyOrders = orderService.findByDateBetween(startDate, endDate);
-
-            // Calcula el ingreso diario y agrégalo al mapa
-            double dailyRevenue = dailyOrders.stream().mapToDouble(Order::getTotal).sum();
-            last7DaysRevenue.put(currentDay, dailyRevenue);
-
-            // Retrocede un día
-            currentDate = currentDate.minusDays(1);
-        }
-
-        return last7DaysRevenue;
-    }
-
 
 }

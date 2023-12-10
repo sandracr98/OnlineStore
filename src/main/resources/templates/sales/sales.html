@@ -8,132 +8,123 @@
 <div class="container py-4">
 
     <div class="card bg-light">
-        <div class="card-header" th:text="${title}"></div>
+        <div class="card-header bg-dark text-white" th:text="${title}"></div>
 
         <div class="card-body">
 
             <div class="row">
                 <div class="col-md-6">
+                    <table class="table table-striped  border border-secondary">
+                        <thead class="thead-inverse">
+                        <tr>
+                            <th colspan="1">Weekly Revenue</th>
+                        </tr>
+                        </thead>
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <table class="table table-striped  border border-secondary">
-                                <thead class="thead-inverse">
-                                <tr>
-                                    <th colspan="1">Weekly Revenue</th>
-                                </tr>
-                                </thead>
-
-                                <tbody>
-                                <tr>
-                                    <td th:text="${weeklyRevenue}"></td>
-                                </tr>
-                                </tbody>
-                            </table>
-
-                            <canvas id="dailyRevenueChart" width="400" height="200"></canvas>
-
-                        </div>
-                    </div>
-                    <br>
-                    <br>
-
-                    <div class="row">
-                        <div class="col-md-12">
-
-                            <table class="table table-striped  border border-secondary">
-                                <thead class="thead-inverse">
-                                <tr>
-                                    <th colspan="4">TOP 10 CUSTOMERS</th>
-                                </tr>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Surname</th>
-                                    <th>Email</th>
-                                    <th>Total-Spent</th>
-                                </tr>
-                                </thead>
-
-                                <tbody>
-                                <tr th:each="customer: ${users}">
-
-                                    <td th:text="${customer.name}"></td>
-                                    <td th:text="${customer.surname}"></td>
-                                    <td th:text="${customer.email}"></td>
-                                    <td th:text="${customer.totalSpent}"></td>
-
-                                </tr>
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                        <tbody>
+                        <tr>
+                            <td th:text="${weeklyRevenue}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
 
                 </div>
 
-
                 <div class="col-md-6">
 
+                    <table class="table table-striped  border border-secondary">
 
-                    <div class="row">
-                        <div class="col-md-12">
+                        <thead class="thead-inverse">
+                        <tr>
+                            <th colspan="1">Monthly Revenue</th>
+                        </tr>
+                        </thead>
+                        <tr>
+                            <td th:text="${monthlyRevenue}"></td>
+                        </tr>
 
-                            <table class="table table-striped  border border-secondary">
-
-                                <thead class="thead-inverse">
-                                <tr>
-                                    <th colspan="1">Monthly Revenue</th>
-                                </tr>
-                                </thead>
-                                <tr>
-                                    <td th:text="${monthlyRevenue}"></td>
-                                </tr>
-
-                            </table>
-
-                            <canvas id="monthlyRevenueChart" width="400" height="200"></canvas>
-
-                        </div>
-                    </div>
-
-                    <br>
-                    <br>
-
-                    <div class="row">
-                        <div class="col-md-12">
-
-
-                            <table class="table table-striped  border border-secondary">
-                                <thead class="thead-inverse">
-                                <tr>
-                                    <th colspan="3">TOP 10 PRODUCTS</th>
-                                </tr>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Price</th>
-                                    <th>Sales</th>
-
-                                </tr>
-                                </thead>
-
-                                <tbody>
-                                <tr th:each="product: ${products}">
-
-                                    <td th:text="${product.title}"></td>
-                                    <td th:text="${product.price}"></td>
-                                    <td th:text="${product.totalSales}"></td>
-
-                                </tr>
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
+                    </table>
 
                 </div>
 
             </div>
+
+            <br>
+
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <canvas id="monthlyRevenueChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+            <br>
+
+
+            <div class="row">
+                <div class="col-md-12">
+
+                    <table class="table table-striped  border border-secondary">
+                        <thead class="thead-inverse">
+                        <tr>
+                            <th class="bg-dark text-white" colspan="4">TOP 10 CUSTOMERS</th>
+                        </tr>
+                        <tr>
+                            <th>Name</th>
+                            <th>Surname</th>
+                            <th>Email</th>
+                            <th>Total-Spent</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr th:each="customer: ${users}">
+
+                            <td th:text="${customer.name}"></td>
+                            <td th:text="${customer.surname}"></td>
+                            <td th:text="${customer.email}"></td>
+                            <td th:text="${customer.totalSpent}"></td>
+
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <br>
+
+
+            <div class="row">
+                <div class="col-md-12">
+
+
+                    <table class="table table-striped  border border-secondary">
+                        <thead class="thead-inverse">
+                        <tr>
+                            <th class="bg-dark text-white" colspan="3">TOP 10 PRODUCTS</th>
+                        </tr>
+                        <tr>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Sales</th>
+
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr th:each="product: ${products}">
+
+                            <td th:text="${product.title}"></td>
+                            <td th:text="${product.price}"></td>
+                            <td th:text="${product.totalSales}"></td>
+
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
 
     </div>
@@ -161,42 +152,6 @@
                 labels: labels,
                 datasets: [{
                     label: 'Monthly Revenue',
-                    data: data,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    });
-    /*]]>*/
-</script>
-
-
-<script th:inline="javascript">
-    /*<![CDATA[*/
-    document.addEventListener('DOMContentLoaded', function () {
-        var ctx = document.getElementById('dailyRevenueChart').getContext('2d');
-
-        /* Obtén los datos diarios de ingresos desde el modelo de Thymeleaf */
-        var dailyData = /*[[${dailyRevenueData}]]*/ {};
-
-        var labels = Object.keys(dailyData);
-        var data = Object.values(dailyData);
-
-        var chart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Daily Revenue',
                     data: data,
                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
                     borderColor: 'rgba(75, 192, 192, 1)',

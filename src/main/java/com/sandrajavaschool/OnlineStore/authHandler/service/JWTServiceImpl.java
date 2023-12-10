@@ -27,7 +27,7 @@ public class JWTServiceImpl implements JWTService{
     public static final String HEADER_STRING = "Authorization";
 
 
-    //The method takes an Authentication object (auth) as a parameter.
+    // The method takes an Authentication object (auth) as a parameter.
     // This object typically contains details about the authenticated user, such as username and authorities (roles).
     @Override
     public String create(Authentication auth) throws IOException {

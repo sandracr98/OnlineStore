@@ -83,9 +83,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
 
-    //el auth de aqui ya esta autenticado con el user los roles etc
-    //ahora vamos a crear nuestro token
-    //nota: principal === user
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
                                             FilterChain chain, Authentication authResult)

@@ -45,12 +45,5 @@ public interface IStatisticService {
      */
     Map<String, Double> calculateLast5MonthsRevenue();
 
-    /**
-     * Calculates the revenue for the last 7 days.
-     *
-     * @return A map where keys are day names and values are corresponding revenues.
-     */
-
-    Map<String, Double> calculateLast7DaysRevenue();
 
 }

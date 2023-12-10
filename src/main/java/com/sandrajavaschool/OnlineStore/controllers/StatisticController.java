@@ -31,17 +31,12 @@ public class StatisticController {
         double weeklyRevenue = stadisticService.calculateWeeklyRevenue();
 
         Map<String, Double> monthlyRevenueData = stadisticService.calculateLast5MonthsRevenue();
-        Map<String, Double> dailyRevenueData = stadisticService.calculateLast7DaysRevenue();
-
-
 
         model.addAttribute("products", products);
         model.addAttribute("users", users);
         model.addAttribute("monthlyRevenue", monthlyRevenue);
         model.addAttribute("weeklyRevenue", weeklyRevenue);
         model.addAttribute("monthlyRevenueData", monthlyRevenueData);
-        model.addAttribute("dailyRevenueData", dailyRevenueData);
-
 
         return "sales/sales";
     }

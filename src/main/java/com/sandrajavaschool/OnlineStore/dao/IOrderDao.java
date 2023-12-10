@@ -4,6 +4,7 @@ import com.sandrajavaschool.OnlineStore.entities.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -33,5 +34,6 @@ public interface IOrderDao extends JpaRepository<Order,Long> {
      * @return A list of orders within the specified date range.
      */
     List<Order> findByDateBetween(Date startDate, Date endDate);
+
 
 }
