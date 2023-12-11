@@ -39,7 +39,7 @@ public class UserService implements IUserService {
 
     @Override
     public void save(User user) {
-            userDao.save(user);
+        userDao.save(user);
     }
 
     @Override
@@ -61,7 +61,6 @@ public class UserService implements IUserService {
     public Page<User> findAll(Pageable pageable) {
         return userDao.findAll(pageable);
     }
-
 
 
     @Override
@@ -117,36 +116,44 @@ public class UserService implements IUserService {
 
     @Override
     public void saveExternalPhoto(MultipartFile photo, User user) {
-            if (user.getId() != null
-                    && user.getId() > 0
-                    && user.getPhoto() != null
-                    && user.getPhoto().length() > 0) {
+        if (user.getId() != null
+                && user.getId() > 0
+                && user.getPhoto() != null
+                && user.getPhoto().length() > 0) {
 
-                Path rootPath = Paths.get("C:/temp/uploads/", user.getPhoto());
-                File file = rootPath.toFile();
+            Path rootPath = Paths.get("C:/temp/uploads/", user.getPhoto());
+            File file = rootPath.toFile();
 
-                if (file.exists() && file.canRead()) {
-                    file.delete();
-                }
+            if (file.exists() && file.canRead()) {
+                file.delete();
             }
-            try {
-                // Generar un nombre único para el archivo
-                String fileName = UUID.randomUUID().toString() + "_" + photo.getOriginalFilename();
+        }
+        try {
+            // Generar un nombre único para el archivo
+            String fileName = UUID.randomUUID().toString() + "_" + photo.getOriginalFilename();
 
-                // Obtener la ruta completa del archivo
-                Path completeRoot = Paths.get("C:/temp/uploads/", fileName);
+            // Obtener la ruta completa del archivo
+            Path completeRoot = Paths.get("C:/temp/uploads/", fileName);
 
-                // Guardar la imagen en el sistema de archivos
-                Files.write(completeRoot, photo.getBytes());
+            // Guardar la imagen en el sistema de archivos
+            Files.write(completeRoot, photo.getBytes());
 
-                // Establecer la ruta del archivo en el campo 'photo' del objeto 'User'
-                user.setPhoto(fileName);
+            // Establecer la ruta del archivo en el campo 'photo' del objeto 'User'
+            user.setPhoto(fileName);
 
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
+    @Override
+    public void updatePassword(User user, String newPassword) {
+        if (user != null && newPassword != null) {
+            user.setPass(newPassword);
+            userDao.save(user);
+        }
 
+
+    }
 }

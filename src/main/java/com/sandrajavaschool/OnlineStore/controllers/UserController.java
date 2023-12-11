@@ -149,7 +149,8 @@ public class UserController {
             return "redirect:/create";
         }
 
-        // 2. If the user is new and a user with the same email already exists, redirect with an error message.
+        // 2. If the user is new and a user with the same email already exists,
+        // redirect with an error message.
 
         if (user.getId() == null && userDao.existsByEmail(user.getEmail())) {
             String message = "The user already exist";
@@ -207,6 +208,41 @@ public class UserController {
         Long userId = user.getId();
 
         return "redirect:/userDetails/" + userId;
+    }
+
+    @GetMapping("/change-password/{id}")
+    public String showChangePasswordForm(@PathVariable(value = "id") Long id,
+                                         Model model) {
+
+        User currentUser = userService.findOne(id);
+        model.addAttribute("currentUser", currentUser);
+
+        return "user/changePasswordView";
+    }
+
+    @PostMapping("/change-password")
+    public String changePassword(@RequestParam("oldPassword") String oldPassword,
+                                 @RequestParam("newPassword") String newPassword,
+                                 @ModelAttribute("currentUser") User currentUser,
+                                 Model model,
+                                 RedirectAttributes flash) {
+
+        Long userId = currentUser.getId();
+        User user = userService.findOne(userId);
+
+        if (passwordEncoder.matches(oldPassword, user.getPass())) {
+
+            user.setPass(passwordEncoder.encode(newPassword));
+            userService.save(user);
+
+            model.addAttribute("success", "Password has been changed");
+
+        } else {
+
+            model.addAttribute("error", "Password does not match");
+        }
+
+        return "redirect:/userDetails/" + currentUser.getId();
     }
 
 

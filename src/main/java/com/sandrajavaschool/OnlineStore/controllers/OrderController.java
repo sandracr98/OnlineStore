@@ -265,7 +265,7 @@ public class OrderController {
             Order existingOrder = userService.findOrderById(id);
 
             // 3. Check if the existing order exists
-            if (existingOrder == null || userService.findOne(id) == null) {
+            if (existingOrder == null) {
                 flash.addFlashAttribute("error", "Order does not exist in the database");
                 return "redirect:/userDetails/" + (existingOrder != null ? existingOrder.getUser().getId() : "");
             }

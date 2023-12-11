@@ -14,17 +14,20 @@ import java.util.List;
 public class FileReader {
     public static List<Product> parseGoodsFile(MultipartFile file) throws IOException {
 
+        // List to store parsed products
         List<Product> goodsList = new ArrayList<>();
 
+        // ObjectMapper for JSON processing
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
+            // Attempt to read JSON content from the file input stream and convert it to a list of products
             goodsList = objectMapper.readValue(file.getInputStream(), new TypeReference<List<Product>>() {});
         } catch (IOException e) {
+            // Print the error and display an error message if JSON reading fails
             e.printStackTrace();
-            System.err.println("Error al leer el JSON: " + e.getMessage());
+            System.err.println("Error reading JSON: " + e.getMessage());
         }
-
 
         return goodsList;
     }

@@ -157,7 +157,6 @@
             $("#total_" + id).html(total);
             this.totalImportCalc();
 
-            // Puedes usar 'total' en otros cálculos aquí
         },
 
         hasProduct: function (id) {
@@ -209,29 +208,31 @@
     }
 
     function loadStoredProducts() {
-        // Obtener los productos de la cookie y convertirlos a un array
+        // Get products from the cookie and convert them to an array
         var cookieProducts = getCookieProducts();
 
-        // Obtener los productos almacenados en el localStorage y convertirlos a un array
+        // Get products stored in localStorage and convert them to an array
         var localStorageProducts = getLocalStorageProducts();
 
-        // Combinar los productos de la cookie y del localStorage
+        // Combine products from both cookie and localStorage
         var allProducts = combineProducts(cookieProducts, localStorageProducts);
 
-        // Agregar productos almacenados a la tabla
+        // Add stored products to the table
         $.each(allProducts, function (index, product) {
             var line = $("#itemsLineTable").html();
 
+            // Replace placeholders in the HTML line with product information
             line = line.replace(/{ID}/g, product.id);
             line = line.replace(/{TITLE}/g, product.title);
             line = line.replace(/{PRICE}/g, product.price);
 
-            // Añadir la cantidad al HTML
+            // Add the quantity to the HTML
             line = line.replace(/{AMOUNT}/g, product.amount);
 
+            // Append the line to the table
             $("#itemTable tbody").append(line);
 
-            // Ejecutar importCalc con la cantidad almacenada
+            // Execute importCalc with the stored quantity
             itemsHelper.importCalc(product.id, product.price, product.amount);
         });
     }

@@ -115,5 +115,8 @@ public interface IUserService {
      */
     void saveExternalPhoto(MultipartFile photo, User user);
 
+    void updatePassword(User user, String newPassword);
+
+
 }
 
